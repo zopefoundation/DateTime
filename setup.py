@@ -20,10 +20,13 @@ setup(name='DateTime',
       version = '2.11.0a1',
       url='http://svn.zope.org/DateTime',
       license='ZPL 2.1',
-      description='',
+      description='DateTime data type',
       author='Zope Corporation and Contributors',
       author_email='zope-dev@zope.org',
-      long_description='',
+      long_description="""\
+This package provides a DateTime data type, as known from Zope 2.
+Unless you need to communicate with Zope 2 APIs, you're probably
+better off using Python's bult-in datetime module.""",
       
 	  packages=find_packages('src'),
 	  package_dir={'': 'src'},
