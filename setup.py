@@ -17,7 +17,7 @@ import os
 from setuptools import setup, find_packages, Extension
 
 setup(name='DateTime',
-      version = '2.11.0a1',
+      version = '2.11.0a2',
       url='http://cheeseshop.python.org/pypi/DateTime',
       license='ZPL 2.1',
       description='DateTime data type',
