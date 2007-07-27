@@ -18,7 +18,7 @@ from setuptools import setup, find_packages, Extension
 
 setup(name='DateTime',
       version = '2.11.0a1',
-      url='http://svn.zope.org/DateTime',
+      url='http://cheeseshop.python.org/pypi/DateTime',
       license='ZPL 2.1',
       description='DateTime data type',
       author='Zope Corporation and Contributors',
