@@ -17,7 +17,7 @@ import os
 from setuptools import setup, find_packages, Extension
 
 setup(name='DateTime',
-      version = '2.11.0a2',
+      version = '2.11.0dev',
       url='http://cheeseshop.python.org/pypi/DateTime',
       license='ZPL 2.1',
       description='DateTime data type',
@@ -31,7 +31,9 @@ better off using Python's bult-in datetime module.""",
 	  packages=find_packages('src'),
 	  package_dir={'': 'src'},
 
-      install_requires=['zope.interface'],
+      install_requires=['zope.interface',
+                        'pytz',
+                        ],
       include_package_data=True,
       zip_safe=False,
       )
