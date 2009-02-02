@@ -27,8 +27,8 @@ better off using Python's bult-in datetime module.""",
       author='Zope Corporation and Contributors',
       author_email='zope-dev@zope.org',
       long_description=open(
-          os.path.join('src', 'DateTime', 'DateTime.txt')).read(),
-
+          os.path.join('src', 'DateTime', 'DateTime.txt')).read() + \
+          '\n\n' + open('CHANGES.txt').read(),
       packages=find_packages('src'),
       package_dir={'': 'src'},
 

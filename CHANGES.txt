@@ -1,0 +1,27 @@
+Changelog
+=========
+
+2.11.2dev (unreleased)
+----------------------
+
+- Include *all* pytz zone names, not just "common" ones.
+
+- Fix one fragile doctest, band-aid another.
+
+- Fix for launchpad #267545: DateTime(DateTime()) should preserve the
+  correct hour.
+
+2.11.1 (2008-08-05)
+-------------------
+
+- DateTime conversion of datetime objects with non-pytz tzinfo. Timezones()
+  returns a copy of the timezone list (allows tests to run).
+
+- Merged the slinkp-datetime-200007 branch: fix the DateTime(anotherDateTime)
+  constructor to preserve timezones.
+
+2.11.0b1 (2008-01-06)
+---------------------
+
+- Split off from the Zope2 main source code tree.
+
