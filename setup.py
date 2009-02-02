@@ -17,8 +17,8 @@ import os
 from setuptools import setup, find_packages, Extension
 
 setup(name='DateTime',
-      version = '2.11.2dev',
-      url='http://cheeseshop.python.org/pypi/DateTime',
+      version = '2.11.2',
+      url='http://pypi.python.org/pypi/DateTime',
       license='ZPL 2.1',
       description="""\
 This package provides a DateTime data type, as known from Zope 2.

@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.11.2dev (unreleased)
-----------------------
+2.11.2 (2009-02-02)
+-------------------
 
 - Include *all* pytz zone names, not just "common" ones.
 
