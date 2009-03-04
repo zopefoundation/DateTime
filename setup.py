@@ -11,13 +11,13 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Setup for the Acquisition egg package
+"""Setup for the DateTime egg package
 """
 import os
 from setuptools import setup, find_packages, Extension
 
 setup(name='DateTime',
-      version = '2.11.3dev',
+      version = '2.12.0dev',
       url='http://pypi.python.org/pypi/DateTime',
       license='ZPL 2.1',
       description="""\

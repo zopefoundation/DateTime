@@ -1,8 +1,11 @@
 Changelog
 =========
 
-2.11.3 (unreleased)
+2.12.0 (unreleased)
 -------------------
+
+- Launchpad #290254: Forward-ported fix for '_micros'-less pickles from
+  the Zope 2.11 branch version.
 
 
 2.11.2 (2009-02-02)
