@@ -332,7 +332,6 @@ class DateTimeTests(unittest.TestCase):
         ref2 = DateTime('2006/11/6 10:30 GMT')
         ref3 = DateTime('2004/06/14 14:30:15 GMT-3')
         ref4 = DateTime('2006/01/01 GMT')
-        ref5 = DateTime('2006/01/01')
 
         # Basic tests
         # Though this is timezone naive and according to specification should
@@ -432,7 +431,7 @@ class DateTimeTests(unittest.TestCase):
         
         # ISO format with no timezone
         isoDt = DateTime('2006-01-01 00:00:00')
-        self.assertEqual(ref5, isoDt)
+        self.assertEqual(ref4, isoDt)
 
     def testJulianWeek(self):
         # Check JulianDayWeek function
