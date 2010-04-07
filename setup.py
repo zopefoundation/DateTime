@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2007 Zope Corporation and Contributors.
+# Copyright (c) 2007 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -24,7 +24,7 @@ setup(name='DateTime',
 This package provides a DateTime data type, as known from Zope 2.
 Unless you need to communicate with Zope 2 APIs, you're probably
 better off using Python's bult-in datetime module.""",
-      author='Zope Corporation and Contributors',
+      author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       long_description=open(
           os.path.join('src', 'DateTime', 'DateTime.txt')).read() + \
