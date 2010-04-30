@@ -1,10 +1,10 @@
 Changelog
 =========
 
-2.12.1 (unreleased)
+2.12.1 (2010-04-30)
 -------------------
 
-- Remove an undeclared testing dependency on zope.testing.doctest in favor of
+- Removed an undeclared testing dependency on zope.testing.doctest in favor of
   the standard libraries doctest module.
 
 - Added a maximum version requirement on pytz <= 2010b. Later versions produce
