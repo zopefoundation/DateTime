@@ -11,10 +11,9 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Setup for the DateTime egg package
-"""
+
 import os
-from setuptools import setup, find_packages, Extension
+from setuptools import setup, find_packages
 
 setup(name='DateTime',
       version = '2.12.1dev',
@@ -33,7 +32,7 @@ better off using Python's bult-in datetime module.""",
       package_dir={'': 'src'},
 
       install_requires=['zope.interface',
-                        'pytz',
+                        'pytz <= 2010b',
                         ],
       include_package_data=True,
       zip_safe=False,
