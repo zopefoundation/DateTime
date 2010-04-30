@@ -648,7 +648,7 @@ class DateTimeTests(unittest.TestCase):
 
 
 def test_suite():
-    from zope.testing import doctest
+    import doctest
     return unittest.TestSuite([
         unittest.makeSuite(DateTimeTests),
         doctest.DocFileSuite('DateTime.txt', package='DateTime'),

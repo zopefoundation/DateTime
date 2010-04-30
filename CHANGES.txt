@@ -4,6 +4,9 @@ Changelog
 2.12.1 (unreleased)
 -------------------
 
+- Remove an undeclared testing dependency on zope.testing.doctest in favor of
+  the standard libraries doctest module.
+
 - Added a maximum version requirement on pytz <= 2010b. Later versions produce
   test failures related to timezone changes.
 
