@@ -33,7 +33,8 @@ better off using Python's bult-in datetime module.""",
 
       install_requires=['zope.interface',
                         'pytz <= 2010b',
-                        ],
+                       ],
       include_package_data=True,
+      test_suite='DateTime.tests.testDateTime.test_suite',
       zip_safe=False,
       )
