@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.12.2 (unreleased)
+2.12.2 (2010-05-05)
 -------------------
 
 - Launchpad #572715:  Relaxed pin on pytz, after applying a patch from 
@@ -21,7 +21,6 @@ Changelog
 
 - Launchpad #290254: Forward-ported fix for '_micros'-less pickles from
   the Zope 2.11 branch version.
-
 
 2.11.2 (2009-02-02)
 -------------------
