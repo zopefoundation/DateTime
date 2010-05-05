@@ -221,14 +221,14 @@ class Timezone:
         normalized_dt = self.tzinfo.normalize(dt.astimezone(self.tzinfo))
         normalized_tzinfo = normalized_dt.tzinfo
         
-        offset = normalized_tzinfo.utcoffset(dt)
+        offset = normalized_tzinfo.utcoffset(normalized_dt)
         secs = offset.days * 24 * 60 * 60 + offset.seconds
-        dst = normalized_tzinfo.dst(dt)
+        dst = normalized_tzinfo.dst(normalized_dt)
         if dst == timedelta(0):
             is_dst = 0
         else:
             is_dst = 1
-        return secs, is_dst, normalized_tzinfo.tzname(dt)
+        return secs, is_dst, normalized_tzinfo.tzname(normalized_dt)
 
 
 class PytzCache:

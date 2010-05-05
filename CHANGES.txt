@@ -4,6 +4,8 @@ Changelog
 2.12.2 (unreleased)
 -------------------
 
+- Launchpad #572715:  Relaxed pin on pytz, after applying a patch from 
+  Marius Gedminus which fixes the apparent API breakage.
 
 2.12.1 (2010-04-30)
 -------------------
