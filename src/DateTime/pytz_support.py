@@ -84,7 +84,7 @@ _numeric_timezone_data = {
 # These are the timezones not in pytz.common_timezones
 _old_zlst = [
 
-'AST',  'AT',  'BST',  'BT',  'CCT',
+'AST',  'AT',  'BST',  'BT',  'CCT', 'EDT',
 'CET',  'CST',  'Cuba',  'EADT',  'EAST',
 'EEST',  'EET',  'EST',  'Egypt',  'FST',
 'FWT',  'GB-Eire',  'GMT+0100',  'GMT+0130',  'GMT+0200',
@@ -186,7 +186,7 @@ _old_zmap={
 'bt':'GMT+3', 'zp4':'GMT+4', 'zp5':'GMT+5', 'zp6':'GMT+6',
 'wast':'GMT+7', 'cct':'GMT+8', 'jst':'GMT+9', 'east':'GMT+10',
 'gst':'GMT+10', 'nzt':'GMT+12', 'nzst':'GMT+12', 'idle':'GMT+12',
-'ret':'GMT+4', 'ist': 'GMT+0530'
+'ret':'GMT+4', 'ist': 'GMT+0530', 'edt' : 'GMT-0400'
 
 }
 

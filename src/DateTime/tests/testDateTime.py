@@ -647,6 +647,14 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(offset1, offset2)
 
 
+    def testEDTTimezone(self):
+        """Should be able to parse EDT timezones"""
+        dt = DateTime("Mon, 28 Jun 2010 10:12:25 EDT")
+        self.assertEqual(dt.Day(), 'Monday')
+        self.assertEqual(dt.day(), 28)
+        self.assertEqual(dt.Month(), 'June')
+        self.assertEqual(dt.timezone(), 'GMT-0400')
+
 def test_suite():
     import doctest
     return unittest.TestSuite([
