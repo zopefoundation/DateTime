@@ -653,7 +653,7 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(dt.Day(), 'Monday')
         self.assertEqual(dt.day(), 28)
         self.assertEqual(dt.Month(), 'June')
-        self.assertEqual(dt.timezone(), 'GMT-0400')
+        self.assertEqual(dt.timezone(), 'GMT-4')
 
 def test_suite():
     import doctest
