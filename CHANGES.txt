@@ -1,12 +1,11 @@
 Changelog
 =========
 
-2.12.3 (unreleased)
+2.12.3 (2010-07-09)
 -------------------
 
 - Added EDT timezone support. Addresses bug #599856.
   [vangheem]
-  
 
 2.12.2 (2010-05-05)
 -------------------
