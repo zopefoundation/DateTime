@@ -4,6 +4,7 @@ Changelog
 2.12.4 (unreleased)
 -------------------
 
+- Fixed mapping of EDT (was -> 'GMT-0400', now 'GMT-4').
 
 2.12.3 (2010-07-09)
 -------------------
