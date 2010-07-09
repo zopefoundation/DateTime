@@ -636,8 +636,7 @@ class DateTimeTests(unittest.TestCase):
         self.failIf(real_failures, '\n'.join(real_failures))
     
     def testBasicTZ(self):
-        """psycopg2 supplies it's own tzinfo instances, with no `zone` attribute
-        """
+        #psycopg2 supplies it's own tzinfo instances, with no `zone` attribute
         tz = FixedOffset(60, 'GMT+1')
         dt1 = datetime(2008, 8, 5, 12, 0, tzinfo=tz)
         DT = DateTime(dt1)
@@ -648,7 +647,7 @@ class DateTimeTests(unittest.TestCase):
 
 
     def testEDTTimezone(self):
-        """Should be able to parse EDT timezones"""
+        #Should be able to parse EDT timezones:  see lp:599856.
         dt = DateTime("Mon, 28 Jun 2010 10:12:25 EDT")
         self.assertEqual(dt.Day(), 'Monday')
         self.assertEqual(dt.day(), 28)
