@@ -4,6 +4,10 @@ Changelog
 2.12.5 (unreleased)
 -------------------
 
+- Launchpad #142521: Removed confusing special case in 
+  DateTime.__str__ where DateTime instances for midnight 
+  (e.g. '2010-07-27 00:00:00 US/Eastern') values would 
+  render only their date and nothing else.
 
 2.12.4 (2010-07-12)
 -------------------

@@ -1676,10 +1676,7 @@ class DateTime:
         """Convert a DateTime to a string."""
         y,m,d = self._year,self._month,self._day
         h,mn,s,t = self._hour,self._minute,self._second,self._tz
-        if h == mn == s == 0:
-            # hh:mm:ss all zero -- suppress the time.
-            return '%4.4d/%2.2d/%2.2d' % (y, m, d)
-        elif s == int(s):
+        if s == int(s):
             # A whole number of seconds -- suppress milliseconds.
             return '%4.4d/%2.2d/%2.2d %2.2d:%2.2d:%2.2d %s' % (
                     y, m, d, h, mn, s, t)

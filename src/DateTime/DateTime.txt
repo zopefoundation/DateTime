@@ -314,7 +314,7 @@ Conversion and comparison methods
     the current object's day, in the object's timezone context:
 
     >>> dt.earliestTime()
-    DateTime('1997/03/09')
+    DateTime('1997/03/09 00:00:00 US/Eastern')
 
 * ``latestTime()`` return a new DateTime object that represents the
   latest possible time (in whole seconds) that still falls within the
