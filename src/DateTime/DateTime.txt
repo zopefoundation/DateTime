@@ -190,7 +190,8 @@ with from zero to seven arguments:
   then the first is taken to be an integer year, the second is taken
   to be an integer month, and the third is taken to be an integer day.
   If the combination of values is not valid, then a DateTimeError is
-  raised.  Two-digit years are assumed to be in the twentieth century.
+  raised.  One- or two-digit years up to 69 are assumed to be in the 
+  21st century, whereas values 70-99 are assumed to be 20th century.
   The fourth, fifth, and sixth arguments are floating point, positive
   or negative offsets in units of hours, minutes, and days, and
   default to zero if not given.  An optional string may be given as
