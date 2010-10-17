@@ -19,7 +19,7 @@ import unittest
 
 from DateTime.DateTime import _findLocalTimeZoneName, _cache
 from DateTime import DateTime
-from datetime import datetime, tzinfo, timedelta
+from datetime import date, datetime, tzinfo, timedelta
 import pytz
 import legacy
 
@@ -143,10 +143,12 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(repr(dt), repr(dt1))
 
     def testDayOfWeek(self):
+        # Compare to the datetime.date value to make it locale independent
+        expected = date(2000, 6, 16).strftime('%A')
         # strftime() used to always be passed a day of week of 0
         dt = DateTime('2000/6/16')
         s = dt.strftime('%A')
-        self.assertEqual(s, 'Friday', (dt, s))
+        self.assertEqual(s, expected, (dt, s))
 
     def testOldDate(self):
         # Fails when an 1800 date is displayed with negative signs

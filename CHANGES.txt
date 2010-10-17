@@ -4,6 +4,7 @@ Changelog
 2.12.6 (unreleased)
 -------------------
 
+- Changed ``testDayOfWeek`` test to be independent of OS locale.
 
 2.12.5 (2010-07-29)
 -------------------
