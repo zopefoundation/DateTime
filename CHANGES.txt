@@ -4,6 +4,15 @@ Changelog
 2.12.7 (unreleased)
 -------------------
 
+- Fixed (possibly unused) _parse_iso8601 function.
+  [thet]
+
+- Removed unused import of legacy DateTimeZone, strftime and re.
+  Remove trailing whitespace.
+  [thet]
+
+- Removed reference to missing version section from buildout.
+  [thet]
 
 2.12.6 (2010-10-17)
 -------------------
