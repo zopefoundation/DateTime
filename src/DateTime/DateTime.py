@@ -1727,7 +1727,7 @@ class DateTime:
     def _parse_iso8601(self,s):
         # preserve the previously implied contract
         # who know where this could be used...
-        return _parse_iso8601_preserving_tznaive(s)[:7]
+        return self._parse_iso8601_preserving_tznaive(s)[:7]
 
     def _parse_iso8601_preserving_tznaive(self,s):
         try:
