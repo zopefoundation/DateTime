@@ -209,18 +209,18 @@ class Timezone:
     """
     def __init__(self, tzinfo):
         self.tzinfo = tzinfo
-        
+
     def info(self, t=None):
         if t is None:
             dt = datetime.utcnow().replace(tzinfo=pytz.utc)
         else:
             dt = EPOCH + timedelta(0, t) # can't use utcfromtimestamp past 2038
-        
+
         # need to normalize tzinfo for the datetime to deal with
         # daylight savings time.
         normalized_dt = self.tzinfo.normalize(dt.astimezone(self.tzinfo))
         normalized_tzinfo = normalized_dt.tzinfo
-        
+
         offset = normalized_tzinfo.utcoffset(normalized_dt)
         secs = offset.days * 24 * 60 * 60 + offset.seconds
         dst = normalized_tzinfo.dst(normalized_dt)
@@ -235,12 +235,12 @@ class PytzCache:
     """
     Reimplementation of the DateTime._cache class that uses for timezone info
     """
-    
+
     _zlst = pytz.common_timezones + _old_zlst # used by DateTime.TimeZones
     _zmap = dict((name.lower(), name) for name in pytz.all_timezones)
     _zmap.update(_old_zmap) # These must take priority
     _zidx = _zmap.keys()
-    
+
     def __getitem__(self, key):
         name = self._zmap.get(key.lower(), key) # fallback to key
         try:
