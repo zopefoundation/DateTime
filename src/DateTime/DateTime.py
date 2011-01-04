@@ -17,7 +17,7 @@ __version__='$Revision: 1.99 $'[11:-2]
 
 import re, math
 from time import time, gmtime, localtime
-from time import daylight, timezone, altzone, strftime
+from time import daylight, timezone, altzone
 from datetime import datetime
 from interfaces import IDateTime
 from interfaces import DateTimeError, SyntaxError, DateError, TimeError
