@@ -457,7 +457,7 @@ class DateTime:
             </PRE>
 
             See http://en.wikipedia.org/wiki/ISO_8601 for full specs.
-            
+
             Note that the Zope DateTime parser assumes timezone naive ISO
             strings to be in UTC rather than local time as specified.
 
@@ -472,7 +472,7 @@ class DateTime:
           - If the DateTime function is invoked with a single argument
             that is a DateTime instane, a copy of the passed object will
             be created.
-            
+
           - New in 2.11:
             The DateTime function may now be invoked with a single argument
             that is a datetime.datetime instance. DateTimes may be converted
@@ -561,7 +561,7 @@ class DateTime:
             # Internal format that includes milliseconds (from the epoch)
             yr,mo,dy,hr,mn,sc,tz,t,d,s,millisecs=args
             microsecs = millisecs * 1000
-        
+
         elif ac == 12:
             # Internal format that includes microseconds (from the epoch) and a
             # flag indicating whether this was constructed in a timezone naive
@@ -580,7 +580,7 @@ class DateTime:
             yr,mo,dy,hr,mn,sc=lt[:6]
             sc=sc+ms
             self._timezone_naive = False
-        
+
         elif ac==1:
             arg=args[0]
 
@@ -594,7 +594,7 @@ class DateTime:
                 t = arg.timeTime()
                 s,d = _calcSD(t)
                 yr,mo,dy,hr,mn,sc,tz = arg.parts()
-            
+
             elif isinstance(arg, datetime):
                 yr,mo,dy,hr,mn,sc,numerictz,tznaive=self._parse_iso8601_preserving_tznaive(arg.isoformat())
                 if arg.tzinfo is None:
@@ -629,7 +629,7 @@ class DateTime:
                 s,d = _calcSD(t)
                 x = _calcDependentSecond(tz, t)
                 yr,mo,dy,hr,mn,sc = _calcYMDHMS(x, ms)
-                
+
 
             elif isinstance(arg, (unicode, str)):
                 # Date/time string
@@ -757,7 +757,7 @@ class DateTime:
         self._micros = microsecs
         # self._micros is the time since the epoch
         # in long integer microseconds.
-        
+
 
     int_pattern  =re.compile(r'([0-9]+)') #AJ
     flt_pattern  =re.compile(r':([0-9]+\.[0-9]+)') #AJ
@@ -1411,14 +1411,14 @@ class DateTime:
         except AttributeError:
             micros = self._upgrade_old()
         return micros / 1000
-    
+
     def micros(self):
         """Return the microsecond since the epoch in GMT."""
         try:
             return self._micros
         except AttributeError:
             return self._upgrade_old()
-    
+
     def timezoneNaive(self):
         """The python datetime module introduces the idea of distinguishing
         between timezone aware and timezone naive datetime values. For lossless
@@ -1580,7 +1580,7 @@ class DateTime:
         Dates are output as: YYYY-MM-DDTHH:MM:SSTZD
             T is a literal character.
             TZD is Time Zone Designator, format +HH:MM or -HH:MM
-        
+
         If the instance is timezone naive (it was not specified with a timezone
         when it was constructed) then the timezone is ommitted.
 
@@ -1610,7 +1610,7 @@ class DateTime:
         return "%0.4d-%0.2d-%0.2dT%0.2d:%0.2d:%0.2dZ" % (
             newdate._year, newdate._month, newdate._day,
             newdate._hour, newdate._minute, newdate._second)
-    
+
     def asdatetime(self):
         """Return a standard libary datetime.datetime
         """
@@ -1624,7 +1624,7 @@ class DateTime:
         dt = datetime(self._year, self._month, self._day, self._hour,
                       self._minute, second, microsec, tzinfo)
         return dt
-    
+
     def utcdatetime(self):
         """Convert the time to UTC then return a timezone naive datetime object"""
         utc = self.toZone('UTC')
@@ -1803,7 +1803,7 @@ class DateTime:
             tznaive = False
         else:
             tznaive = True
-        
+
         # Differ from the specification here. To preserve backwards
         # compatibility assume a default timezone == UTC.
         tz = 'GMT%+03d%02d' % (hour_off, min_off)
