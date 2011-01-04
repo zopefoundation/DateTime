@@ -18,7 +18,6 @@ import pytz
 import pytz.reference
 from pytz.tzinfo import StaticTzInfo, memorized_timedelta
 from datetime import datetime, timedelta
-import re
 from interfaces import DateTimeError
 
 EPOCH = datetime.utcfromtimestamp(0).replace(tzinfo=pytz.utc)
