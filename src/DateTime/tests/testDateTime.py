@@ -430,7 +430,7 @@ class DateTimeTests(unittest.TestCase):
         iso8601_string = '2002-05-02T08:00:00-04:00'
         iso8601DT = DateTime(iso8601_string)
         self.assertEqual(iso8601_string, iso8601DT.ISO8601())
-        
+
         # ISO format with no timezone
         isoDt = DateTime('2006-01-01 00:00:00')
         self.assertEqual(ref4, isoDt)
@@ -556,7 +556,7 @@ class DateTimeTests(unittest.TestCase):
         dt = DateTime('2002-05-02T08:00:00+00:00')
         ok = dt.strftime('Le %d/%m/%Y a %Hh%M').replace('a', u'\xe0')
         self.assertEqual(dt.strftime(u'Le %d/%m/%Y \xe0 %Hh%M'), ok)
-    
+
     def testTimezoneNaiveHandling(self):
         # checks that we assign timezone naivity correctly
         dt = DateTime('2007-10-04T08:00:00+00:00')
@@ -577,7 +577,7 @@ class DateTimeTests(unittest.TestCase):
         s = '2007-10-04T08:00:00+00:00'
         dt = DateTime(s)
         self.assertEqual(s, dt.ISO8601())
-    
+
     def testConversions(self):
         sdt0 = datetime.now() # this is a timezone naive datetime
         dt0 = DateTime(sdt0)
@@ -585,18 +585,18 @@ class DateTimeTests(unittest.TestCase):
         sdt1 = datetime(2007, 10, 4, 18, 14, 42, 580, pytz.utc)
         dt1 = DateTime(sdt1)
         assert dt1.timezoneNaive() is False, (sdt1, dt1)
-        
+
         # convert back
         sdt2 = dt0.asdatetime()
         self.assertEqual(sdt0, sdt2)
         sdt3 = dt1.utcdatetime() # this returns a timezone naive datetime
         self.assertEqual(sdt1.hour, sdt3.hour)
-        
+
         dt4 = DateTime('2007-10-04T10:00:00+05:00')
         sdt4 = datetime(2007, 10, 4, 5, 0)
         self.assertEqual(dt4.utcdatetime(), sdt4)
         self.assertEqual(dt4.asdatetime(), sdt4.replace(tzinfo=pytz.utc))
-        
+
         dt5 = DateTime('2007-10-23 10:00:00 US/Eastern')
         tz = pytz.timezone('US/Eastern')
         sdt5 = datetime(2007, 10, 23, 10, 0, tzinfo=tz)
@@ -606,23 +606,23 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(dt5, dt6)
         self.assertEqual(dt5.asdatetime().tzinfo, tz)
         self.assertEqual(dt6.asdatetime().tzinfo, tz)
-    
+
     def testLegacyTimezones(self):
         cache = _cache()
         # The year is important here as timezones change over time
         t1 = time.mktime(datetime(2002, 1, 1).timetuple())
         t2 = time.mktime(datetime(2002, 7, 1).timetuple())
-        
+
         for name in legacy._zlst + legacy._zmap.keys() + legacy._data.keys():
-            self.failUnless(name.lower() in cache._zidx, 'legacy timezone  %s cannot be looked up' % name)            
-        
+            self.failUnless(name.lower() in cache._zidx, 'legacy timezone  %s cannot be looked up' % name)
+
         failures = []
         for name, zone in legacy.timezones.iteritems():
             newzone = cache[name]
             # The name of the new zone might change (eg GMT+6 rather than GMT+0600)
             if zone.info(t1)[:2] != newzone.info(t1)[:2] or zone.info(t2)[:2] != newzone.info(t2)[:2]:
                 failures.append(name)
-                
+
         expected_failures = [ # zone.info(t1)     newzone.info(t1)     zone.info(t2)     newzone.info(t2)
             'Jamaica',        # (-18000, 0, 'EST') (-18000, 0, 'EST') (-14400, 1, 'EDT') (-18000, 0, 'EST')
             'Turkey',         # (10800, 0, 'EET') (7200, 0, 'EET') (14400, 1, 'EET DST') (10800, 1, 'EEST')
@@ -632,11 +632,11 @@ class DateTimeTests(unittest.TestCase):
             'Brazil/West',    # (-10800, 1, 'WDT') (-14400, 0, 'AMT') (-14400, 0, 'WST') (-14400, 0, 'AMT')
             'Brazil/Acre',    # (-14400, 1, 'ADT') (-18000, 0, 'ACT') (-18000, 0, 'AST') (-18000, 0, 'ACT')
             ]
-            
+
         real_failures = list(set(failures).difference(set(expected_failures)))
-            
+
         self.failIf(real_failures, '\n'.join(real_failures))
-    
+
     def testBasicTZ(self):
         #psycopg2 supplies it's own tzinfo instances, with no `zone` attribute
         tz = FixedOffset(60, 'GMT+1')
@@ -655,6 +655,10 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(dt.day(), 28)
         self.assertEqual(dt.Month(), 'June')
         self.assertEqual(dt.timezone(), 'GMT-4')
+
+    def testParseISO8601(self):
+        parsed = DateTime()._parse_iso8601('2010-10-10')
+        self.assertEqual(parsed, (2010, 10, 10, 0, 0, 0, 'GMT+0000'))
 
 def test_suite():
     import doctest
