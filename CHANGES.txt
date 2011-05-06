@@ -4,6 +4,13 @@ Changelog
 2.13.0 (unreleased)
 -------------------
 
+- Reordered some calculations in `_calcIndependentSecondEtc` to preserve more
+  floating point precision.
+
+- Optimized the pickled data, by only storing a tuple of `_micros` and time
+  zone information - this reduces the pickle size from an average of 300 bytes
+  to just 60 bytes.
+
 - Optimized un-pickling, by avoiding the creation of an intermediate DateTime
   value representing the current time.
 

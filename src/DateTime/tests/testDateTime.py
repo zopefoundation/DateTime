@@ -12,6 +12,7 @@
 #
 ##############################################################################
 
+import cPickle
 import math
 import os
 import time
@@ -55,18 +56,15 @@ class FixedOffset(tzinfo):
 
 class DateTimeTests(unittest.TestCase):
 
-    def _compare(self, dt1, dt2, ms=1):
+    def _compare(self, dt1, dt2):
         '''Compares the internal representation of dt1 with
         the representation in dt2.  Allows sub-millisecond variations.
         Primarily for testing.'''
-        if ms:
-            self.assertEqual(dt1.millis(), dt2.millis())
-        self.assertEqual(math.floor(dt1._t * 1000.0),
-                         math.floor(dt2._t * 1000.0))
-        self.assertEqual(math.floor(dt1._d * 86400000.0),
-                         math.floor(dt2._d * 86400000.0))
-        self.assertEqual(math.floor(dt1.time * 86400000.0),
-                         math.floor(dt2.time * 86400000.0))
+        self.assertEqual(round(dt1._t, 3), round(dt2._t, 3))
+        self.assertEqual(round(dt1._d, 9), round(dt2._d, 9))
+        self.assertEqual(round(dt1.time, 9), round(dt2.time, 9))
+        self.assertEqual(dt1.millis(), dt2.millis())
+        self.assertEqual(dt1._micros, dt2._micros)
 
     def testBug1203(self):
         # 01:59:60 occurred in old DateTime
@@ -201,14 +199,37 @@ class DateTimeTests(unittest.TestCase):
         self.failUnless(not dt.equalTo(dt1))
 
     def test_pickle(self):
-        import cPickle
         dt = DateTime()
         data = cPickle.dumps(dt, 1)
         new = cPickle.loads(data)
         self.assertEqual(dt.__dict__, new.__dict__)
 
-        dt = DateTime('2002/5/2 8:00am GMT+0')
+    def test_pickle_with_tz(self):
+        dt = DateTime('2002/5/2 8:00am GMT+8')
         data = cPickle.dumps(dt, 1)
+        new = cPickle.loads(data)
+        self.assertEqual(dt.__dict__, new.__dict__)
+
+    def test_pickle_with_micros(self):
+        dt = DateTime('2002/5/2 8:00:14.123 GMT+8')
+        data = cPickle.dumps(dt, 1)
+        new = cPickle.loads(data)
+        self.assertEqual(dt.__dict__, new.__dict__)
+
+    def test_pickle_old(self):
+        dt = DateTime('2002/5/2 8:00am GMT+0')
+        data = ('(cDateTime.DateTime\nDateTime\nq\x01Noq\x02}q\x03(U\x05_amonq'
+            '\x04U\x03Mayq\x05U\x05_adayq\x06U\x03Thuq\x07U\x05_pmonq\x08h'
+            '\x05U\x05_hourq\tK\x08U\x05_fmonq\nh\x05U\x05_pdayq\x0bU\x04T'
+            'hu.q\x0cU\x05_fdayq\rU\x08Thursdayq\x0eU\x03_pmq\x0fU\x02amq'
+            '\x10U\x02_tq\x11GA\xcehy\x00\x00\x00\x00U\x07_minuteq\x12K\x00U'
+            '\x07_microsq\x13L1020326400000000L\nU\x02_dq\x14G@\xe2\x12j\xaa'
+            '\xaa\xaa\xabU\x07_secondq\x15G\x00\x00\x00\x00\x00\x00\x00\x00U'
+            '\x03_tzq\x16U\x05GMT+0q\x17U\x06_monthq\x18K\x05U'
+            '\x0f_timezone_naiveq\x19I00\nU\x04_dayq\x1aK\x02U\x05_yearq'
+            '\x1bM\xd2\x07U\x08_nearsecq\x1cG\x00\x00\x00\x00\x00\x00\x00'
+            '\x00U\x07_pmhourq\x1dK\x08U\n_dayoffsetq\x1eK\x04U\x04timeq'
+            '\x1fG?\xd5UUUV\x00\x00ub.')
         new = cPickle.loads(data)
         self.assertEqual(dt.__dict__, new.__dict__)
 

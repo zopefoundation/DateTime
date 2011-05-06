@@ -161,9 +161,8 @@ def _calcIndependentSecondEtc(tz, x, ms):
     # nearTime is now within an hour of being correct.
     # Recalculate t according to DST.
     fset = long(_tzoffset(tz, nearTime))
-    x_adjusted = x - fset + ms
-    d = x_adjusted / 86400.0
-    t = x_adjusted - long(EPOCH) + 86400L
+    d = (x - fset) / 86400.0 + (ms / 86400.0)
+    t = x - fset - long(EPOCH) + 86400L + ms
     micros = (x + 86400 - fset) * 1000000 + \
              long(round(ms * 1000000.0)) - long(EPOCH * 1000000.0)
     s = d - math.floor(d)
@@ -349,8 +348,21 @@ class DateTime:
         except Exception:
             raise SyntaxError('Unable to parse %s, %s' % (args, kw))
 
-    def __getinitargs__(self):
-        return (None, )
+    def __getstate__(self):
+        state = self.__dict__
+        return (state['_micros'] / 1000000.0,
+            state.get('_timezone_naive', False),
+            state['_tz'])
+
+    def __setstate__(self, value):
+        state = self.__dict__
+        if isinstance(value, tuple):
+            self._parse_args(value[0], value[2])
+            state['_micros'] = long(value[0] * 1000000)
+            state['_timezone_naive'] = value[1]
+        else:
+            state.clear()
+            state.update(value)
 
     def _parse_args(self, *args, **kw):
         """Return a new date-time object.
