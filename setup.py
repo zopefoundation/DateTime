@@ -22,7 +22,7 @@ setup(name='DateTime',
       description="""\
 This package provides a DateTime data type, as known from Zope 2.
 Unless you need to communicate with Zope 2 APIs, you're probably
-better off using Python's bult-in datetime module.""",
+better off using Python's built-in datetime module.""",
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       long_description=open(
