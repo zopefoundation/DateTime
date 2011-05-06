@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.13.0 (unreleased)
--------------------
+3.0 (unreleased)
+----------------
 
 - Reordered some calculations in `_calcIndependentSecondEtc` to preserve more
   floating point precision.
