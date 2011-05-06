@@ -183,7 +183,7 @@ with from zero to seven arguments:
 
   Only their representations are different:
 
-    >>> now_east == now_west
+    >>> now_east.equalTo(now_west)
     True
 
 * If the function is invoked with three or more numeric arguments,
@@ -237,7 +237,7 @@ Conversion and comparison methods
     >>> dt.toZone('UTC')
     DateTime('1997/03/09 18:45:00 UTC')
 
-    >>> dt.toZone('UTC') == dt
+    >>> dt.toZone('UTC').equalTo(dt)
     True
 
 * ``isFuture()`` returns true if this object represents a date/time
@@ -620,39 +620,11 @@ equal for different representations of the DateTime:
   >>> hash(dt.toZone('UTC'))
   3618678
 
-A DateTime can be compared with another DateTime or float via
-``cmp()``.  NOTE: __cmp__ support is provided for backward
-compatibility only, and mixing DateTimes with ExtensionClasses could
-cause __cmp__ to break.  You should use the methods lessThan,
-greaterThan, lessThanEqualTo, greaterThanEqualTo, equalTo and
-notEqualTo to avoid potential problems later!
-
-  >>> cmp(dt, dt)
-  0
-  >>> cmp(dt, dt.toZone('UTC'))
-  0
-  >>> cmp(dt, dt.timeTime())
-  0
-
-  >>> cmp(dt, DateTime('2000/01/01'))
-  -1
-  >>> cmp(dt, DateTime('1900/01/01'))
-  1
-
 DateTime objects can be compared to other DateTime objects OR floating
 point numbers such as the ones which are returned by the python time
-module.  On comparison for equality, True is returned if the object
-represents a date/time equal to the specified DateTime or time module
+module by using the equalTo method. Using this API, True is returned if the
+object represents a date/time equal to the specified DateTime or time module
 style time:
-
-  >>> dt == dt
-  True
-  >>> dt == dt.toZone('UTC')
-  True
-  >>> dt == dt.timeTime()
-  True
-  >>> dt == DateTime()
-  False
 
   >>> dt.equalTo(dt)
   True
@@ -665,15 +637,6 @@ style time:
 
 Same goes for inequalities:
 
-  >>> dt != dt
-  False
-  >>> dt != dt.toZone('UTC')
-  False
-  >>> dt != dt.timeTime()
-  False
-  >>> dt != DateTime()
-  True
-
   >>> dt.notEqualTo(dt)
   False
   >>> dt.notEqualTo(dt.toZone('UTC'))
@@ -682,6 +645,26 @@ Same goes for inequalities:
   False
   >>> dt.notEqualTo(DateTime())
   True
+
+Normal equality operations only work with datetime objects and take the
+timezone setting into account:
+
+  >>> dt == dt
+  True
+  >>> dt == dt.toZone('UTC')
+  False
+  >>> dt == DateTime()
+  False
+
+  >>> dt != dt
+  False
+  >>> dt != dt.toZone('UTC')
+  True
+  >>> dt != DateTime()
+  True
+
+But the other comparison operations compare the referenced moment in time and
+not the representation itself:
 
   >>> dt > dt
   False

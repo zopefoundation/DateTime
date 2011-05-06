@@ -362,16 +362,6 @@ class IDateTime(Interface):
     def __str__():
         """Convert a DateTime to a string."""
 
-    def __cmp__(obj):
-        """Compare a DateTime with another DateTime object, or a float
-        such as those returned by time.time().
-
-        NOTE: __cmp__ support is provided for backward compatibility
-        only, and mixing DateTimes with ExtensionClasses could cause
-        __cmp__ to break.  You should use the methods lessThan,
-        greaterThan, lessThanEqualTo, greaterThanEqualTo, equalTo and
-        notEqualTo to avoid potential problems later!!"""
-
     def __hash__():
         """Compute a hash value for a DateTime"""
 

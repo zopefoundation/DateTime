@@ -1,8 +1,18 @@
 Changelog
 =========
 
-2.12.7 (unreleased)
+2.13.0 (unreleased)
 -------------------
+
+- Optimized un-pickling, by avoiding the creation of an intermediate DateTime
+  value representing the current time.
+
+- Removed in-place migration of old DateTime pickles without a `_micros` value.
+
+- Removed deprecated support for using `DateTime.__cmp__`.
+
+- Take time zone settings into account when comparing two date times for
+  (non-) equality.
 
 - Fixed (possibly unused) _parse_iso8601 function.
   [thet]

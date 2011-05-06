@@ -175,13 +175,13 @@ class DateTimeTests(unittest.TestCase):
         # Time zone manipulation: add to a date
         dt = DateTime('1997/3/8 1:45am GMT-4')
         dt1 = DateTime('1997/3/9 1:45pm GMT+8')
-        self.assertEqual(dt + 1.0, dt1, (dt, dt1))
+        self.assertTrue((dt + 1.0).equalTo(dt1))
 
     def testTZ1sub(self):
         # Time zone manipulation: subtract from a date
         dt = DateTime('1997/3/8 1:45am GMT-4')
         dt1 = DateTime('1997/3/9 1:45pm GMT+8')
-        self.assertEqual(dt1 - 1.0, dt, (dt, dt1))
+        self.assertTrue((dt1 - 1.0).equalTo(dt))
 
     def testTZ1diff(self):
         # Time zone manipulation: diff two dates
@@ -200,73 +200,17 @@ class DateTimeTests(unittest.TestCase):
         self.failUnless(dt.notEqualTo(dt1))
         self.failUnless(not dt.equalTo(dt1))
 
-    def testCompareOperations(self, dt=None, dt1=None):
-        # Compare two dates using several operations
-        if dt is None:
-            dt = DateTime('1997/1/1')
-        if dt1 is None:
-            dt1 = DateTime('1997/2/2')
-        self.failUnless(dt1 > dt)
-        self.failUnless(dt1 >= dt)
-        self.failUnless(dt < dt1)
-        self.failUnless(dt <= dt1)
-        self.failUnless(dt != dt1)
-        self.failUnless(not (dt == dt1))
+    def test_pickle(self):
+        import cPickle
+        dt = DateTime()
+        data = cPickle.dumps(dt, 1)
+        new = cPickle.loads(data)
+        self.assertEqual(dt.__dict__, new.__dict__)
 
-    def test_compare_old_instances(self):
-        # Compare dates that don't have the _micros attribute yet
-        # (e.g., from old pickles).
-        dt = DateTime('1997/1/1')
-        dt1 = DateTime('1997/2/2')
-        dt._millis = dt._micros / 1000
-        del dt._micros
-        dt1._millis = dt1._micros / 1000
-        del dt1._micros
-        self.testCompareOperations(dt, dt1)
-
-    def test_compare_old_new_instances(self):
-        # Compare a date without _micros attribute (e.g., from an old
-        # pickle) with one that does.
-        dt = DateTime('1997/1/1')
-        dt1 = DateTime('1997/2/2')
-        dt._millis = dt._micros / 1000
-        del dt._micros
-        self.testCompareOperations(dt, dt1)
-
-    def test_compare_new_old_instances(self):
-        # Compare a date with _micros attribute with one that does not
-        # (e.g., from an old pickle).
-        dt = DateTime('1997/1/1')
-        dt1 = DateTime('1997/2/2')
-        dt1._millis = dt._micros / 1000
-        del dt1._micros
-        self.testCompareOperations(dt, dt1)
-
-    def test_strftime_old_instance(self):
-        # https://bugs.launchpad.net/zope2/+bug/290254
-        # Ensure that dates without _micros attribute (e.g., from old
-        # pickles) still render correctly in strftime.
-        ISO = '2001-10-10T00:00:00+02:00'
-        dt = DateTime(ISO)
-        dt._millis = dt._micros / 1000
-        del dt._micros
-        self.assertEqual(dt.strftime('%Y'), '2001')
-
-        # Now, create one via pickling / unpickling.
-        from cPickle import dumps, loads
-        self.assertEqual(loads(dumps(dt)).strftime('%Y'), '2001')
-
-    def test___setstate___without_micros(self):
-        ISO = '2001-10-10T00:00:00+02:00'
-        dt = DateTime(ISO)
-        micros = dt._micros
-        dt._millis = dt._micros / 1000
-        del dt._micros
-        state = dt.__dict__
-
-        dt1 = DateTime()
-        dt1.__setstate__(state)
-        self.assertEqual(dt1._micros, micros)
+        dt = DateTime('2002/5/2 8:00am GMT+0')
+        data = cPickle.dumps(dt, 1)
+        new = cPickle.loads(data)
+        self.assertEqual(dt.__dict__, new.__dict__)
 
     def testTZ2(self):
         # Time zone manipulation test 2
@@ -340,91 +284,91 @@ class DateTimeTests(unittest.TestCase):
         # be interpreted in the local timezone, to preserve backwards
         # compatibility with previously expected behaviour.
         isoDt = DateTime('2002-05-02T08:00:00')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
         isoDt = DateTime('2002-05-02T08:00:00Z')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
         isoDt = DateTime('2002-05-02T08:00:00+00:00')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
         isoDt = DateTime('2002-05-02T08:00:00-04:00')
-        self.assertEqual(ref1, isoDt)
+        self.assertTrue(ref1.equalTo(isoDt))
         isoDt = DateTime('2002-05-02 08:00:00-04:00')
-        self.assertEqual(ref1, isoDt)
+        self.assertTrue(ref1.equalTo(isoDt))
 
         # Bug 1386: the colon in the timezone offset is optional
         isoDt = DateTime('2002-05-02T08:00:00-0400')
-        self.assertEqual(ref1, isoDt)
+        self.assertTrue(ref1.equalTo(isoDt))
 
         # Bug 2191: date reduced formats
         isoDt = DateTime('2006-01-01')
-        self.assertEqual(ref4, isoDt)
+        self.assertTrue(ref4.equalTo(isoDt))
         isoDt = DateTime('200601-01')
-        self.assertEqual(ref4, isoDt)
+        self.assertTrue(ref4.equalTo(isoDt))
         isoDt = DateTime('20060101')
-        self.assertEqual(ref4, isoDt)
+        self.assertTrue(ref4.equalTo(isoDt))
         isoDt = DateTime('2006-01')
-        self.assertEqual(ref4, isoDt)
+        self.assertTrue(ref4.equalTo(isoDt))
         isoDt = DateTime('200601')
-        self.assertEqual(ref4, isoDt)
+        self.assertTrue(ref4.equalTo(isoDt))
         isoDt = DateTime('2006')
-        self.assertEqual(ref4, isoDt)
+        self.assertTrue(ref4.equalTo(isoDt))
 
         # Bug 2191: date/time separators are also optional
         isoDt = DateTime('20020502T08:00:00')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
         isoDt = DateTime('2002-05-02T080000')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
         isoDt = DateTime('20020502T080000')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
 
         # Bug 2191: timezones with only one digit for hour
         isoDt = DateTime('20020502T080000+0')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
         isoDt = DateTime('20020502 080000-4')
-        self.assertEqual(ref1, isoDt)
+        self.assertTrue(ref1.equalTo(isoDt))
         isoDt = DateTime('20020502T080000-400')
-        self.assertEqual(ref1, isoDt)
+        self.assertTrue(ref1.equalTo(isoDt))
         isoDt = DateTime('20020502T080000-4:00')
-        self.assertEqual(ref1, isoDt)
+        self.assertTrue(ref1.equalTo(isoDt))
 
         # Bug 2191: optional seconds/minutes
         isoDt = DateTime('2002-05-02T0800')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
         isoDt = DateTime('2002-05-02T08')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
 
         # Bug 2191: week format
         isoDt = DateTime('2002-W18-4T0800')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
         isoDt = DateTime('2002-W184T0800')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
         isoDt = DateTime('2002W18-4T0800')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
         isoDt = DateTime('2002W184T08')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
         isoDt = DateTime('2004-W25-1T14:30:15-03:00')
-        self.assertEqual(ref3, isoDt)
+        self.assertTrue(ref3.equalTo(isoDt))
         isoDt = DateTime('2004-W25T14:30:15-03:00')
-        self.assertEqual(ref3, isoDt)
+        self.assertTrue(ref3.equalTo(isoDt))
 
         # Bug 2191: day of year format
         isoDt = DateTime('2002-122T0800')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
         isoDt = DateTime('2002122T0800')
-        self.assertEqual(ref0, isoDt)
+        self.assertTrue(ref0.equalTo(isoDt))
 
         # Bug 2191: hours/minutes fractions
         isoDt = DateTime('2006-11-06T10.5')
-        self.assertEqual(ref2, isoDt)
+        self.assertTrue(ref2.equalTo(isoDt))
         isoDt = DateTime('2006-11-06T10,5')
-        self.assertEqual(ref2, isoDt)
+        self.assertTrue(ref2.equalTo(isoDt))
         isoDt = DateTime('20040614T1430.25-3')
-        self.assertEqual(ref3, isoDt)
+        self.assertTrue(ref3.equalTo(isoDt))
         isoDt = DateTime('2004-06-14T1430,25-3')
-        self.assertEqual(ref3, isoDt)
+        self.assertTrue(ref3.equalTo(isoDt))
         isoDt = DateTime('2004-06-14T14:30.25-3')
-        self.assertEqual(ref3, isoDt)
+        self.assertTrue(ref3.equalTo(isoDt))
         isoDt = DateTime('20040614T14:30,25-3')
-        self.assertEqual(ref3, isoDt)
+        self.assertTrue(ref3.equalTo(isoDt))
 
         # ISO8601 standard format
         iso8601_string = '2002-05-02T08:00:00-04:00'
@@ -433,7 +377,7 @@ class DateTimeTests(unittest.TestCase):
 
         # ISO format with no timezone
         isoDt = DateTime('2006-01-01 00:00:00')
-        self.assertEqual(ref4, isoDt)
+        self.assertTrue(ref4.equalTo(isoDt))
 
     def testJulianWeek(self):
         # Check JulianDayWeek function
@@ -556,7 +500,7 @@ class DateTimeTests(unittest.TestCase):
         dt = DateTime('2002-05-02T08:00:00+00:00')
         ok = dt.strftime('Le %d/%m/%Y a %Hh%M').replace('a', u'\xe0')
         self.assertEqual(dt.strftime(u'Le %d/%m/%Y \xe0 %Hh%M'), ok)
-
+    
     def testTimezoneNaiveHandling(self):
         # checks that we assign timezone naivity correctly
         dt = DateTime('2007-10-04T08:00:00+00:00')
@@ -577,7 +521,7 @@ class DateTimeTests(unittest.TestCase):
         s = '2007-10-04T08:00:00+00:00'
         dt = DateTime(s)
         self.assertEqual(s, dt.ISO8601())
-
+    
     def testConversions(self):
         sdt0 = datetime.now() # this is a timezone naive datetime
         dt0 = DateTime(sdt0)
@@ -585,18 +529,18 @@ class DateTimeTests(unittest.TestCase):
         sdt1 = datetime(2007, 10, 4, 18, 14, 42, 580, pytz.utc)
         dt1 = DateTime(sdt1)
         assert dt1.timezoneNaive() is False, (sdt1, dt1)
-
+        
         # convert back
         sdt2 = dt0.asdatetime()
         self.assertEqual(sdt0, sdt2)
         sdt3 = dt1.utcdatetime() # this returns a timezone naive datetime
         self.assertEqual(sdt1.hour, sdt3.hour)
-
+        
         dt4 = DateTime('2007-10-04T10:00:00+05:00')
         sdt4 = datetime(2007, 10, 4, 5, 0)
         self.assertEqual(dt4.utcdatetime(), sdt4)
         self.assertEqual(dt4.asdatetime(), sdt4.replace(tzinfo=pytz.utc))
-
+        
         dt5 = DateTime('2007-10-23 10:00:00 US/Eastern')
         tz = pytz.timezone('US/Eastern')
         sdt5 = datetime(2007, 10, 23, 10, 0, tzinfo=tz)
@@ -606,23 +550,23 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(dt5, dt6)
         self.assertEqual(dt5.asdatetime().tzinfo, tz)
         self.assertEqual(dt6.asdatetime().tzinfo, tz)
-
+    
     def testLegacyTimezones(self):
         cache = _cache()
         # The year is important here as timezones change over time
         t1 = time.mktime(datetime(2002, 1, 1).timetuple())
         t2 = time.mktime(datetime(2002, 7, 1).timetuple())
-
+        
         for name in legacy._zlst + legacy._zmap.keys() + legacy._data.keys():
-            self.failUnless(name.lower() in cache._zidx, 'legacy timezone  %s cannot be looked up' % name)
-
+            self.failUnless(name.lower() in cache._zidx, 'legacy timezone  %s cannot be looked up' % name)            
+        
         failures = []
         for name, zone in legacy.timezones.iteritems():
             newzone = cache[name]
             # The name of the new zone might change (eg GMT+6 rather than GMT+0600)
             if zone.info(t1)[:2] != newzone.info(t1)[:2] or zone.info(t2)[:2] != newzone.info(t2)[:2]:
                 failures.append(name)
-
+                
         expected_failures = [ # zone.info(t1)     newzone.info(t1)     zone.info(t2)     newzone.info(t2)
             'Jamaica',        # (-18000, 0, 'EST') (-18000, 0, 'EST') (-14400, 1, 'EDT') (-18000, 0, 'EST')
             'Turkey',         # (10800, 0, 'EET') (7200, 0, 'EET') (14400, 1, 'EET DST') (10800, 1, 'EEST')
@@ -632,11 +576,11 @@ class DateTimeTests(unittest.TestCase):
             'Brazil/West',    # (-10800, 1, 'WDT') (-14400, 0, 'AMT') (-14400, 0, 'WST') (-14400, 0, 'AMT')
             'Brazil/Acre',    # (-14400, 1, 'ADT') (-18000, 0, 'ACT') (-18000, 0, 'AST') (-18000, 0, 'ACT')
             ]
-
+            
         real_failures = list(set(failures).difference(set(expected_failures)))
-
+            
         self.failIf(real_failures, '\n'.join(real_failures))
-
+    
     def testBasicTZ(self):
         #psycopg2 supplies it's own tzinfo instances, with no `zone` attribute
         tz = FixedOffset(60, 'GMT+1')

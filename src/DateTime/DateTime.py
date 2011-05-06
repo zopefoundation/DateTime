@@ -12,12 +12,11 @@
 ##############################################################################
 """Encapsulation of date/time values"""
 
-__version__='$Revision: 1.99 $'[11:-2]
-
 
 import re, math
 from time import time, gmtime, localtime
 from time import daylight, timezone, altzone
+from time import tzname
 from datetime import datetime
 from interfaces import IDateTime
 from interfaces import DateTimeError, SyntaxError, DateError, TimeError
@@ -39,11 +38,6 @@ def getDefaultDateFormat():
     else:
         return default_datefmt
 
-
-try:
-    from time import tzname
-except:
-    tzname=('UNKNOWN','UNKNOWN')
 
 # To control rounding errors, we round system time to the nearest
 # microsecond.  Then delicate calculations can rely on that the
@@ -343,21 +337,20 @@ class DateTime:
     DateTimeError = DateTimeError
     SyntaxError = SyntaxError
 
-    def __init__(self,*args, **kw):
+    def __init__(self, *args, **kw):
         """Return a new date-time object"""
-
+        if args and args[0] is None:
+            # unpickle
+            return
         try:
             return self._parse_args(*args, **kw)
         except (DateError, TimeError, DateTimeError):
             raise
-        except:
+        except Exception:
             raise SyntaxError('Unable to parse %s, %s' % (args, kw))
 
-    def __setstate__(self, state):
-        self.__dict__.clear()  # why doesn't Python's unpickler do this?
-        self.__dict__.update(state)
-        if '_micros' not in state:
-            self._micros = self._upgrade_old()
+    def __getinitargs__(self):
+        return (None, )
 
     def _parse_args(self, *args, **kw):
         """Return a new date-time object.
@@ -713,7 +706,6 @@ class DateTime:
                                 raise DateTimeError,'Too many arguments'
             if not self._validTime(hr,mn,sc):
                 raise TimeError, 'Invalid time: %s' % `args`
-            leap = (yr % 4 == 0) and (yr % 100 != 0 or yr % 400 == 0)
 
             x = _calcDependentSecond2(yr,mo,dy,hr,mn,sc)
             ms = sc - math.floor(sc)
@@ -1035,9 +1027,6 @@ class DateTime:
         return year,month,day,hr,mn,sc,tz
 
     # Internal methods
-    def __getinitargs__(self):
-        return (None,)
-
     def _validDate(self,y,m,d):
         if m<1 or m>12 or y<0 or d<1 or d>31:
             return 0
@@ -1163,7 +1152,7 @@ class DateTime:
         return self.__class__(self._year,self._month,self._day,
                               23,59,59,self._tz)
 
-    def greaterThan(self,t):
+    def greaterThan(self, t):
         """Compare this DateTime object to another DateTime object
         OR a floating point number such as that which is returned
         by the python time module.
@@ -1174,13 +1163,9 @@ class DateTime:
         Revised to give more correct results through comparison of
         long integer microseconds.
         """
-        # Optimized for sorting speed
-        try:
-            return (self._micros > t._micros)
-        except AttributeError:
-            try: self._micros
-            except AttributeError: self._upgrade_old()
-        return (self._t > t)
+        if isinstance(t, float):
+            return self._t > t
+        return self._micros > t._micros
 
     __gt__ = greaterThan
 
@@ -1196,17 +1181,13 @@ class DateTime:
         Revised to give more correct results through comparison of
         long integer microseconds.
         """
-        # Optimized for sorting speed
-        try:
-            return (self._micros >= t._micros)
-        except AttributeError:
-            try: self._micros
-            except AttributeError: self._upgrade_old()
-        return (self._t >= t)
+        if isinstance(t, float):
+            return self._t >= t
+        return self._micros >= t._micros
 
     __ge__ = greaterThanEqualTo
 
-    def equalTo(self,t):
+    def equalTo(self, t):
         """Compare this DateTime object to another DateTime object
         OR a floating point number such as that which is returned
         by the python time module.
@@ -1217,17 +1198,11 @@ class DateTime:
         Revised to give more correct results through comparison of
         long integer microseconds.
         """
-        # Optimized for sorting speed
-        try:
-            return (self._micros == t._micros)
-        except AttributeError:
-            try: self._micros
-            except AttributeError: self._upgrade_old()
-        return (self._t == t)
+        if isinstance(t, float):
+            return self._t == t
+        return self._micros == t._micros
 
-    __eq__ = equalTo
-
-    def notEqualTo(self,t):
+    def notEqualTo(self, t):
         """Compare this DateTime object to another DateTime object
         OR a floating point number such as that which is returned
         by the python time module.
@@ -1238,15 +1213,21 @@ class DateTime:
         Revised to give more correct results through comparison of
         long integer microseconds.
         """
-        # Optimized for sorting speed
-        try:
-            return (self._micros != t._micros)
-        except AttributeError:
-            try: self._micros
-            except AttributeError: self._upgrade_old()
-        return (self._t != t)
+        return not self.equalTo(t)
 
-    __ne__ = notEqualTo
+    def __eq__(self, t):
+        """Compare this DateTime object to another DateTime object.
+        Return True if their internal state is the same. Two objects
+        representing the same time in different timezones are regared as
+        unequal. Use the equalTo method if you are only interested in them
+        refering to the same moment in time.
+        """
+        if not isinstance(t, DateTime):
+            return False
+        return (self._micros, self._tz) == (t._micros, t._tz)
+
+    def __ne__(self, t):
+        return not self.__eq__(t)
 
     def lessThan(self,t):
         """Compare this DateTime object to another DateTime object
@@ -1259,13 +1240,9 @@ class DateTime:
         Revised to give more correct results through comparison of
         long integer microseconds.
         """
-        # Optimized for sorting speed
-        try:
-            return (self._micros < t._micros)
-        except AttributeError:
-            try: self._micros
-            except AttributeError: self._upgrade_old()
-        return (self._t < t)
+        if isinstance(t, float):
+            return self._t < t
+        return self._micros < t._micros
 
     __lt__ = lessThan
 
@@ -1280,13 +1257,9 @@ class DateTime:
         Revised to give more correct results through comparison of
         long integer microseconds.
         """
-        # Optimized for sorting speed
-        try:
-            return (self._micros <= t._micros)
-        except AttributeError:
-            try: self._micros
-            except AttributeError: self._upgrade_old()
-        return (self._t <= t)
+        if isinstance(t, float):
+            return self._t <= t
+        return self._micros <= t._micros
 
     __le__ = lessThanEqualTo
 
@@ -1406,18 +1379,11 @@ class DateTime:
 
     def millis(self):
         """Return the millisecond since the epoch in GMT."""
-        try:
-            micros = self._micros
-        except AttributeError:
-            micros = self._upgrade_old()
-        return micros / 1000
+        return self._micros / 1000
 
     def micros(self):
         """Return the microsecond since the epoch in GMT."""
-        try:
-            return self._micros
-        except AttributeError:
-            return self._upgrade_old()
+        return self._micros
 
     def timezoneNaive(self):
         """The python datetime module introduces the idea of distinguishing
@@ -1430,12 +1396,6 @@ class DateTime:
             return self._timezone_naive
         except AttributeError:
             return None
-
-    def _upgrade_old(self):
-        """Upgrades a previously pickled DateTime object."""
-        micros = long(math.floor(self._t * 1000000.0))
-        #self._micros = micros # don't upgrade instances in place
-        return micros
 
     def strftime(self, format):
         """Format the date/time using the *current timezone representation*."""
@@ -1686,26 +1646,6 @@ class DateTime:
             # 2 digits before the decimal point.
             return '%4.4d/%2.2d/%2.2d %2.2d:%2.2d:%06.6f %s' % (
                     y, m, d, h, mn, s, t)
-
-    def __cmp__(self,obj):
-        """Compare a DateTime with another DateTime object, or a
-        float such as those returned by time.time().
-
-        NOTE: __cmp__ support is provided for backward compatibility
-        only, and mixing DateTimes with ExtensionClasses could cause
-        __cmp__ to break.
-
-        You should use the methods lessThan, greaterThan, lessThanEqualTo,
-        greaterThanEqualTo, equalTo and notEqualTo to avoid potential
-        problems later!
-        """
-        # Optimized for sorting speed.
-        try:
-            return cmp(self._micros, obj._micros)
-        except AttributeError:
-            try: self._micros
-            except AttributeError: self._upgrade_old()
-        return cmp(self._t,obj)
 
     def __hash__(self):
         """Compute a hash value for a DateTime."""
