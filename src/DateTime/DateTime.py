@@ -442,7 +442,9 @@ class DateTime(object):
     def __getstate__(self):
         # We store a float of _micros, instead of the _micros long, as we most
         # often don't have any sub-second resolution and can save those bytes
-        return (self._micros / 1000000.0, self._timezone_naive, self._tz)
+        return (self._micros / 1000000.0,
+            getattr(self, '_timezone_naive', False),
+            self._tz)
 
     def __setstate__(self, value):
         if isinstance(value, tuple):
@@ -453,6 +455,11 @@ class DateTime(object):
             for k, v in value.items():
                 if k in self.__slots__:
                     setattr(self, k, v)
+            # BBB: support for very old DateTime pickles
+            if '_micros' not in value:
+                self._micros = long(value['_t'] * 1000000)
+            if '_timezone_naive' not in value:
+                self._timezone_naive = False
 
     def _parse_args(self, *args, **kw):
         """Return a new date-time object.

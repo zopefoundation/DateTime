@@ -4,6 +4,8 @@ Changelog
 3.0 (unreleased)
 ----------------
 
+- Added back support for reading old DateTime pickles without a `_micros` value.
+
 - Avoid storing `_t` representing the time as a float in seconds since the
   epoch, as we already have `_micros` doing the same as a long. Memory use is
   down to about 300 bytes per DateTime instance.

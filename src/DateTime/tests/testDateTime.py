@@ -237,6 +237,23 @@ class DateTimeTests(unittest.TestCase):
         for key in DateTime.__slots__:
             self.assertEqual(getattr(dt, key), getattr(new, key))
 
+    def test_pickle_old_without_micros(self):
+        dt = DateTime('2002/5/2 8:00am GMT+0')
+        data = ('(cDateTime.DateTime\nDateTime\nq\x01Noq\x02}q\x03(U\x05_amonq'
+            '\x04U\x03Mayq\x05U\x05_adayq\x06U\x03Thuq\x07U\x05_pmonq\x08h'
+            '\x05U\x05_hourq\tK\x08U\x05_fmonq\nh\x05U\x05_pdayq\x0bU'
+            '\x04Thu.q\x0cU\x05_fdayq\rU\x08Thursdayq\x0eU\x03_pmq\x0fU'
+            '\x02amq\x10U\x02_tq\x11GA\xcehy\x00\x00\x00\x00U\x07_minuteq'
+            '\x12K\x00U\x02_dq\x13G@\xe2\x12j\xaa\xaa\xaa\xabU\x07_secondq'
+            '\x14G\x00\x00\x00\x00\x00\x00\x00\x00U\x03_tzq\x15U\x05GMT+0q'
+            '\x16U\x06_monthq\x17K\x05U\x0f_timezone_naiveq\x18I00\nU'
+            '\x04_dayq\x19K\x02U\x05_yearq\x1aM\xd2\x07U\x08_nearsecq'
+            '\x1bG\x00\x00\x00\x00\x00\x00\x00\x00U\x07_pmhourq\x1cK\x08U'
+            '\n_dayoffsetq\x1dK\x04U\x04timeq\x1eG?\xd5UUUV\x00\x00ub.')
+        new = cPickle.loads(data)
+        for key in DateTime.__slots__:
+            self.assertEqual(getattr(dt, key), getattr(new, key))
+
     def testTZ2(self):
         # Time zone manipulation test 2
         dt = DateTime()
