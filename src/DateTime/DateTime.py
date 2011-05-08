@@ -56,6 +56,8 @@ to_month=tm[yr%4==0 and (yr%100!=0 or yr%400==0)][mo]
 EPOCH  =(to_year+to_month+dy+(hr/24.0+mn/1440.0+sc/86400.0))*86400
 jd1901 =2415385L
 
+_TZINFO = PytzCache()
+
 numericTimeZoneMatch = re.compile(r'[+-][0-9][0-9][0-9][0-9]').match
 iso8601Match = re.compile(r'''
   (?P<year>\d\d\d\d)                # four digits year
@@ -229,7 +231,7 @@ def _tzoffset(tz, t):
     the time zone, i.e. GMT+2 has a 7200 second offset. This is the opposite
     sign of time.timezone which (confusingly) is -7200 for GMT+2."""
     try:
-        return DateTime._tzinfo[tz].info(t)[0]
+        return _TZINFO[tz].info(t)[0]
     except:
         if numericTimeZoneMatch(tz) is not None:
             return int(tz[0:3])*3600+int(tz[0]+tz[3:5])*60
@@ -643,10 +645,10 @@ class DateTime(object):
 
                 if tz:
                     try:
-                        zone = self._tzinfo[tz]
+                        zone = _TZINFO[tz]
                     except DateTimeError:
                         try:
-                            zone = self._tzinfo[numerictz]
+                            zone = _TZINFO[numerictz]
                         except DateTimeError:
                             raise DateTimeError, \
                                   'Unknown time zone in date: %s' % arg
@@ -655,9 +657,9 @@ class DateTime(object):
                     tz = self._calcTimezoneName(x, ms)
                 s,d,t,microsecs = _calcIndependentSecondEtc(tz, x, ms)
 
-            elif isinstance(arg, (unicode, str)) and arg.lower() in self._tzinfo._zidx:
+            elif isinstance(arg, (unicode, str)) and arg.lower() in _TZINFO._zidx:
                 # Current time, to be displayed in specified timezone
-                t,tz=time(),self._tzinfo._zmap[arg.lower()]
+                t,tz=time(), _TZINFO._zmap[arg.lower()]
                 ms=(t-math.floor(t))
                 # Use integer arithmetic as much as possible.
                 s,d = _calcSD(t)
@@ -684,7 +686,8 @@ class DateTime(object):
                 x = _calcDependentSecond2(yr,mo,dy,hr,mn,sc)
 
                 if tz:
-                    try: tz=self._tzinfo._zmap[tz.lower()]
+                    try:
+                        tz= _TZINFO._zmap[tz.lower()]
                     except KeyError:
                         if numericTimeZoneMatch(tz) is None:
                             raise DateTimeError, \
@@ -708,7 +711,7 @@ class DateTime(object):
                 # Seconds from epoch (gmt) and timezone
                 t,tz=args
                 ms = (t - math.floor(t))
-                tz=self._tzinfo._zmap[tz.lower()]
+                tz = _TZINFO._zmap[tz.lower()]
                 # Use integer arithmetic as much as possible.
                 s,d = _calcSD(t)
                 x = _calcDependentSecond(tz, t)
@@ -751,7 +754,8 @@ class DateTime(object):
             x = _calcDependentSecond2(yr,mo,dy,hr,mn,sc)
             ms = sc - math.floor(sc)
             if tz:
-                try: tz=self._tzinfo._zmap[tz.lower()]
+                try:
+                    tz = _TZINFO._zmap[tz.lower()]
                 except KeyError:
                     if numericTimeZoneMatch(tz) is None:
                         raise DateTimeError, \
@@ -790,7 +794,6 @@ class DateTime(object):
         self._micros = microsecs
         # self._micros is the time since the epoch
         # in long integer microseconds.
-
 
     int_pattern  =re.compile(r'([0-9]+)') #AJ
     flt_pattern  =re.compile(r':([0-9]+\.[0-9]+)') #AJ
@@ -888,7 +891,7 @@ class DateTime(object):
         delimiters    =self.delimiters
         MonthNumbers  =self._monthmap
         DayOfWeekNames=self._daymap
-        ValidZones    =self._tzinfo._zidx
+        ValidZones = _TZINFO._zidx
         TimeModifiers =['am','pm']
 
         # Find timezone first, since it should always be the last
@@ -1095,7 +1098,7 @@ class DateTime(object):
         """Return a DateTime with the value as the current
         object, represented in the indicated timezone.
         """
-        t,tz=self._t,self._tzinfo._zmap[z.lower()]
+        t, tz = self._t, _TZINFO._zmap[z.lower()]
         micros = self.micros()
         tznaive = False # you're performing a timzone change, can't be naive
 
@@ -1619,7 +1622,7 @@ class DateTime(object):
         if tznaive:
             tzinfo = None
         else:
-            tzinfo = self._tzinfo[self._tz].tzinfo
+            tzinfo = _TZINFO[self._tz].tzinfo
         second = int(self._second)
         microsec = self.micros() % 1000000
         dt = datetime(self._year, self._month, self._day, self._hour,

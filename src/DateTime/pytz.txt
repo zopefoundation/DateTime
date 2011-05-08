@@ -99,25 +99,25 @@ Note that you can mess with this list without hurting things.
     >>> t.remove('US/Eastern')
     >>> d = DateTime('US/Eastern')
 
-Python Versions
----------------
-Both pytz and DateTime should work under Python 2.3 as well as Python 2.4.
 
 Internal Components
 -------------------
+
 The following are tests of internal components.
 
 Cache
 ~~~~~
+
 The DateTime class uses a new time zone cache.
 
-    >>> DateTime._tzinfo #doctest: +ELLIPSIS
+    >>> from DateTime.DateTime import _TZINFO
+    >>> _TZINFO #doctest: +ELLIPSIS
     <DateTime.pytz_support.PytzCache instance at ...>
 
 The cache maps time zone names to time zone instances.
 
-    >>> cache = DateTime._tzinfo
-    >>> tz = cache['GMT+730']   
+    >>> cache = _TZINFO
+    >>> tz = cache['GMT+730']
     >>> tz = cache['US/Mountain']
 
 The cache also must provide a few attributes for use by the DateTime

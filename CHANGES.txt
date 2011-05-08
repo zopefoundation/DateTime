@@ -4,6 +4,8 @@ Changelog
 3.0 (unreleased)
 ----------------
 
+- Moved pytz cache from `DateTime._tzinfo` to a module global `_TZINFO`.
+
 - Make DateTime a new-style class and limit its available attributes via a
   slots definition. The pickle size increases to 110 bytes thanks to the
   `ccopy_reg\n_reconstructor` stanza. But the memory size drops from 3kb to
