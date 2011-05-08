@@ -440,6 +440,8 @@ class DateTime(object):
             raise SyntaxError('Unable to parse %s, %s' % (args, kw))
 
     def __getstate__(self):
+        # We store a float of _micros, instead of the _micros long, as we most
+        # often don't have any sub-second resolution and can save those bytes
         return (self._micros / 1000000.0, self._timezone_naive, self._tz)
 
     def __setstate__(self, value):
