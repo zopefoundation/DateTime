@@ -4,6 +4,8 @@ Changelog
 3.0 (unreleased)
 ----------------
 
+- Updated exception raising syntax to current style.
+
 - Avoid storing `_aday`, `_fday`, `_pday`, `_amon`, `_fmon`, `_pmon`, `_pmhour`
   and `_pm` in memory for every instance but look them up dynamically based on
   `_dayoffset`, `_month` and `_hour`. This saves another 150 bytes of memory
