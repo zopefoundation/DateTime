@@ -4,6 +4,8 @@ Changelog
 3.0 (unreleased)
 ----------------
 
+- Moved various internal parsing related class variables to module constants.
+
 - No longer provide the `DateError`, `DateTimeError`, `SyntaxError` and
   `TimeError` exceptions as class attributes, import them from their canonical
   `DateTime.interfaces` location instead.

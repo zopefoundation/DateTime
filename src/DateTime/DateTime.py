@@ -74,6 +74,38 @@ NAME_PATTERN = re.compile(r'([a-zA-Z]+)', re.I)
 SPACE_CHARS =' \t\n'
 DELIMITERS = '-/.:,+'
 
+_MONTH_LEN = ((0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31),
+              (0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31))
+_MONTHS = ('','January','February','March','April','May','June','July',
+           'August', 'September', 'October', 'November', 'December')
+_MONTHS_A = ('', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+             'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
+_MONTHS_P = ('', 'Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'June',
+             'July', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.')
+_MONTHMAP = {'january': 1,   'jan': 1,
+             'february': 2,  'feb': 2,
+             'march': 3,     'mar': 3,
+             'april': 4,     'apr': 4,
+             'may': 5,
+             'june': 6,      'jun': 6,
+             'july': 7,      'jul': 7,
+             'august': 8,    'aug': 8,
+             'september': 9, 'sep': 9, 'sept': 9,
+             'october': 10,  'oct': 10,
+             'november': 11, 'nov': 11,
+             'december': 12, 'dec': 12}
+_DAYS = ('Sunday', 'Monday', 'Tuesday', 'Wednesday',
+         'Thursday', 'Friday', 'Saturday')
+_DAYS_A = ('Sun',  'Mon',  'Tue',  'Wed',  'Thu',  'Fri',  'Sat')
+_DAYS_P = ('Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.')
+_DAYMAP = {'sunday': 1,    'sun': 1,
+           'monday': 2,    'mon': 2,
+           'tuesday': 3,   'tues': 3,  'tue': 3,
+           'wednesday': 4, 'wed': 4,
+           'thursday': 5,  'thurs': 5, 'thur': 5, 'thu': 5,
+           'friday': 6,    'fri': 6,
+           'saturday': 7,  'sat': 7}
+
 numericTimeZoneMatch = re.compile(r'[+-][0-9][0-9][0-9][0-9]').match
 iso8601Match = re.compile(r'''
   (?P<year>\d\d\d\d)                # four digits year
@@ -378,40 +410,6 @@ class DateTime(object):
     __roles__ = None
     __allow_access_to_unprotected_subobjects__ = 1
 
-    _month_len  =((0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31),
-                  (0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31))
-    _until_month=((0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334),
-                  (0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335))
-    _months     =['','January','February','March','April','May','June','July',
-                     'August', 'September', 'October', 'November', 'December']
-    _months_a   =['','Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    _months_p   =['','Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'June',
-                     'July', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.']
-    _monthmap   ={'january': 1,   'jan': 1,
-                  'february': 2,  'feb': 2,
-                  'march': 3,     'mar': 3,
-                  'april': 4,     'apr': 4,
-                  'may': 5,
-                  'june': 6,      'jun': 6,
-                  'july': 7,      'jul': 7,
-                  'august': 8,    'aug': 8,
-                  'september': 9, 'sep': 9, 'sept': 9,
-                  'october': 10,  'oct': 10,
-                  'november': 11, 'nov': 11,
-                  'december': 12, 'dec': 12}
-    _days       =['Sunday','Monday','Tuesday','Wednesday',
-                  'Thursday','Friday','Saturday']
-    _days_a     =['Sun',  'Mon',  'Tue',  'Wed',  'Thu',  'Fri',  'Sat' ]
-    _days_p     =['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.']
-    _daymap     ={'sunday': 1,    'sun': 1,
-                  'monday': 2,    'mon': 2,
-                  'tuesday': 3,   'tues': 3,  'tue': 3,
-                  'wednesday': 4, 'wed': 4,
-                  'thursday': 5,  'thurs': 5, 'thur': 5, 'thu': 5,
-                  'friday': 6,    'fri': 6,
-                  'saturday': 7,  'sat': 7}
-
     # Limit the amount of instance attributes
     __slots__ = (
         '_timezone_naive',
@@ -422,15 +420,9 @@ class DateTime(object):
         '_fmon',
         '_amon',
         '_pmon',
-        '_months',
-        '_months_a',
-        '_months_p',
         '_fday',
         '_aday',
         '_pday',
-        '_days',
-        '_days_a',
-        '_days_p',
         '_year',
         '_month',
         '_day',
@@ -846,10 +838,10 @@ class DateTime(object):
             self._pmhour=hr or 12
             self._pm= (hr==12) and 'pm' or 'am'
         self._dayoffset=dx=int((_julianday(yr,mo,dy)+2L)%7)
-        self._fmon,self._amon,self._pmon= \
-            self._months[mo],self._months_a[mo],self._months_p[mo]
+        self._fmon, self._amon, self._pmon = \
+            _MONTHS[mo], _MONTHS_A[mo], _MONTHS_P[mo]
         self._fday,self._aday,self._pday= \
-            self._days[dx],self._days_a[dx],self._days_p[dx]
+            _DAYS[dx], _DAYS_A[dx], _DAYS_P[dx]
         # Round to nearest microsecond in platform-independent way.  You
         # cannot rely on C sprintf (Python '%') formatting to round
         # consistently; doing it ourselves ensures that all but truly
@@ -911,8 +903,6 @@ class DateTime(object):
     def _parse(self,st, datefmt=getDefaultDateFormat()):
         # Parse date-time components from a string
         month = year = tz = tm = None
-        MonthNumbers  =self._monthmap
-        DayOfWeekNames=self._daymap
         ValidZones = _TZINFO._zidx
         TimeModifiers =['am','pm']
 
@@ -977,10 +967,12 @@ class DateTime(object):
                 i=i+len(s)
                 if i < l and st[i]=='.': i=i+1
                 # Check for month name:
-                if MonthNumbers.has_key(s):
-                    v=MonthNumbers[s]
-                    if month is None: month=v
-                    else: raise SyntaxError, st
+                _v = _MONTHMAP.get(s)
+                if _v is not None:
+                    if month is None:
+                        month = _v
+                    else:
+                        raise SyntaxError(st)
                     continue
                 # Check for time modifier:
                 if s in TimeModifiers:
@@ -988,7 +980,7 @@ class DateTime(object):
                     else: raise SyntaxError, st
                     continue
                 # Check for and skip day of week:
-                if DayOfWeekNames.has_key(s):
+                if s in _DAYMAP:
                     continue
 
             raise SyntaxError, st
@@ -1058,7 +1050,7 @@ class DateTime(object):
 
         leap = year%4==0 and (year%100!=0 or year%400==0)
         try:
-            if not day or day > self._month_len[leap][month]:
+            if not day or day > _MONTH_LEN[leap][month]:
                 raise DateError, st
         except IndexError:
             raise DateError, st
@@ -1098,7 +1090,7 @@ class DateTime(object):
     def _validDate(self,y,m,d):
         if m<1 or m>12 or y<0 or d<1 or d>31:
             return 0
-        return d<=self._month_len[(y%4==0 and (y%100!=0 or y%400==0))][m]
+        return d <= _MONTH_LEN[(y%4==0 and (y%100!=0 or y%400==0))][m]
 
     def _validTime(self,h,m,s):
         return h>=0 and h<=23 and m>=0 and m<=59 and s>=0 and s < 60
