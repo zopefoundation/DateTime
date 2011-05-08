@@ -423,7 +423,6 @@ class DateTime(object):
         '_second',
         '_nearsec',
         '_d',
-        '_t',
         '_micros',
         'time',
     )
@@ -839,7 +838,7 @@ class DateTime(object):
         self._nearsec=math.floor(sc)
         self._year, self._month, self._day = yr, mo, dy
         self._hour, self._minute, self._second = hr, mn, sc
-        self.time, self._d, self._t, self._tz = s, d, t, tz
+        self.time, self._d, self._tz = s, d, tz
         # self._micros is the time since the epoch
         # in long integer microseconds.
         if microsecs is None:
@@ -1101,6 +1100,7 @@ class DateTime(object):
         raise AttributeError(name)
 
     # Conversion and comparison methods
+
     def timeTime(self):
         """Return the date/time as a floating-point number in UTC,
         in the format used by the python time module.
@@ -1108,7 +1108,7 @@ class DateTime(object):
         Note that it is possible to create date/time values with
         DateTime that have no meaningful value to the time module.
         """
-        return self._t
+        return self._micros / 1000000.0
 
     def toZone(self, z):
         """Return a DateTime with the value as the current
@@ -1225,7 +1225,7 @@ class DateTime(object):
         long integer microseconds.
         """
         if isinstance(t, float):
-            return self._t > t
+            return self._micros > long(t * 1000000)
         return self._micros > t._micros
 
     __gt__ = greaterThan
@@ -1243,7 +1243,7 @@ class DateTime(object):
         long integer microseconds.
         """
         if isinstance(t, float):
-            return self._t >= t
+            return self._micros >= long(t * 1000000)
         return self._micros >= t._micros
 
     __ge__ = greaterThanEqualTo
@@ -1260,7 +1260,7 @@ class DateTime(object):
         long integer microseconds.
         """
         if isinstance(t, float):
-            return self._t == t
+            return self._micros == long(t * 1000000)
         return self._micros == t._micros
 
     def notEqualTo(self, t):
@@ -1302,7 +1302,7 @@ class DateTime(object):
         long integer microseconds.
         """
         if isinstance(t, float):
-            return self._t < t
+            return self._micros < long(t * 1000000)
         return self._micros < t._micros
 
     __lt__ = lessThan
@@ -1319,7 +1319,7 @@ class DateTime(object):
         long integer microseconds.
         """
         if isinstance(t, float):
-            return self._t <= t
+            return self._micros <= long(t * 1000000)
         return self._micros <= t._micros
 
     __le__ = lessThanEqualTo
@@ -1762,7 +1762,11 @@ class DateTime(object):
     def __float__(self):
         """Convert to floating-point number of seconds since the epoch (gmt).
         """
-        return float(self._t)
+        return self.micros() / 1000000.0
+
+    @property
+    def _t(self):
+        return self._micros / 1000000.0
 
     def _parse_iso8601(self, s):
         # preserve the previously implied contract

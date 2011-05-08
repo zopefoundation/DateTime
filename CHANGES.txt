@@ -4,6 +4,10 @@ Changelog
 3.0 (unreleased)
 ----------------
 
+- Avoid storing `_t` representing the time as a float in seconds since the
+  epoch, as we already have `_micros` doing the same as a long. Memory use is
+  down to about 300 bytes per DateTime instance.
+
 - Updated exception raising syntax to current style.
 
 - Avoid storing `_aday`, `_fday`, `_pday`, `_amon`, `_fmon`, `_pmon`, `_pmhour`
