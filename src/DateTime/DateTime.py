@@ -414,8 +414,6 @@ class DateTime(object):
     __slots__ = (
         '_timezone_naive',
         '_tz',
-        '_pm',
-        '_pmhour',
         '_dayoffset',
         '_year',
         '_month',
@@ -825,12 +823,6 @@ class DateTime(object):
                 tz = self._calcTimezoneName(x, ms)
             s,d,t,microsecs = _calcIndependentSecondEtc(tz, x, ms)
 
-        if hr>12:
-            self._pmhour=hr-12
-            self._pm='pm'
-        else:
-            self._pmhour=hr or 12
-            self._pm= (hr==12) and 'pm' or 'am'
         self._dayoffset = int((_julianday(yr,mo,dy) + 2L) % 7)
         # Round to nearest microsecond in platform-independent way.  You
         # cannot rely on C sprintf (Python '%') formatting to round
@@ -1426,6 +1418,13 @@ class DateTime(object):
         """Return the integer day of the week, where sunday is 1."""
         return self._dayoffset+1
 
+    @property
+    def _pmhour(self):
+        hr = self._hour
+        if hr > 12:
+            return hr - 12
+        return hr or 12
+
     def h_12(self):
         """Return the 12-hour clock representation of the hour."""
         return self._pmhour
@@ -1433,6 +1432,13 @@ class DateTime(object):
     def h_24(self):
         """Return the 24-hour clock representation of the hour."""
         return self._hour
+
+    @property
+    def _pm(self):
+        hr = self._hour
+        if hr >= 12:
+            return 'pm'
+        return 'am'
 
     def ampm(self):
         """Return the appropriate time modifier (am or pm)."""

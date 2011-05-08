@@ -4,9 +4,10 @@ Changelog
 3.0 (unreleased)
 ----------------
 
-- Avoid storing `_aday`, `_fday`, `_pday`, `_amon`, `_fmon` and `_pmon` in
-  memory for every instance but look them up dynamically based on `_dayoffset`
-  and `_month`. This saves another 150 bytes of memory per DateTime instance.
+- Avoid storing `_aday`, `_fday`, `_pday`, `_amon`, `_fmon`, `_pmon`, `_pmhour`
+  and `_pm` in memory for every instance but look them up dynamically based on
+  `_dayoffset`, `_month` and `_hour`. This saves another 150 bytes of memory
+  per DateTime instance.
 
 - Moved various internal parsing related class variables to module constants.
 
