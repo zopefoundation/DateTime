@@ -4,6 +4,7 @@ Changelog
 3.0 (unreleased)
 ----------------
 
+- Added tests for read-only class attributes and interface.
 
 3.0a2 (2011-05-07)
 ------------------

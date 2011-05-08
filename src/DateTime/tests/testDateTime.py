@@ -641,6 +641,16 @@ class DateTimeTests(unittest.TestCase):
         parsed = DateTime()._parse_iso8601('2010-10-10')
         self.assertEqual(parsed, (2010, 10, 10, 0, 0, 0, 'GMT+0000'))
 
+    def test_interface(self):
+        from DateTime.interfaces import IDateTime
+        self.assertTrue(IDateTime.providedBy(DateTime()))
+
+    def test_security(self):
+        dt = DateTime()
+        self.assertEqual(dt.__roles__, None)
+        self.assertEqual(dt.__allow_access_to_unprotected_subobjects__, 1)
+
+
 def test_suite():
     import doctest
     return unittest.TestSuite([
@@ -648,7 +658,3 @@ def test_suite():
         doctest.DocFileSuite('DateTime.txt', package='DateTime'),
         doctest.DocFileSuite('pytz.txt', package='DateTime'),
         ])
-
-
-if __name__=="__main__":
-    unittest.main(defaultTest='test_suite')
