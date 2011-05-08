@@ -4,6 +4,8 @@ Changelog
 3.0 (unreleased)
 ----------------
 
+- Removed deprecated `_isDST` and `_localzone` class variables.
+
 - Moved pytz cache from `DateTime._tzinfo` to a module global `_TZINFO`.
 
 - Make DateTime a new-style class and limit its available attributes via a
