@@ -357,8 +357,14 @@ def Timezones():
     return sorted(list(PytzCache._zmap.values()))
 
 
-def strftimeFormatter(dt, format):
-    return dt.strftime(format)
+class strftimeFormatter(object):
+
+    def __init__(self, dt, format):
+        self.dt = dt
+        self.format = format
+
+    def __call__(self):
+        return self.dt.strftime(self.format)
 
 
 class DateTime(object):
