@@ -417,9 +417,6 @@ class DateTime(object):
         '_pm',
         '_pmhour',
         '_dayoffset',
-        '_fmon',
-        '_amon',
-        '_pmon',
         '_year',
         '_month',
         '_day',
@@ -835,8 +832,6 @@ class DateTime(object):
             self._pmhour=hr or 12
             self._pm= (hr==12) and 'pm' or 'am'
         self._dayoffset = int((_julianday(yr,mo,dy) + 2L) % 7)
-        self._fmon, self._amon, self._pmon = \
-            _MONTHS[mo], _MONTHS_A[mo], _MONTHS_P[mo]
         # Round to nearest microsecond in platform-independent way.  You
         # cannot rely on C sprintf (Python '%') formatting to round
         # consistently; doing it ourselves ensures that all but truly
@@ -1355,9 +1350,17 @@ class DateTime(object):
         """Return the month of the object as an integer."""
         return self._month
 
+    @property
+    def _fmon(self):
+        return _MONTHS[self._month]
+
     def Month(self):
         """Return the full month name."""
         return self._fmon
+
+    @property
+    def _amon(self):
+        return _MONTHS_A[self._month]
 
     def aMonth(self):
         """Return the abreviated month name."""
@@ -1366,6 +1369,10 @@ class DateTime(object):
     def Mon(self):
         """Compatibility: see aMonth."""
         return self._amon
+
+    @property
+    def _pmon(self):
+        return _MONTHS_P[self._month]
 
     def pMonth(self):
         """Return the abreviated (with period) month name."""
