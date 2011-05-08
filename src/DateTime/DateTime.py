@@ -310,19 +310,13 @@ def _tzoffset2iso8601zone(seconds):
     return "%+03d:%02d" % divmod((seconds / 60), 60)
 
 
-class strftimeFormatter:
-
-    def __init__(self, dt, format):
-        self._dt=dt
-        self._f=format
-
-    def __call__(self):
-        return self._dt.strftime(self._f)
-
-
 def Timezones():
     """Return the list of recognized timezone names"""
     return sorted(list(PytzCache._zmap.values()))
+
+
+def strftimeFormatter(dt, format):
+    return dt.strftime(format)
 
 
 class DateTime(object):
