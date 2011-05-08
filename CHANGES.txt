@@ -4,6 +4,10 @@ Changelog
 3.0 (unreleased)
 ----------------
 
+- No longer provide the `DateError`, `DateTimeError`, `SyntaxError` and
+  `TimeError` exceptions as class attributes, import them from their canonical
+  `DateTime.interfaces` location instead.
+
 - Removed deprecated `_isDST` and `_localzone` class variables.
 
 - Moved pytz cache from `DateTime._tzinfo` to a module global `_TZINFO`.

@@ -368,12 +368,6 @@ class DateTime(object):
     __roles__ = None
     __allow_access_to_unprotected_subobjects__ = 1
 
-    # Make class-specific exceptions available as attributes.
-    DateError = DateError
-    TimeError = TimeError
-    DateTimeError = DateTimeError
-    SyntaxError = SyntaxError
-
     int_pattern  =re.compile(r'([0-9]+)') #AJ
     flt_pattern  =re.compile(r':([0-9]+\.[0-9]+)') #AJ
     name_pattern =re.compile(r'([a-zA-Z]+)', re.I) #AJ

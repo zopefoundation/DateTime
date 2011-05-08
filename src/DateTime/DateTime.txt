@@ -200,8 +200,8 @@ with from zero to seven arguments:
   the specified timezone).
 
 If a string argument passed to the DateTime constructor cannot be
-parsed, it will raise DateTime.SyntaxError.  Invalid date, time, or
-timezone components will raise a DateTime.DateTimeError.
+parsed, it will raise SyntaxError.  Invalid date, time, or
+timezone components will raise a DateTimeError.
 
 The module function Timezones() will return a list of the timezones
 recognized by the DateTime module.  Recognition of timezone names is

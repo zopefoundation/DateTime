@@ -484,10 +484,11 @@ class DateTimeTests(unittest.TestCase):
                     self.assertEqual(d_us, d_int)
 
     def test_calcTimezoneName(self):
+        from DateTime.interfaces import TimeError
         timezone_dependent_epoch = 2177452800L
         try:
             DateTime()._calcTimezoneName(timezone_dependent_epoch, 0)
-        except DateTime.TimeError:
+        except TimeError:
             self.fail('Zope Collector issue #484 (negative time bug): '
                       'TimeError raised')
 
