@@ -420,9 +420,6 @@ class DateTime(object):
         '_fmon',
         '_amon',
         '_pmon',
-        '_fday',
-        '_aday',
-        '_pday',
         '_year',
         '_month',
         '_day',
@@ -837,11 +834,9 @@ class DateTime(object):
         else:
             self._pmhour=hr or 12
             self._pm= (hr==12) and 'pm' or 'am'
-        self._dayoffset=dx=int((_julianday(yr,mo,dy)+2L)%7)
+        self._dayoffset = int((_julianday(yr,mo,dy) + 2L) % 7)
         self._fmon, self._amon, self._pmon = \
             _MONTHS[mo], _MONTHS_A[mo], _MONTHS_P[mo]
-        self._fday,self._aday,self._pday= \
-            _DAYS[dx], _DAYS_A[dx], _DAYS_P[dx]
         # Round to nearest microsecond in platform-independent way.  You
         # cannot rely on C sprintf (Python '%') formatting to round
         # consistently; doing it ourselves ensures that all but truly
@@ -1384,6 +1379,10 @@ class DateTime(object):
         """Return the integer day."""
         return self._day
 
+    @property
+    def _fday(self):
+        return _DAYS[self._dayoffset]
+
     def Day(self):
         """Return the full name of the day of the week."""
         return self._fday
@@ -1392,9 +1391,17 @@ class DateTime(object):
         """Compatibility: see Day."""
         return self._fday
 
+    @property
+    def _aday(self):
+        return _DAYS_A[self._dayoffset]
+
     def aDay(self):
         """Return the abreviated name of the day of the week."""
         return self._aday
+
+    @property
+    def _pday(self):
+        return _DAYS_P[self._dayoffset]
 
     def pDay(self):
         """Return the abreviated (with period) name of the day of the week."""
