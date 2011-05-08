@@ -68,6 +68,12 @@ jd1901 = 2415385L
 
 _TZINFO = PytzCache()
 
+INT_PATTERN = re.compile(r'([0-9]+)')
+FLT_PATTERN = re.compile(r':([0-9]+\.[0-9]+)')
+NAME_PATTERN = re.compile(r'([a-zA-Z]+)', re.I)
+SPACE_CHARS =' \t\n'
+DELIMITERS = '-/.:,+'
+
 numericTimeZoneMatch = re.compile(r'[+-][0-9][0-9][0-9][0-9]').match
 iso8601Match = re.compile(r'''
   (?P<year>\d\d\d\d)                # four digits year
@@ -142,6 +148,10 @@ def _findLocalTimeZoneName(isDST):
         except:
             _localzone = ''
     return _localzone
+
+_localzone0 = _findLocalTimeZoneName(0)
+_localzone1 = _findLocalTimeZoneName(1)
+_multipleZones = (_localzone0 != _localzone1)
 
 # Some utility functions for calculating dates:
 
@@ -368,11 +378,6 @@ class DateTime(object):
     __roles__ = None
     __allow_access_to_unprotected_subobjects__ = 1
 
-    int_pattern  =re.compile(r'([0-9]+)') #AJ
-    flt_pattern  =re.compile(r':([0-9]+\.[0-9]+)') #AJ
-    name_pattern =re.compile(r'([a-zA-Z]+)', re.I) #AJ
-    space_chars  =' \t\n'
-    delimiters   ='-/.:,+'
     _month_len  =((0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31),
                   (0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31))
     _until_month=((0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334),
@@ -406,10 +411,6 @@ class DateTime(object):
                   'thursday': 5,  'thurs': 5, 'thur': 5, 'thu': 5,
                   'friday': 6,    'fri': 6,
                   'saturday': 7,  'sat': 7}
-
-    _localzone0 = _findLocalTimeZoneName(0)
-    _localzone1 = _findLocalTimeZoneName(1)
-    _multipleZones = (_localzone0 != _localzone1)
 
     # Limit the amount of instance attributes
     __slots__ = (
@@ -871,20 +872,20 @@ class DateTime(object):
     def localZone(self, ltm=None):
         '''Returns the time zone on the given date.  The time zone
         can change according to daylight savings.'''
-        if not DateTime._multipleZones:
-            return DateTime._localzone0
+        if not _multipleZones:
+            return _localzone0
         if ltm == None:
             ltm = localtime(time())
         isDST = ltm[8]
-        lz = isDST and DateTime._localzone1 or DateTime._localzone0
+        lz = isDST and _localzone1 or _localzone0
         return lz
 
     def _calcTimezoneName(self, x, ms):
         # Derive the name of the local time zone at the given
         # timezone-dependent second.
-        if not DateTime._multipleZones:
-            return DateTime._localzone0
-        fsetAtEpoch = _tzoffset(DateTime._localzone0, 0.0)
+        if not _multipleZones:
+            return _localzone0
+        fsetAtEpoch = _tzoffset(_localzone0, 0.0)
         nearTime = x - fsetAtEpoch - long(EPOCH) + 86400L + ms
         # nearTime is within an hour of being correct.
         try:
@@ -909,12 +910,7 @@ class DateTime(object):
 
     def _parse(self,st, datefmt=getDefaultDateFormat()):
         # Parse date-time components from a string
-        month=year=tz=tm=None
-        spaces        =self.space_chars
-        intpat        =self.int_pattern
-        fltpat        =self.flt_pattern
-        wordpat       =self.name_pattern
-        delimiters    =self.delimiters
+        month = year = tz = tm = None
         MonthNumbers  =self._monthmap
         DayOfWeekNames=self._daymap
         ValidZones = _TZINFO._zidx
@@ -936,13 +932,15 @@ class DateTime(object):
         ints,dels=[],[]
         i,l=0,len(st)
         while i < l:
-            while i < l and st[i] in spaces    : i=i+1
-            if i < l and st[i] in delimiters:
+            while i < l and st[i] in SPACE_CHARS:
+                i = i + 1
+            if i < l and st[i] in DELIMITERS:
                 d=st[i]
                 i=i+1
             else:
                 d=''
-            while i < l and st[i] in spaces    : i=i+1
+            while i < l and st[i] in SPACE_CHARS:
+                i = i + 1
 
             # The float pattern needs to look back 1 character, because it
             # actually looks for a preceding colon like ':33.33'. This is
@@ -951,7 +949,7 @@ class DateTime(object):
             if i > 0: b=i-1
             else: b=i
 
-            ts_results = fltpat.match(st, b)
+            ts_results = FLT_PATTERN.match(st, b)
             if ts_results:
                 s=ts_results.group(1)
                 i=i+len(s)
@@ -959,7 +957,7 @@ class DateTime(object):
                 continue
 
             #AJ
-            ts_results = intpat.match(st, i)
+            ts_results = INT_PATTERN.match(st, i)
             if ts_results:
                 s=ts_results.group(0)
 
@@ -973,7 +971,7 @@ class DateTime(object):
                     ints.append(v)
                 continue
 
-            ts_results = wordpat.match(st, i)
+            ts_results = NAME_PATTERN.match(st, i)
             if ts_results:
                 o,s=ts_results.group(0),ts_results.group(0).lower()
                 i=i+len(s)
