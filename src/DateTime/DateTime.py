@@ -31,8 +31,8 @@ from interfaces import SyntaxError
 from interfaces import DateError
 from interfaces import TimeError
 
-
 default_datefmt = None
+
 
 def getDefaultDateFormat():
     global default_datefmt
@@ -50,6 +50,8 @@ def getDefaultDateFormat():
 # microsecond.  Then delicate calculations can rely on that the
 # maximum precision that needs to be preserved is known.
 _system_time = time
+
+
 def time():
     return round(_system_time(), 6)
 
@@ -128,13 +130,14 @@ def _findLocalTimeZoneName(isDST):
                 localzone = altzone
             else:
                 localzone = timezone
-            offset=(-localzone/(60*60.0))
-            majorOffset=int(offset)
-            if majorOffset != 0 :
-                minorOffset=abs(int((offset % majorOffset) * 60.0))
-            else: minorOffset = 0
-            m=majorOffset >= 0 and '+' or ''
-            lz='%s%0.02d%0.02d' % (m, majorOffset, minorOffset)
+            offset = (-localzone / (60 * 60.0))
+            majorOffset = int(offset)
+            if majorOffset != 0:
+                minorOffset = abs(int((offset % majorOffset) * 60.0))
+            else:
+                minorOffset = 0
+            m = majorOffset >= 0 and '+' or ''
+            lz = '%s%0.02d%0.02d' % (m, majorOffset, minorOffset)
             _localzone = PytzCache._zmap[('GMT%s' % lz).lower()]
         except:
             _localzone = ''
@@ -150,18 +153,21 @@ def _calcSD(t):
     s = d - math.floor(d)
     return s, d
 
+
 def _calcDependentSecond(tz, t):
     # Calculates the timezone-dependent second (integer part only)
     # from the timezone-independent second.
     fset = _tzoffset(tz, t)
     return fset + long(math.floor(t)) + long(EPOCH) - 86400L
 
-def _calcDependentSecond2(yr,mo,dy,hr,mn,sc):
+
+def _calcDependentSecond2(yr, mo, dy, hr, mn, sc):
     # Calculates the timezone-dependent second (integer part only)
     # from the date given.
     ss = int(hr) * 3600 + int(mn) * 60 + int(sc)
-    x = long(_julianday(yr,mo,dy)-jd1901) * 86400 + ss
+    x = long(_julianday(yr, mo, dy) - jd1901) * 86400 + ss
     return x
+
 
 def _calcIndependentSecondEtc(tz, x, ms):
     # Derive the timezone-independent second from the timezone
@@ -176,7 +182,8 @@ def _calcIndependentSecondEtc(tz, x, ms):
     micros = (x + 86400 - fset) * 1000000 + \
              long(round(ms * 1000000.0)) - long(EPOCH * 1000000.0)
     s = d - math.floor(d)
-    return s,d,t,micros
+    return (s, d, t, micros)
+
 
 def _calcHMS(x, ms):
     # hours, minutes, seconds from integer and float.
@@ -184,54 +191,59 @@ def _calcHMS(x, ms):
     x = x - hr * 3600
     mn = x / 60
     sc = x - mn * 60 + ms
-    return hr,mn,sc
+    return (hr, mn, sc)
+
 
 def _calcYMDHMS(x, ms):
     # x is a timezone-dependent integer of seconds.
     # Produces yr,mo,dy,hr,mn,sc.
-    yr,mo,dy=_calendarday(x / 86400 + jd1901)
+    yr, mo, dy = _calendarday(x / 86400 + jd1901)
     x = int(x - (x / 86400) * 86400)
     hr = x / 3600
     x = x - hr * 3600
     mn = x / 60
     sc = x - mn * 60 + ms
-    return yr,mo,dy,hr,mn,sc
+    return (yr, mo, dy, hr, mn, sc)
 
-def _julianday(yr,mo,dy):
-    y,m,d=long(yr),long(mo),long(dy)
+
+def _julianday(yr, mo, dy):
+    y, m, d = long(yr), long(mo), long(dy)
     if m > 12L:
-        y=y+m/12L
-        m=m%12L
+        y = y + m / 12L
+        m = m % 12L
     elif m < 1L:
-        m=-m
-        y=y-m/12L-1L
-        m=12L-m%12L
+        m = -m
+        y = y - m / 12L - 1L
+        m = 12L - m % 12L
     if y > 0L:
-        yr_correct=0L
+        yr_correct = 0L
     else:
-        yr_correct=3L
+        yr_correct = 3L
     if m < 3L:
-        y,m=y-1L,m+12L
-    if y*10000L+m*100L+d > 15821014L:
-        b=2L-y/100L+y/400L
+        y, m = y - 1L, m + 12L
+    if y * 10000L + m * 100L + d > 15821014L:
+        b = 2L - y / 100L + y / 400L
     else:
-        b=0L
-    return (1461L*y-yr_correct)/4L+306001L*(m+1L)/10000L+d+1720994L+b
+        b = 0L
+    return ((1461L * y - yr_correct) / 4L +
+        306001L * (m + 1L) / 10000L + d + 1720994L + b)
+
 
 def _calendarday(j):
-    j=long(j)
-    if(j < 2299160L):
-        b=j+1525L
+    j = long(j)
+    if (j < 2299160L):
+        b = j + 1525L
     else:
-        a=(4L*j-7468861L)/146097L
-        b=j+1526L+a-a/4L
-    c=(20L*b-2442L)/7305L
-    d=1461L*c/4L
-    e=10000L*(b-d)/306001L
-    dy=int(b-d-306001L*e/10000L)
-    mo=(e < 14L) and int(e-1L) or int(e-13L)
-    yr=(mo > 2) and (c-4716L) or (c-4715L)
-    return int(yr),int(mo),int(dy)
+        a = (4L * j - 7468861L) / 146097L
+        b = j + 1526L + a - a / 4L
+    c = (20L * b - 2442L) / 7305L
+    d = 1461L * c / 4L
+    e = 10000L * (b - d) / 306001L
+    dy = int(b - d - 306001L * e / 10000L)
+    mo = (e < 14L) and int(e - 1L) or int(e - 13L)
+    yr = (mo > 2) and (c - 4716L) or (c - 4715L)
+    return (int(yr), int(mo), int(dy))
+
 
 def _tzoffset(tz, t):
     """Returns the offset in seconds to GMT from a specific timezone (tz) at
@@ -240,11 +252,12 @@ def _tzoffset(tz, t):
     sign of time.timezone which (confusingly) is -7200 for GMT+2."""
     try:
         return _TZINFO[tz].info(t)[0]
-    except:
+    except Exception:
         if numericTimeZoneMatch(tz) is not None:
-            return int(tz[0:3])*3600+int(tz[0]+tz[3:5])*60
+            return int(tz[0:3]) * 3600 + int(tz[0] + tz[3:5]) * 60
         else:
             return 0 # ??
+
 
 def _correctYear(year):
     # Y2K patch.
@@ -256,6 +269,7 @@ def _correctYear(year):
             year = 1900 + year
     return year
 
+
 def safegmtime(t):
     '''gmtime with a safety zone.'''
     try:
@@ -264,8 +278,9 @@ def safegmtime(t):
             raise OverflowError # Python 2.3 fix: int can return a long!
         return gmtime(t_int)
     except (ValueError, OverflowError):
-        raise TimeError, 'The time %f is beyond the range ' \
-              'of this Python implementation.' % float(t)
+        raise TimeError('The time %f is beyond the range of this Python '
+            'implementation.' % float(t))
+
 
 def safelocaltime(t):
     '''localtime with a safety zone.'''
@@ -275,20 +290,24 @@ def safelocaltime(t):
             raise OverflowError # Python 2.3 fix: int can return a long!
         return localtime(t_int)
     except (ValueError, OverflowError):
-        raise TimeError, 'The time %f is beyond the range ' \
-              'of this Python implementation.' % float(t)
+        raise TimeError('The time %f is beyond the range of this Python '
+            'implementation.' % float(t))
+
 
 def _tzoffset2rfc822zone(seconds):
     """Takes an offset, such as from _tzoffset(), and returns an rfc822
        compliant zone specification. Please note that the result of
-       _tzoffset() is the negative of what time.localzone and time.altzone is."""
-    return "%+03d%02d" % divmod( (seconds/60), 60)
+       _tzoffset() is the negative of what time.localzone and time.altzone is.
+    """
+    return "%+03d%02d" % divmod((seconds / 60), 60)
+
 
 def _tzoffset2iso8601zone(seconds):
     """Takes an offset, such as from _tzoffset(), and returns an ISO 8601
        compliant zone specification. Please note that the result of
-       _tzoffset() is the negative of what time.localzone and time.altzone is."""
-    return "%+03d:%02d" % divmod( (seconds/60), 60)
+       _tzoffset() is the negative of what time.localzone and time.altzone is.
+    """
+    return "%+03d:%02d" % divmod((seconds / 60), 60)
 
 
 class DateTime(object):
@@ -399,7 +418,7 @@ class DateTime(object):
             self._micros = long(value[0] * 1000000)
             self._timezone_naive = value[1]
         else:
-            for k,v in value.items():
+            for k, v in value.items():
                 if k in self.__slots__:
                     setattr(self, k, v)
 
@@ -1844,4 +1863,3 @@ class strftimeFormatter:
 def Timezones():
     """Return the list of recognized timezone names"""
     return sorted(list(PytzCache._zmap.values()))
-
