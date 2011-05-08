@@ -419,7 +419,6 @@ class DateTime(object):
     # For backward compatibility only:
     _isDST = localtime(time())[8]
     _localzone  = _isDST and _localzone1 or _localzone0
-    _tzinfo = PytzCache()
 
     # Limit the amount of instance attributes
     __slots__ = (
