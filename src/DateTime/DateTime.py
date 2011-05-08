@@ -10,19 +10,27 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-"""Encapsulation of date/time values"""
 
-
-import re, math
-from time import time, gmtime, localtime
-from time import daylight, timezone, altzone
+import math
+import re
+from time import altzone
+from time import daylight
+from time import gmtime
+from time import localtime
+from time import time
+from time import timezone
 from time import tzname
 from datetime import datetime
-from interfaces import IDateTime
-from interfaces import DateTimeError, SyntaxError, DateError, TimeError
-from zope.interface import implements
+
 from pytz_support import PytzCache
-_cache = PytzCache
+from zope.interface import implements
+
+from interfaces import IDateTime
+from interfaces import DateTimeError
+from interfaces import SyntaxError
+from interfaces import DateError
+from interfaces import TimeError
+
 
 default_datefmt = None
 
@@ -33,11 +41,10 @@ def getDefaultDateFormat():
             from App.config import getConfiguration
             default_datefmt = getConfiguration().datetime_format
             return default_datefmt
-        except:
+        except Exception:
             return 'us'
     else:
         return default_datefmt
-
 
 # To control rounding errors, we round system time to the nearest
 # microsecond.  Then delicate calculations can rely on that the
@@ -47,14 +54,15 @@ def time():
     return round(_system_time(), 6)
 
 # Determine machine epoch
-tm=((0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334),
-    (0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335))
-yr,mo,dy,hr,mn,sc=gmtime(0)[:6]
-i=int(yr-1)
-to_year =int(i*365+i/4-i/100+i/400-693960.0)
-to_month=tm[yr%4==0 and (yr%100!=0 or yr%400==0)][mo]
-EPOCH  =(to_year+to_month+dy+(hr/24.0+mn/1440.0+sc/86400.0))*86400
-jd1901 =2415385L
+tm= ((0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334),
+     (0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335))
+yr, mo, dy, hr, mn, sc = gmtime(0)[:6]
+i = int(yr - 1)
+to_year = int(i * 365 + i / 4 - i / 100 + i / 400 - 693960.0)
+to_month = tm[yr % 4 == 0 and (yr % 100 != 0 or yr % 400 == 0)][mo]
+EPOCH = ((to_year + to_month + dy +
+    (hr / 24.0 + mn / 1440.0 + sc / 86400.0)) * 86400)
+jd1901 = 2415385L
 
 _TZINFO = PytzCache()
 
@@ -112,7 +120,7 @@ def _findLocalTimeZoneName(isDST):
     try:
         # Get the name of the current time zone depending
         # on DST.
-        _localzone = _cache._zmap[tzname[isDST].lower()]
+        _localzone = PytzCache._zmap[tzname[isDST].lower()]
     except:
         try:
             # Generate a GMT-offset zone name.
@@ -127,7 +135,7 @@ def _findLocalTimeZoneName(isDST):
             else: minorOffset = 0
             m=majorOffset >= 0 and '+' or ''
             lz='%s%0.02d%0.02d' % (m, majorOffset, minorOffset)
-            _localzone = _cache._zmap[('GMT%s' % lz).lower()]
+            _localzone = PytzCache._zmap[('GMT%s' % lz).lower()]
         except:
             _localzone = ''
     return _localzone

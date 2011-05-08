@@ -18,7 +18,7 @@ import os
 import time
 import unittest
 
-from DateTime.DateTime import _findLocalTimeZoneName, _cache
+from DateTime.DateTime import _findLocalTimeZoneName
 from DateTime import DateTime
 from datetime import date, datetime, tzinfo, timedelta
 import pytz
@@ -569,19 +569,19 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(dt5, dt6)
         self.assertEqual(dt5.asdatetime().tzinfo, tz)
         self.assertEqual(dt6.asdatetime().tzinfo, tz)
-    
+
     def testLegacyTimezones(self):
-        cache = _cache()
+        from DateTime.DateTime import _TZINFO
         # The year is important here as timezones change over time
         t1 = time.mktime(datetime(2002, 1, 1).timetuple())
         t2 = time.mktime(datetime(2002, 7, 1).timetuple())
         
         for name in legacy._zlst + legacy._zmap.keys() + legacy._data.keys():
-            self.failUnless(name.lower() in cache._zidx, 'legacy timezone  %s cannot be looked up' % name)            
+            self.failUnless(name.lower() in _TZINFO._zidx, 'legacy timezone  %s cannot be looked up' % name)            
         
         failures = []
         for name, zone in legacy.timezones.iteritems():
-            newzone = cache[name]
+            newzone = _TZINFO[name]
             # The name of the new zone might change (eg GMT+6 rather than GMT+0600)
             if zone.info(t1)[:2] != newzone.info(t1)[:2] or zone.info(t2)[:2] != newzone.info(t2)[:2]:
                 failures.append(name)
