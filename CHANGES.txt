@@ -1,8 +1,8 @@
 Changelog
 =========
 
-3.0 (unreleased)
-----------------
+3.0b1 (2011-05-07)
+------------------
 
 - Restored `strftimeFormatter` as a class.
 
