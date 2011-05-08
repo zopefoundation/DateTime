@@ -1,8 +1,8 @@
 Changelog
 =========
 
-3.0 (unreleased)
-----------------
+3.0a2 (2011-05-07)
+------------------
 
 - Added back support for reading old DateTime pickles without a `_micros` value.
 
