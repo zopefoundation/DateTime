@@ -374,6 +374,53 @@ class DateTime(object):
     DateTimeError = DateTimeError
     SyntaxError = SyntaxError
 
+    int_pattern  =re.compile(r'([0-9]+)') #AJ
+    flt_pattern  =re.compile(r':([0-9]+\.[0-9]+)') #AJ
+    name_pattern =re.compile(r'([a-zA-Z]+)', re.I) #AJ
+    space_chars  =' \t\n'
+    delimiters   ='-/.:,+'
+    _month_len  =((0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31),
+                  (0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31))
+    _until_month=((0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334),
+                  (0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335))
+    _months     =['','January','February','March','April','May','June','July',
+                     'August', 'September', 'October', 'November', 'December']
+    _months_a   =['','Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    _months_p   =['','Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'June',
+                     'July', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.']
+    _monthmap   ={'january': 1,   'jan': 1,
+                  'february': 2,  'feb': 2,
+                  'march': 3,     'mar': 3,
+                  'april': 4,     'apr': 4,
+                  'may': 5,
+                  'june': 6,      'jun': 6,
+                  'july': 7,      'jul': 7,
+                  'august': 8,    'aug': 8,
+                  'september': 9, 'sep': 9, 'sept': 9,
+                  'october': 10,  'oct': 10,
+                  'november': 11, 'nov': 11,
+                  'december': 12, 'dec': 12}
+    _days       =['Sunday','Monday','Tuesday','Wednesday',
+                  'Thursday','Friday','Saturday']
+    _days_a     =['Sun',  'Mon',  'Tue',  'Wed',  'Thu',  'Fri',  'Sat' ]
+    _days_p     =['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.']
+    _daymap     ={'sunday': 1,    'sun': 1,
+                  'monday': 2,    'mon': 2,
+                  'tuesday': 3,   'tues': 3,  'tue': 3,
+                  'wednesday': 4, 'wed': 4,
+                  'thursday': 5,  'thurs': 5, 'thur': 5, 'thu': 5,
+                  'friday': 6,    'fri': 6,
+                  'saturday': 7,  'sat': 7}
+
+    _localzone0 = _findLocalTimeZoneName(0)
+    _localzone1 = _findLocalTimeZoneName(1)
+    _multipleZones = (_localzone0 != _localzone1)
+    # For backward compatibility only:
+    _isDST = localtime(time())[8]
+    _localzone  = _isDST and _localzone1 or _localzone0
+    _tzinfo = PytzCache()
+
     # Limit the amount of instance attributes
     __slots__ = (
         '_timezone_naive',
@@ -825,58 +872,11 @@ class DateTime(object):
         self._year,self._month,self._day     =yr,mo,dy
         self._hour,self._minute,self._second =hr,mn,sc
         self.time,self._d,self._t,self._tz   =s,d,t,tz
+        # self._micros is the time since the epoch
+        # in long integer microseconds.
         if microsecs is None:
             microsecs = long(math.floor(t * 1000000.0))
         self._micros = microsecs
-        # self._micros is the time since the epoch
-        # in long integer microseconds.
-
-    int_pattern  =re.compile(r'([0-9]+)') #AJ
-    flt_pattern  =re.compile(r':([0-9]+\.[0-9]+)') #AJ
-    name_pattern =re.compile(r'([a-zA-Z]+)', re.I) #AJ
-    space_chars  =' \t\n'
-    delimiters   ='-/.:,+'
-    _month_len  =((0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31),
-                  (0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31))
-    _until_month=((0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334),
-                  (0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335))
-    _months     =['','January','February','March','April','May','June','July',
-                     'August', 'September', 'October', 'November', 'December']
-    _months_a   =['','Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    _months_p   =['','Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'June',
-                     'July', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.']
-    _monthmap   ={'january': 1,   'jan': 1,
-                  'february': 2,  'feb': 2,
-                  'march': 3,     'mar': 3,
-                  'april': 4,     'apr': 4,
-                  'may': 5,
-                  'june': 6,      'jun': 6,
-                  'july': 7,      'jul': 7,
-                  'august': 8,    'aug': 8,
-                  'september': 9, 'sep': 9, 'sept': 9,
-                  'october': 10,  'oct': 10,
-                  'november': 11, 'nov': 11,
-                  'december': 12, 'dec': 12}
-    _days       =['Sunday','Monday','Tuesday','Wednesday',
-                  'Thursday','Friday','Saturday']
-    _days_a     =['Sun',  'Mon',  'Tue',  'Wed',  'Thu',  'Fri',  'Sat' ]
-    _days_p     =['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.']
-    _daymap     ={'sunday': 1,    'sun': 1,
-                  'monday': 2,    'mon': 2,
-                  'tuesday': 3,   'tues': 3,  'tue': 3,
-                  'wednesday': 4, 'wed': 4,
-                  'thursday': 5,  'thurs': 5, 'thur': 5, 'thu': 5,
-                  'friday': 6,    'fri': 6,
-                  'saturday': 7,  'sat': 7}
-
-    _localzone0 = _findLocalTimeZoneName(0)
-    _localzone1 = _findLocalTimeZoneName(1)
-    _multipleZones = (_localzone0 != _localzone1)
-    # For backward compatibility only:
-    _isDST = localtime(time())[8]
-    _localzone  = _isDST and _localzone1 or _localzone0
-    _tzinfo = PytzCache()
 
     def localZone(self, ltm=None):
         '''Returns the time zone on the given date.  The time zone
@@ -1355,7 +1355,6 @@ class DateTime(object):
         """
         d=int(self._d+(_tzoffset(self._tz, self._t)/86400.0))
         return int((d+jd1901)-_julianday(self._year,1,0))
-
 
     # Component access
     def parts(self):
