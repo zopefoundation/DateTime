@@ -202,19 +202,22 @@ class DateTimeTests(unittest.TestCase):
         dt = DateTime()
         data = cPickle.dumps(dt, 1)
         new = cPickle.loads(data)
-        self.assertEqual(dt.__dict__, new.__dict__)
+        for key in DateTime.__slots__:
+            self.assertEqual(getattr(dt, key), getattr(new, key))
 
     def test_pickle_with_tz(self):
         dt = DateTime('2002/5/2 8:00am GMT+8')
         data = cPickle.dumps(dt, 1)
         new = cPickle.loads(data)
-        self.assertEqual(dt.__dict__, new.__dict__)
+        for key in DateTime.__slots__:
+            self.assertEqual(getattr(dt, key), getattr(new, key))
 
     def test_pickle_with_micros(self):
         dt = DateTime('2002/5/2 8:00:14.123 GMT+8')
         data = cPickle.dumps(dt, 1)
         new = cPickle.loads(data)
-        self.assertEqual(dt.__dict__, new.__dict__)
+        for key in DateTime.__slots__:
+            self.assertEqual(getattr(dt, key), getattr(new, key))
 
     def test_pickle_old(self):
         dt = DateTime('2002/5/2 8:00am GMT+0')
@@ -231,7 +234,8 @@ class DateTimeTests(unittest.TestCase):
             '\x00U\x07_pmhourq\x1dK\x08U\n_dayoffsetq\x1eK\x04U\x04timeq'
             '\x1fG?\xd5UUUV\x00\x00ub.')
         new = cPickle.loads(data)
-        self.assertEqual(dt.__dict__, new.__dict__)
+        for key in DateTime.__slots__:
+            self.assertEqual(getattr(dt, key), getattr(new, key))
 
     def testTZ2(self):
         # Time zone manipulation test 2

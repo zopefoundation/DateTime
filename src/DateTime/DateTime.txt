@@ -758,7 +758,7 @@ however, a DateTime may not be subtracted from a number:
   >>> 1 - dt
   Traceback (most recent call last):
   ...
-  TypeError: unsupported operand type(s) for -: 'int' and 'instance'
+  TypeError: unsupported operand type(s) for -: 'int' and 'DateTime'
 
 DateTimes can also be converted to integers (number of seconds since
 the epoch), longs (not too long ;)) and floats:

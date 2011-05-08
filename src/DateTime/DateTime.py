@@ -281,7 +281,7 @@ def _tzoffset2iso8601zone(seconds):
     return "%+03d:%02d" % divmod( (seconds/60), 60)
 
 
-class DateTime:
+class DateTime(object):
     """DateTime objects represent instants in time and provide
        interfaces for controlling its representation without
        affecting the absolute value of the object.
@@ -327,14 +327,46 @@ class DateTime:
     implements(IDateTime)
 
     # For security machinery:
-    __roles__=None
-    __allow_access_to_unprotected_subobjects__=1
+    __roles__ = None
+    __allow_access_to_unprotected_subobjects__ = 1
 
     # Make class-specific exceptions available as attributes.
     DateError = DateError
     TimeError = TimeError
     DateTimeError = DateTimeError
     SyntaxError = SyntaxError
+
+    # Limit the amount of instance attributes
+    __slots__ = (
+        '_timezone_naive',
+        '_tz',
+        '_pm',
+        '_pmhour',
+        '_dayoffset',
+        '_fmon',
+        '_amon',
+        '_pmon',
+        '_months',
+        '_months_a',
+        '_months_p',
+        '_fday',
+        '_aday',
+        '_pday',
+        '_days',
+        '_days_a',
+        '_days_p',
+        '_year',
+        '_month',
+        '_day',
+        '_hour',
+        '_minute',
+        '_second',
+        '_nearsec',
+        '_d',
+        '_t',
+        '_micros',
+        'time',
+    )
 
     def __init__(self, *args, **kw):
         """Return a new date-time object"""
@@ -349,20 +381,17 @@ class DateTime:
             raise SyntaxError('Unable to parse %s, %s' % (args, kw))
 
     def __getstate__(self):
-        state = self.__dict__
-        return (state['_micros'] / 1000000.0,
-            state.get('_timezone_naive', False),
-            state['_tz'])
+        return (self._micros / 1000000.0, self._timezone_naive, self._tz)
 
     def __setstate__(self, value):
-        state = self.__dict__
         if isinstance(value, tuple):
             self._parse_args(value[0], value[2])
-            state['_micros'] = long(value[0] * 1000000)
-            state['_timezone_naive'] = value[1]
+            self._micros = long(value[0] * 1000000)
+            self._timezone_naive = value[1]
         else:
-            state.clear()
-            state.update(value)
+            for k,v in value.items():
+                if k in self.__slots__:
+                    setattr(self, k, v)
 
     def _parse_args(self, *args, **kw):
         """Return a new date-time object.
@@ -1050,7 +1079,7 @@ class DateTime:
     def __getattr__(self, name):
         if '%' in name:
             return strftimeFormatter(self, name)
-        raise AttributeError, name
+        raise AttributeError(name)
 
     # Conversion and comparison methods
     def timeTime(self):
