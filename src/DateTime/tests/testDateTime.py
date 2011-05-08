@@ -402,15 +402,9 @@ class DateTimeTests(unittest.TestCase):
 
     def testJulianWeek(self):
         # Check JulianDayWeek function
-        try:
-            import gzip
-        except ImportError:
-            print "Warning: testJulianWeek disabled: module gzip not found"
-            return 0
-
-        fn = os.path.join(DATADIR, 'julian_testdata.txt.gz')
-        lines = gzip.GzipFile(fn).readlines()
-
+        fn = os.path.join(DATADIR, 'julian_testdata.txt')
+        with open(fn, 'r') as fd:
+            lines = fd.readlines()
         for line in lines:
             d = DateTime(line[:10])
             result_from_mx=tuple(map(int, line[12:-2].split(',')))
@@ -469,12 +463,12 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(dts[5], "%+03d%02d" % divmod( (-offset/60), 60) )
 
     def testInternationalDateformat(self):
-        for year in range(1990, 2020):
+        for year in (1990, 2020):
             for month in range (1, 13):
                 for day in range(1, 32):
                     try:
                         d_us = DateTime("%d/%d/%d" % (year,month,day))
-                    except:
+                    except Exception:
                         continue
 
                     d_int = DateTime("%d.%d.%d" % (day,month,year),
