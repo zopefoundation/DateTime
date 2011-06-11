@@ -4,6 +4,32 @@ Changelog
 3.0 (unreleased)
 ----------------
 
+Backwards compatibility of DateTime 3
+*************************************
+
+DateTime 3 changes its pickle representation. DateTime instances pickled with
+former versions of DateTime can be read, but older DateTime versions cannot read
+DateTime instances pickled with version 3.
+
+DateTime 3 changes DateTime to be a new-style class with slots instead of being
+an old-style class.
+
+DateTime 3 tries to preserve microsecond resolution throughout most of its API's
+while former versions were often only accurate to millisecond resolution. Due to
+the representation of float values in Python versions before Python 2.7 you
+shouldn't compare string or float representations of DateTime instances if you
+want high accuracy. The same is true for calculated values returned by methods
+like `timeTime()`. You get the highest accuracy of comparing DateTime values by
+calling its `micros()` methods. DateTime is not particular well suited to be
+used in comparing timestamps of file systems - use the time and datetime objects
+from the Python standard library instead.
+
+Calling the DateTime constructor with a single argument of `None` will no longer
+create a DateTime instance representing `now`. Call the constructor without any
+arguments instead. The `None` case is a special case used during unpickling and
+requires you to call `__setstate__` to get a fully initialized instance.
+
+
 
 3.0b1 (2011-05-07)
 ------------------
@@ -64,14 +90,11 @@ Changelog
   (non-) equality.
 
 - Fixed (possibly unused) _parse_iso8601 function.
-  [thet]
 
 - Removed unused import of legacy DateTimeZone, strftime and re.
   Remove trailing whitespace.
-  [thet]
 
 - Removed reference to missing version section from buildout.
-  [thet]
 
 2.12.6 (2010-10-17)
 -------------------
