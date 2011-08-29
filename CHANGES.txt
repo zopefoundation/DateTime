@@ -5,7 +5,7 @@ Changelog
 ----------------
 
 Backwards compatibility of DateTime 3
-*************************************
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 DateTime 3 changes its pickle representation. DateTime instances pickled with
 former versions of DateTime can be read, but older DateTime versions cannot read
