@@ -24,12 +24,12 @@ calling its `micros()` methods. DateTime is not particular well suited to be
 used in comparing timestamps of file systems - use the time and datetime objects
 from the Python standard library instead.
 
-Calling the DateTime constructor with a single argument of `None` will no longer
-create a DateTime instance representing `now`. Call the constructor without any
-arguments instead. The `None` case is a special case used during unpickling and
-requires you to call `__setstate__` to get a fully initialized instance.
 
+3.0b2 (unreleased)
+------------------
 
+- Reverted the single argument `None` special case handling for unpickling and
+  continue to treat it as meaning `now`.
 
 3.0b1 (2011-05-07)
 ------------------

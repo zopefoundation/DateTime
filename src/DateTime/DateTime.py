@@ -435,9 +435,6 @@ class DateTime(object):
 
     def __init__(self, *args, **kw):
         """Return a new date-time object"""
-        if args and args[0] is None:
-            # unpickle
-            return
         try:
             return self._parse_args(*args, **kw)
         except (DateError, TimeError, DateTimeError):
