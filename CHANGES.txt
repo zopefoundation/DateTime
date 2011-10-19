@@ -21,8 +21,8 @@ calling its `micros()` methods. DateTime is not particular well suited to be
 used in comparing timestamps of file systems - use the time and datetime objects
 from the Python standard library instead.
 
-3.0 (unreleased)
-----------------
+3.0b3 (2011-10-19)
+------------------
 
 - Allow comparison of DateTime objects against None.
 
