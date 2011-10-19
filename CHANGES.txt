@@ -24,6 +24,7 @@ from the Python standard library instead.
 3.0 (unreleased)
 ----------------
 
+- Allow comparison of DateTime objects against None.
 
 3.0b2 (2011-10-19)
 ------------------

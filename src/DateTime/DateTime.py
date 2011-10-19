@@ -1238,7 +1238,10 @@ class DateTime(object):
         """
         if isinstance(t, float):
             return self._micros > long(t * 1000000)
-        return self._micros > t._micros
+        try:
+            return self._micros > t._micros
+        except AttributeError:
+            return self._micros > t
 
     __gt__ = greaterThan
 
@@ -1256,7 +1259,10 @@ class DateTime(object):
         """
         if isinstance(t, float):
             return self._micros >= long(t * 1000000)
-        return self._micros >= t._micros
+        try:
+            return self._micros >= t._micros
+        except AttributeError:
+            return self._micros >= t
 
     __ge__ = greaterThanEqualTo
 
@@ -1273,7 +1279,10 @@ class DateTime(object):
         """
         if isinstance(t, float):
             return self._micros == long(t * 1000000)
-        return self._micros == t._micros
+        try:
+            return self._micros == t._micros
+        except AttributeError:
+            return self._micros == t
 
     def notEqualTo(self, t):
         """Compare this DateTime object to another DateTime object
@@ -1315,7 +1324,10 @@ class DateTime(object):
         """
         if isinstance(t, float):
             return self._micros < long(t * 1000000)
-        return self._micros < t._micros
+        try:
+            return self._micros < t._micros
+        except AttributeError:
+            return self._micros < t
 
     __lt__ = lessThan
 
@@ -1332,7 +1344,10 @@ class DateTime(object):
         """
         if isinstance(t, float):
             return self._micros <= long(t * 1000000)
-        return self._micros <= t._micros
+        try:
+            return self._micros <= t._micros
+        except AttributeError:
+            return self._micros <= t
 
     __le__ = lessThanEqualTo
 

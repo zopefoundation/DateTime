@@ -187,16 +187,26 @@ class DateTimeTests(unittest.TestCase):
         dt1 = DateTime('1997/3/9 1:45pm GMT+8')
         self.assertEqual(dt1 - dt, 1.0, (dt, dt1))
 
-    def testCompareMethods(self):
+    def test_compare_methods(self):
         # Compare two dates using several methods
         dt = DateTime('1997/1/1')
         dt1 = DateTime('1997/2/2')
-        self.failUnless(dt1.greaterThan(dt))
-        self.failUnless(dt1.greaterThanEqualTo(dt))
-        self.failUnless(dt.lessThan(dt1))
-        self.failUnless(dt.lessThanEqualTo(dt1))
-        self.failUnless(dt.notEqualTo(dt1))
-        self.failUnless(not dt.equalTo(dt1))
+        self.assertTrue(dt1.greaterThan(dt))
+        self.assertTrue(dt1.greaterThanEqualTo(dt))
+        self.assertTrue(dt.lessThan(dt1))
+        self.assertTrue(dt.lessThanEqualTo(dt1))
+        self.assertTrue(dt.notEqualTo(dt1))
+        self.assertFalse(dt.equalTo(dt1))
+
+    def test_compare_methods_none(self):
+        # Compare a date to None
+        dt = DateTime('1997/1/1')
+        self.assertTrue(dt.greaterThan(None))
+        self.assertTrue(dt.greaterThanEqualTo(None))
+        self.assertFalse(dt.lessThan(None))
+        self.assertFalse(dt.lessThanEqualTo(None))
+        self.assertTrue(dt.notEqualTo(None))
+        self.assertFalse(dt.equalTo(None))
 
     def test_pickle(self):
         dt = DateTime()
