@@ -275,6 +275,30 @@ class DateTimeTests(unittest.TestCase):
         new = cPickle.loads(data)
         self.assertEqual(dt.__dict__, new.__dict__)
 
+    def test_pickle_new(self):
+        dt = DateTime('2002/5/2 8:00am')
+        data = ('ccopy_reg\n_reconstructor\nq\x01(cDateTime.DateTime\n'
+            'DateTime\nq\x02c__builtin__\nobject\nq\x03NtRq\x04(GA\xcehj'
+            '\xf0\x00\x00\x00I01\nU\x05GMT+2q\x05tb.')
+        new = cPickle.loads(data)
+        self._compare(dt, new)
+
+    def test_pickle_new_with_tz(self):
+        dt = DateTime('2002/5/2 8:00am GMT+8')
+        data = ('ccopy_reg\n_reconstructor\nq\x01(cDateTime.DateTime\n'
+            'DateTime\nq\x02c__builtin__\nobject\nq\x03NtRq\x04(GA\xceh@'
+            '\xc0\x00\x00\x00I00\nU\x05GMT+8q\x05tb.')
+        new = cPickle.loads(data)
+        self._compare(dt, new)
+
+    def test_pickle_new_with_micros(self):
+        dt = DateTime('2002/5/2 8:00:14.123 GMT+8')
+        data = ('ccopy_reg\n_reconstructor\nq\x01(cDateTime.DateTime\n'
+            'DateTime\nq\x02c__builtin__\nobject\nq\x03NtRq\x04(GA\xceh@'
+            '\xc7\x0f\xbewI00\nU\x05GMT+8q\x05tb.')
+        new = cPickle.loads(data)
+        self._compare(dt, new)
+
     def test_pickle_old(self):
         dt = DateTime('2002/5/2 8:00am GMT+0')
         data = ('(cDateTime.DateTime\nDateTime\nq\x01Noq\x02}q\x03(U\x05_amonq'

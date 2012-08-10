@@ -15,6 +15,7 @@
 __version__='$Revision: 1.99 $'[11:-2]
 
 
+import copy_reg
 import re, math,  DateTimeZone
 from time import time, gmtime, localtime
 from time import daylight, timezone, altzone, strftime
@@ -355,6 +356,12 @@ class DateTime:
 
     def __setstate__(self, state):
         self.__dict__.clear()  # why doesn't Python's unpickler do this?
+        if isinstance(state, tuple):
+            # Add support for parsing the DateTime 3 format
+            self._parse_args(state[0], state[2])
+            self._timezone_naive = state[1]
+            self._micros = long(state[0] * 1000000)
+            return
         self.__dict__.update(state)
         if '_micros' not in state:
             self._micros = self._upgrade_old()
@@ -1853,3 +1860,15 @@ def Timezones():
     """Return the list of recognized timezone names"""
     return sorted(list(PytzCache._zmap.values()))
 
+# Patch the copy_reg module, so we can deal with DateTime 3 new-style
+# classes being recreated as old-style classes
+
+orig_reconstructor = copy_reg._reconstructor
+
+
+def _dt_reconstructor(cls, base, state):
+    if cls is DateTime:
+        return cls(state)
+    return orig_reconstructor(cls, base, state)
+
+copy_reg._reconstructor = _dt_reconstructor

@@ -4,6 +4,12 @@ Changelog
 2.12.7 (unreleased)
 -------------------
 
+- Added forward compatibility with DateTime 3 pickle format. DateTime
+  instances constructed under version 3 can be read and unpickled by this
+  version. The pickled data is converted to the current versions format
+  (old-style class / no slots). Once converted it will be stored again in the
+  old format. This should allow for a transparent upgrade/downgrade path
+  between DateTime 2 and 3.
 
 2.12.6 (2010-10-17)
 -------------------
