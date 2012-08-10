@@ -491,22 +491,22 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(int(times[0]), dt.h_24())
         self.assertEqual(int(times[1]), dt.minute())
         self.assertEqual(int(times[2]), int(dt.second()))
-        self.assertEqual(dts[5], "%+03d%02d" % divmod( (-offset/60), 60) )
+        self.assertEqual(dts[5], "%+03d%02d" % divmod((-offset / 60), 60))
 
     def testInternationalDateformat(self):
         for year in (1990, 2001, 2020):
             for month in (1, 12):
                 for day in (1, 12, 28, 31):
                     try:
-                        d_us = DateTime("%d/%d/%d" % (year,month,day))
+                        d_us = DateTime("%d/%d/%d" % (year, month, day))
                     except Exception:
                         continue
 
-                    d_int = DateTime("%d.%d.%d" % (day,month,year),
+                    d_int = DateTime("%d.%d.%d" % (day, month, year),
                                      datefmt="international")
                     self.assertEqual(d_us, d_int)
 
-                    d_int = DateTime("%d/%d/%d" % (day,month,year),
+                    d_int = DateTime("%d/%d/%d" % (day, month, year),
                                      datefmt="international")
                     self.assertEqual(d_us, d_int)
 
