@@ -438,7 +438,7 @@ class DateTimeTests(unittest.TestCase):
             lines = fd.readlines()
         for line in lines:
             d = DateTime(line[:10])
-            result_from_mx=tuple(map(int, line[12:-2].split(',')))
+            result_from_mx = tuple(map(int, line[12:-2].split(',')))
             self.assertEqual(result_from_mx[1], d.week())
 
     def testCopyConstructor(self):
