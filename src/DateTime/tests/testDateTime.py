@@ -437,18 +437,12 @@ class DateTimeTests(unittest.TestCase):
 
     def testJulianWeek(self):
         # Check JulianDayWeek function
-        try:
-            import gzip
-        except ImportError:
-            print "Warning: testJulianWeek disabled: module gzip not found"
-            return 0
-
-        fn = os.path.join(DATADIR, 'julian_testdata.txt.gz')
-        lines = gzip.GzipFile(fn).readlines()
-
+        fn = os.path.join(DATADIR, 'julian_testdata.txt')
+        with open(fn, 'r') as fd:
+            lines = fd.readlines()
         for line in lines:
             d = DateTime(line[:10])
-            result_from_mx=tuple(map(int, line[12:-2].split(',')))
+            result_from_mx = tuple(map(int, line[12:-2].split(',')))
             self.assertEqual(result_from_mx[1], d.week())
 
     def testCopyConstructor(self):
