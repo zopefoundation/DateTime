@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.12.7 (unreleased)
+2.12.7 (2012-08-11)
 -------------------
 
 - Added forward compatibility with DateTime 3 pickle format. DateTime
