@@ -257,6 +257,24 @@ class DateTimeTests(unittest.TestCase):
         from cPickle import dumps, loads
         self.assertEqual(loads(dumps(dt)).strftime('%Y'), '2001')
 
+    def test_pickle(self):
+        dt = DateTime()
+        data = cPickle.dumps(dt, 1)
+        new = cPickle.loads(data)
+        self.assertEqual(dt.__dict__, new.__dict__)
+
+    def test_pickle_with_tz(self):
+        dt = DateTime('2002/5/2 8:00am GMT+8')
+        data = cPickle.dumps(dt, 1)
+        new = cPickle.loads(data)
+        self.assertEqual(dt.__dict__, new.__dict__)
+
+    def test_pickle_with_micros(self):
+        dt = DateTime('2002/5/2 8:00:14.123 GMT+8')
+        data = cPickle.dumps(dt, 1)
+        new = cPickle.loads(data)
+        self.assertEqual(dt.__dict__, new.__dict__)
+
     def test_pickle_old(self):
         dt = DateTime('2002/5/2 8:00am GMT+0')
         data = ('(cDateTime.DateTime\nDateTime\nq\x01Noq\x02}q\x03(U\x05_amonq'
