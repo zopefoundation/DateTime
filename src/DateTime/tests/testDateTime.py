@@ -12,6 +12,7 @@
 #
 ##############################################################################
 
+import cPickle
 import math
 import os
 import time
@@ -256,17 +257,38 @@ class DateTimeTests(unittest.TestCase):
         from cPickle import dumps, loads
         self.assertEqual(loads(dumps(dt)).strftime('%Y'), '2001')
 
-    def test___setstate___without_micros(self):
-        ISO = '2001-10-10T00:00:00+02:00'
-        dt = DateTime(ISO)
-        micros = dt._micros
-        dt._millis = dt._micros / 1000
-        del dt._micros
-        state = dt.__dict__
+    def test_pickle_old(self):
+        dt = DateTime('2002/5/2 8:00am GMT+0')
+        data = ('(cDateTime.DateTime\nDateTime\nq\x01Noq\x02}q\x03(U\x05_amonq'
+            '\x04U\x03Mayq\x05U\x05_adayq\x06U\x03Thuq\x07U\x05_pmonq\x08h'
+            '\x05U\x05_hourq\tK\x08U\x05_fmonq\nh\x05U\x05_pdayq\x0bU\x04T'
+            'hu.q\x0cU\x05_fdayq\rU\x08Thursdayq\x0eU\x03_pmq\x0fU\x02amq'
+            '\x10U\x02_tq\x11GA\xcehy\x00\x00\x00\x00U\x07_minuteq\x12K\x00U'
+            '\x07_microsq\x13L1020326400000000L\nU\x02_dq\x14G@\xe2\x12j\xaa'
+            '\xaa\xaa\xabU\x07_secondq\x15G\x00\x00\x00\x00\x00\x00\x00\x00U'
+            '\x03_tzq\x16U\x05GMT+0q\x17U\x06_monthq\x18K\x05U'
+            '\x0f_timezone_naiveq\x19I00\nU\x04_dayq\x1aK\x02U\x05_yearq'
+            '\x1bM\xd2\x07U\x08_nearsecq\x1cG\x00\x00\x00\x00\x00\x00\x00'
+            '\x00U\x07_pmhourq\x1dK\x08U\n_dayoffsetq\x1eK\x04U\x04timeq'
+            '\x1fG?\xd5UUUV\x00\x00ub.')
+        new = cPickle.loads(data)
+        self.assertEqual(dt.__dict__, new.__dict__)
 
-        dt1 = DateTime()
-        dt1.__setstate__(state)
-        self.assertEqual(dt1._micros, micros)
+    def test_pickle_old_without_micros(self):
+        dt = DateTime('2002/5/2 8:00am GMT+0')
+        data = ('(cDateTime.DateTime\nDateTime\nq\x01Noq\x02}q\x03(U\x05_amonq'
+            '\x04U\x03Mayq\x05U\x05_adayq\x06U\x03Thuq\x07U\x05_pmonq\x08h'
+            '\x05U\x05_hourq\tK\x08U\x05_fmonq\nh\x05U\x05_pdayq\x0bU'
+            '\x04Thu.q\x0cU\x05_fdayq\rU\x08Thursdayq\x0eU\x03_pmq\x0fU'
+            '\x02amq\x10U\x02_tq\x11GA\xcehy\x00\x00\x00\x00U\x07_minuteq'
+            '\x12K\x00U\x02_dq\x13G@\xe2\x12j\xaa\xaa\xaa\xabU\x07_secondq'
+            '\x14G\x00\x00\x00\x00\x00\x00\x00\x00U\x03_tzq\x15U\x05GMT+0q'
+            '\x16U\x06_monthq\x17K\x05U\x0f_timezone_naiveq\x18I00\nU'
+            '\x04_dayq\x19K\x02U\x05_yearq\x1aM\xd2\x07U\x08_nearsecq'
+            '\x1bG\x00\x00\x00\x00\x00\x00\x00\x00U\x07_pmhourq\x1cK\x08U'
+            '\n_dayoffsetq\x1dK\x04U\x04timeq\x1eG?\xd5UUUV\x00\x00ub.')
+        new = cPickle.loads(data)
+        self.assertEqual(dt.__dict__, new.__dict__)
 
     def testTZ2(self):
         # Time zone manipulation test 2
