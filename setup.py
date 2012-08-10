@@ -16,7 +16,7 @@ import os
 from setuptools import setup, find_packages
 
 setup(name='DateTime',
-      version = '2.12.7',
+      version = '2.12.8dev',
       url='http://pypi.python.org/pypi/DateTime',
       license='ZPL 2.1',
       description="""\
