@@ -1,10 +1,16 @@
 Changelog
 =========
 
-3.1 (unreleased)
+3.0.1 (unreleased)
+------------------
+
+- Add `_dt_reconstructor` function introduced in DateTime 2.12.7 to provide
+  forward compatibility with pickles that might reference this function.
+
+3.0 (2011-12-09)
 ----------------
 
-
+- No changes.
 
 Backwards compatibility of DateTime 3
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,11 +31,6 @@ like `timeTime()`. You get the highest accuracy of comparing DateTime values by
 calling its `micros()` methods. DateTime is not particular well suited to be
 used in comparing timestamps of file systems - use the time and datetime objects
 from the Python standard library instead.
-
-3.0 (2011-12-09)
-----------------
-
-- No changes.
 
 3.0b3 (2011-10-19)
 ------------------

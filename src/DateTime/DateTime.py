@@ -11,6 +11,7 @@
 #
 ##############################################################################
 
+import copy_reg
 import math
 import re
 from time import altzone
@@ -1907,3 +1908,15 @@ class DateTime(object):
         out.write('<value><dateTime.iso8601>')
         out.write(self.ISO8601())
         out.write('</dateTime.iso8601></value>\n')
+
+
+# Provide the _dt_reconstructor function here, in case something
+# accidentally creates a reference to this function
+
+orig_reconstructor = copy_reg._reconstructor
+
+
+def _dt_reconstructor(cls, base, state):
+    if cls is DateTime:
+        return cls(state)
+    return orig_reconstructor(cls, base, state)
