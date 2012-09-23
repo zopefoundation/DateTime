@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.1 (unreleased)
+3.0.1 (2012-09-23)
 ------------------
 
 - Add `_dt_reconstructor` function introduced in DateTime 2.12.7 to provide
