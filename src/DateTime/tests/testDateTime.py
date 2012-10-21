@@ -510,6 +510,15 @@ class DateTimeTests(unittest.TestCase):
                                      datefmt="international")
                     self.assertEqual(d_us, d_int)
 
+    def test_intl_format_hyphen(self):
+        d_jan = DateTime('2011-01-11 GMT')
+        d_nov = DateTime('2011-11-01 GMT')
+        d_us = DateTime('11-01-2011 GMT')
+        d_int = DateTime('11-01-2011 GMT', datefmt="international")
+        self.assertNotEqual(d_us, d_int)
+        self.assertEqual(d_us, d_nov)
+        self.assertEqual(d_int, d_jan)
+
     def test_calcTimezoneName(self):
         from DateTime.interfaces import TimeError
         timezone_dependent_epoch = 2177452800L

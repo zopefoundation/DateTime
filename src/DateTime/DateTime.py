@@ -996,8 +996,12 @@ class DateTime(object):
                 day = ints[0]
                 del ints[:1]
             else:
-                month = ints[0]
-                day = ints[1]
+                if datefmt == "us":
+                    month = ints[0]
+                    day = ints[1]
+                else:
+                    month = ints[1]
+                    day = ints[0]
                 del ints[:2]
         elif month:
             if len(ints) > 1:

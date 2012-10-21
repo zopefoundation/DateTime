@@ -4,6 +4,7 @@ Changelog
 3.0.2 (unreleased)
 ------------------
 
+- LP #1045233: Respect date format setting for parsing dates like `11-01-2001`.
 
 3.0.1 (2012-09-23)
 ------------------
