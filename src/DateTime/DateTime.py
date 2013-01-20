@@ -729,7 +729,7 @@ class DateTime(object):
                     tz = self._calcTimezoneName(x, ms)
                 s, d, t, microsecs = _calcIndependentSecondEtc(tz, x, ms)
 
-            elif (isinstance(arg, (unicode, str)) and
+            elif (isinstance(arg, basestring) and
                   arg.lower() in _TZINFO._zidx):
                 # Current time, to be displayed in specified timezone
                 t, tz = time(), _TZINFO._zmap[arg.lower()]
@@ -739,7 +739,7 @@ class DateTime(object):
                 x = _calcDependentSecond(tz, t)
                 yr, mo, dy, hr, mn, sc = _calcYMDHMS(x, ms)
 
-            elif isinstance(arg, (unicode, str)):
+            elif isinstance(arg, basestring):
                 # Date/time string
 
                 iso8601 = iso8601Match(arg.strip())
@@ -780,7 +780,7 @@ class DateTime(object):
                 sc = sc + ms
 
         elif ac==2:
-            if isinstance(args[1], str):
+            if isinstance(args[1], basestring):
                 # Seconds from epoch (gmt) and timezone
                 t, tz = args
                 ms = (t - math.floor(t))

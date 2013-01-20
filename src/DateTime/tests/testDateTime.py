@@ -116,6 +116,8 @@ class DateTimeTests(unittest.TestCase):
         dt = DateTime()
         dt1 = DateTime(float(dt), dt.timezone())
         self.assertEqual(str(dt), str(dt1), (dt, dt1))
+        dt1 = DateTime(float(dt), unicode(dt.timezone()))
+        self.assertEqual(str(dt), str(dt1), (dt, dt1))
 
     def testConstructor6(self):
         # Constructor from year and julian date

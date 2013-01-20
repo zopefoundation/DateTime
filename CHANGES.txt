@@ -4,6 +4,8 @@ Changelog
 3.0.3 (unreleased)
 ------------------
 
+- Allow timezone argument to be a Unicode string while creating a DateTime
+  object using two arguments.
 
 3.0.2 (2012-10-21)
 ------------------
