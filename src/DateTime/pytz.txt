@@ -134,8 +134,12 @@ The _zlst attribute is a list of supported time zone names.
 The _zidx attribute is a list of lower-case and possibly abbreviated
 time zone names that can be mapped to offical zone names.
 
-    >>> cache._zidx #doctest: +ELLIPSIS
-    [... 'australia/yancowinna'... 'gmt+0500'... 'europe/isle_of_man'...]
+    >>> 'australia/yancowinna' in cache._zidx
+    True
+    >>> 'europe/isle_of_man' in cache._zidx
+    True
+    >>> 'gmt+0500' in cache._zidx
+    True
 
 Note that there are more items in _zidx than in _zlst since there are
 multiple names for some time zones.
@@ -162,10 +166,8 @@ The _zmap attribute maps the names in _zidx to official names in _zlst.
 
 Let's make sure that _zmap and _zidx agree.
 
-    >>> idx = list(cache._zidx)
-    >>> idx.sort()
-    >>> keys = cache._zmap.keys()
-    >>> keys.sort()
+    >>> idx = set(cache._zidx)
+    >>> keys = set(cache._zmap.keys())
     >>> idx == keys
     True
 
