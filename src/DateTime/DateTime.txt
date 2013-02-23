@@ -443,7 +443,7 @@ Component access
 strftime()
 ~~~~~~~~~~
 
-See ``tests/testDateTime.py``.
+See ``tests/test_datetime.py``.
 
 General formats from previous DateTime
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
