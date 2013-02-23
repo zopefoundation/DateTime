@@ -10,26 +10,26 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-"""DateTime interfaces
-
-$Id$
-"""
 from zope.interface import Interface
+
 
 class DateTimeError(Exception):
     pass
 
+
 class SyntaxError(DateTimeError):
     pass
+
 
 class DateError(DateTimeError):
     pass
 
+
 class TimeError(DateTimeError):
     pass
 
-class IDateTime(Interface):
 
+class IDateTime(Interface):
     # Conversion and comparison methods
 
     #TODO determine whether this method really is part of the public API
