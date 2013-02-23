@@ -330,7 +330,7 @@ Component access
 * ``parts()`` returns a tuple containing the calendar year, month,
   day, hour, minute second and timezone of the object
 
-    >>> y.parts() # doctest: +ELLIPSIS
+    >>> dt.parts() # doctest: +ELLIPSIS
     (1997, 3, 9, 13, 45, ... 'US/Eastern')
 
 * ``timezone()`` returns the timezone in which the object is represented:
