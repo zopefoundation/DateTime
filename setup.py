@@ -26,7 +26,7 @@ better off using Python's built-in datetime module.""",
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       long_description=open(
-          os.path.join('src', 'DateTime', 'DateTime.txt')).read() + \
+          os.path.join('src', 'DateTime', 'DateTime.txt')).read() +
           '\n\n' + open('CHANGES.txt').read(),
       packages=find_packages('src'),
       package_dir={'': 'src'},
@@ -42,9 +42,10 @@ better off using Python's built-in datetime module.""",
           "Programming Language :: Python :: 2.7",
           "Programming Language :: Python :: Implementation :: CPython",
       ],
-      install_requires=['zope.interface',
-                        'pytz',
-                       ],
+      install_requires=[
+          'zope.interface',
+          'pytz',
+      ],
       include_package_data=True,
       test_suite='DateTime.tests.testDateTime.test_suite',
       zip_safe=False,
