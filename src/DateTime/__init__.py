@@ -10,5 +10,8 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-from DateTime import DateTime
-from DateTime import Timezones
+
+from .DateTime import DateTime
+from .DateTime import Timezones
+
+__all__ = ('DateTime', 'Timezones')

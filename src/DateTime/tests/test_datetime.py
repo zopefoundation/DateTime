@@ -12,21 +12,26 @@
 #
 ##############################################################################
 
-import cPickle
+from datetime import date, datetime, tzinfo, timedelta
 import math
 import os
+import sys
 import time
 import unittest
 
+import pytz
+
 from DateTime.DateTime import _findLocalTimeZoneName
 from DateTime import DateTime
-from datetime import date, datetime, tzinfo, timedelta
-import pytz
+
+if sys.version_info > (3, ):
+    import pickle
+else:
+    import cPickle as pickle
 
 try:
     __file__
 except NameError:
-    import sys
     f = sys.argv[0]
 else:
     f = __file__
@@ -212,22 +217,22 @@ class DateTimeTests(unittest.TestCase):
 
     def test_pickle(self):
         dt = DateTime()
-        data = cPickle.dumps(dt, 1)
-        new = cPickle.loads(data)
+        data = pickle.dumps(dt, 1)
+        new = pickle.loads(data)
         for key in DateTime.__slots__:
             self.assertEqual(getattr(dt, key), getattr(new, key))
 
     def test_pickle_with_tz(self):
         dt = DateTime('2002/5/2 8:00am GMT+8')
-        data = cPickle.dumps(dt, 1)
-        new = cPickle.loads(data)
+        data = pickle.dumps(dt, 1)
+        new = pickle.loads(data)
         for key in DateTime.__slots__:
             self.assertEqual(getattr(dt, key), getattr(new, key))
 
     def test_pickle_with_micros(self):
         dt = DateTime('2002/5/2 8:00:14.123 GMT+8')
-        data = cPickle.dumps(dt, 1)
-        new = cPickle.loads(data)
+        data = pickle.dumps(dt, 1)
+        new = pickle.loads(data)
         for key in DateTime.__slots__:
             self.assertEqual(getattr(dt, key), getattr(new, key))
 
@@ -245,7 +250,7 @@ class DateTimeTests(unittest.TestCase):
             '\x1bM\xd2\x07U\x08_nearsecq\x1cG\x00\x00\x00\x00\x00\x00\x00'
             '\x00U\x07_pmhourq\x1dK\x08U\n_dayoffsetq\x1eK\x04U\x04timeq'
             '\x1fG?\xd5UUUV\x00\x00ub.')
-        new = cPickle.loads(data)
+        new = pickle.loads(data)
         for key in DateTime.__slots__:
             self.assertEqual(getattr(dt, key), getattr(new, key))
 
@@ -262,7 +267,7 @@ class DateTimeTests(unittest.TestCase):
             '\x04_dayq\x19K\x02U\x05_yearq\x1aM\xd2\x07U\x08_nearsecq'
             '\x1bG\x00\x00\x00\x00\x00\x00\x00\x00U\x07_pmhourq\x1cK\x08U'
             '\n_dayoffsetq\x1dK\x04U\x04timeq\x1eG?\xd5UUUV\x00\x00ub.')
-        new = cPickle.loads(data)
+        new = pickle.loads(data)
         for key in DateTime.__slots__:
             self.assertEqual(getattr(dt, key), getattr(new, key))
 
@@ -288,7 +293,7 @@ class DateTimeTests(unittest.TestCase):
         dsec = (dt.millis() - dt1.millis()) / 1000.0
         ddays = math.floor((dsec / 86400.0) + 0.5)
 
-        self.assertEqual(ddays, 3000000L, ddays)
+        self.assertEqual(ddays, 3000000, ddays)
 
     def test_tzoffset(self):
         # Test time-zone given as an offset
@@ -522,7 +527,7 @@ class DateTimeTests(unittest.TestCase):
 
     def test_calcTimezoneName(self):
         from DateTime.interfaces import TimeError
-        timezone_dependent_epoch = 2177452800L
+        timezone_dependent_epoch = 2177452800
         try:
             DateTime()._calcTimezoneName(timezone_dependent_epoch, 0)
         except TimeError:
@@ -555,8 +560,10 @@ class DateTimeTests(unittest.TestCase):
 
     def testStrftimeUnicode(self):
         dt = DateTime('2002-05-02T08:00:00+00:00')
-        ok = dt.strftime('Le %d/%m/%Y a %Hh%M').replace('a', u'\xe0')
-        self.assertEqual(dt.strftime(u'Le %d/%m/%Y \xe0 %Hh%M'), ok)
+        uchar = b'\xe0'.decode('latin1')
+        ok = dt.strftime('Le %d/%m/%Y a %Hh%M').replace('a', uchar)
+        ustr = b'Le %d/%m/%Y \xe0 %Hh%M'.decode('latin-1')
+        self.assertEqual(dt.strftime(ustr), ok)
 
     def testTimezoneNaiveHandling(self):
         # checks that we assign timezone naivity correctly

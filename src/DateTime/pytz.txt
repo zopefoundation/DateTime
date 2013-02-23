@@ -144,7 +144,7 @@ Each entry in _zlst should also be present in _zidx in lower case form.
 
     >>> for name in cache._zlst:
     ...     if not name.lower() in cache._zidx:
-    ...         print "Error %s not in _zidx" % name.lower()
+    ...         print("Error %s not in _zidx" % name.lower())
 
 The _zmap attribute maps the names in _zidx to official names in _zlst.
 

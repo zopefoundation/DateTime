@@ -11,9 +11,9 @@
 #
 ##############################################################################
 
-import copy_reg
 import math
 import re
+import sys
 from time import altzone
 from time import daylight
 from time import gmtime
@@ -23,14 +23,21 @@ from time import timezone
 from time import tzname
 from datetime import datetime
 
-from pytz_support import PytzCache
-from zope.interface import implements
+from zope.interface import implementer
 
-from interfaces import IDateTime
-from interfaces import DateTimeError
-from interfaces import SyntaxError
-from interfaces import DateError
-from interfaces import TimeError
+from .interfaces import IDateTime
+from .interfaces import DateTimeError
+from .interfaces import SyntaxError
+from .interfaces import DateError
+from .interfaces import TimeError
+from .pytz_support import PytzCache
+
+if sys.version_info > (3, ):
+    import copyreg as copy_reg
+    basestring = str
+    long = int
+else:
+    import copy_reg
 
 default_datefmt = None
 
@@ -65,7 +72,7 @@ to_year = int(i * 365 + i / 4 - i / 100 + i / 400 - 693960.0)
 to_month = tm[yr % 4 == 0 and (yr % 100 != 0 or yr % 400 == 0)][mo]
 EPOCH = ((to_year + to_month + dy +
     (hr / 24.0 + mn / 1440.0 + sc / 86400.0)) * 86400)
-jd1901 = 2415385L
+jd1901 = 2415385
 
 _TZINFO = PytzCache()
 
@@ -202,7 +209,7 @@ def _calcDependentSecond(tz, t):
     # Calculates the timezone-dependent second (integer part only)
     # from the timezone-independent second.
     fset = _tzoffset(tz, t)
-    return fset + long(math.floor(t)) + long(EPOCH) - 86400L
+    return fset + long(math.floor(t)) + long(EPOCH) - 86400
 
 
 def _calcDependentSecond2(yr, mo, dy, hr, mn, sc):
@@ -217,12 +224,12 @@ def _calcIndependentSecondEtc(tz, x, ms):
     # Derive the timezone-independent second from the timezone
     # dependent second.
     fsetAtEpoch = _tzoffset(tz, 0.0)
-    nearTime = x - fsetAtEpoch - long(EPOCH) + 86400L + ms
+    nearTime = x - fsetAtEpoch - long(EPOCH) + 86400 + ms
     # nearTime is now within an hour of being correct.
     # Recalculate t according to DST.
     fset = long(_tzoffset(tz, nearTime))
     d = (x - fset) / 86400.0 + (ms / 86400.0)
-    t = x - fset - long(EPOCH) + 86400L + ms
+    t = x - fset - long(EPOCH) + 86400 + ms
     micros = (x + 86400 - fset) * 1000000 + \
         long(round(ms * 1000000.0)) - long(EPOCH * 1000000.0)
     s = d - math.floor(d)
@@ -252,40 +259,40 @@ def _calcYMDHMS(x, ms):
 
 def _julianday(yr, mo, dy):
     y, m, d = long(yr), long(mo), long(dy)
-    if m > 12L:
-        y = y + m / 12L
-        m = m % 12L
-    elif m < 1L:
+    if m > 12:
+        y = y + m / 12
+        m = m % 12
+    elif m < 1:
         m = -m
-        y = y - m / 12L - 1L
-        m = 12L - m % 12L
-    if y > 0L:
-        yr_correct = 0L
+        y = y - m / 12 - 1
+        m = 12 - m % 12
+    if y > 0:
+        yr_correct = 0
     else:
-        yr_correct = 3L
-    if m < 3L:
-        y, m = y - 1L, m + 12L
-    if y * 10000L + m * 100L + d > 15821014L:
-        b = 2L - y / 100L + y / 400L
+        yr_correct = 3
+    if m < 3:
+        y, m = y - 1, m + 12
+    if y * 10000 + m * 100 + d > 15821014:
+        b = 2 - y / 100 + y / 400
     else:
-        b = 0L
-    return ((1461L * y - yr_correct) / 4L +
-        306001L * (m + 1L) / 10000L + d + 1720994L + b)
+        b = 0
+    return ((1461 * y - yr_correct) / 4 +
+        306001 * (m + 1) / 10000 + d + 1720994 + b)
 
 
 def _calendarday(j):
     j = long(j)
-    if (j < 2299160L):
-        b = j + 1525L
+    if (j < 2299160):
+        b = j + 1525
     else:
-        a = (4L * j - 7468861L) / 146097L
-        b = j + 1526L + a - a / 4L
-    c = (20L * b - 2442L) / 7305L
-    d = 1461L * c / 4L
-    e = 10000L * (b - d) / 306001L
-    dy = int(b - d - 306001L * e / 10000L)
-    mo = (e < 14L) and int(e - 1L) or int(e - 13L)
-    yr = (mo > 2) and (c - 4716L) or (c - 4715L)
+        a = (4 * j - 7468861) / 146097
+        b = j + 1526 + a - a / 4
+    c = (20 * b - 2442) / 7305
+    d = 1461 * c / 4
+    e = 10000 * (b - d) / 306001
+    dy = int(b - d - 306001 * e / 10000)
+    mo = (e < 14) and int(e - 1) or int(e - 13)
+    yr = (mo > 2) and (c - 4716) or (c - 4715)
     return (int(yr), int(mo), int(dy))
 
 
@@ -369,6 +376,7 @@ class strftimeFormatter(object):
         return self.dt.strftime(self.format)
 
 
+@implementer(IDateTime)
 class DateTime(object):
     """DateTime objects represent instants in time and provide
        interfaces for controlling its representation without
@@ -411,8 +419,6 @@ class DateTime(object):
         A DateTime object should be considered immutable; all conversion
         and numeric operations return a new DateTime object rather than
         modify the current object."""
-
-    implements(IDateTime)
 
     # For security machinery:
     __roles__ = None
@@ -838,7 +844,7 @@ class DateTime(object):
                 tz = self._calcTimezoneName(x, ms)
             s, d, t, microsecs = _calcIndependentSecondEtc(tz, x, ms)
 
-        self._dayoffset = int((_julianday(yr, mo, dy) + 2L) % 7)
+        self._dayoffset = int((_julianday(yr, mo, dy) + 2) % 7)
         # Round to nearest microsecond in platform-independent way.  You
         # cannot rely on C sprintf (Python '%') formatting to round
         # consistently; doing it ourselves ensures that all but truly
@@ -875,7 +881,7 @@ class DateTime(object):
         if not _multipleZones:
             return _localzone0
         fsetAtEpoch = _tzoffset(_localzone0, 0.0)
-        nearTime = x - fsetAtEpoch - long(EPOCH) + 86400L + ms
+        nearTime = x - fsetAtEpoch - long(EPOCH) + 86400 + ms
         # nearTime is within an hour of being correct.
         try:
             ltm = safelocaltime(nearTime)
@@ -887,7 +893,7 @@ class DateTime(object):
             yr, mo, dy, hr, mn, sc = _calcYMDHMS(x, 0)
             yr = ((yr - 1970) % 28) + 1970
             x = _calcDependentSecond2(yr, mo, dy, hr, mn, sc)
-            nearTime = x - fsetAtEpoch - long(EPOCH) + 86400L + ms
+            nearTime = x - fsetAtEpoch - long(EPOCH) + 86400 + ms
 
             # nearTime might still be negative if we are east of Greenwich.
             # But we can asume on 1969/12/31 were no timezone changes.
