@@ -22,7 +22,6 @@ from DateTime.DateTime import _findLocalTimeZoneName
 from DateTime import DateTime
 from datetime import date, datetime, tzinfo, timedelta
 import pytz
-import legacy
 
 try:
     __file__
@@ -37,11 +36,12 @@ del f
 
 ZERO = timedelta(0)
 
+
 class FixedOffset(tzinfo):
     """Fixed offset in minutes east from UTC."""
 
     def __init__(self, offset, name):
-        self.__offset = timedelta(minutes = offset)
+        self.__offset = timedelta(minutes=offset)
         self.__name = name
 
     def utcoffset(self, dt):
@@ -103,13 +103,13 @@ class DateTimeTests(unittest.TestCase):
         dt1 = DateTime(dt1s)
         # Compare representations as it's the
         # only way to compare the dates to the same accuracy
-        self.assertEqual(repr(dt),repr(dt1))
+        self.assertEqual(repr(dt), repr(dt1))
 
     def testConstructor4(self):
         # Constructor from time float
         dt = DateTime()
         dt1 = DateTime(float(dt))
-        self._compare(dt,dt1)
+        self._compare(dt, dt1)
 
     def testConstructor5(self):
         # Constructor from time float and timezone
@@ -465,7 +465,6 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(DateTime(d3).timezone(), d3.timezone())
         self.assertEqual(str(DateTime(d3)), str(d3))
 
-
     def testRFC822(self):
         # rfc822 conversion
         dt = DateTime('2002-05-02T08:00:00+00:00')
@@ -558,7 +557,7 @@ class DateTimeTests(unittest.TestCase):
         dt = DateTime('2002-05-02T08:00:00+00:00')
         ok = dt.strftime('Le %d/%m/%Y a %Hh%M').replace('a', u'\xe0')
         self.assertEqual(dt.strftime(u'Le %d/%m/%Y \xe0 %Hh%M'), ok)
-    
+
     def testTimezoneNaiveHandling(self):
         # checks that we assign timezone naivity correctly
         dt = DateTime('2007-10-04T08:00:00+00:00')
@@ -579,26 +578,26 @@ class DateTimeTests(unittest.TestCase):
         s = '2007-10-04T08:00:00+00:00'
         dt = DateTime(s)
         self.assertEqual(s, dt.ISO8601())
-    
+
     def testConversions(self):
-        sdt0 = datetime.now() # this is a timezone naive datetime
+        sdt0 = datetime.now()  # this is a timezone naive datetime
         dt0 = DateTime(sdt0)
         assert dt0.timezoneNaive() is True, (sdt0, dt0)
         sdt1 = datetime(2007, 10, 4, 18, 14, 42, 580, pytz.utc)
         dt1 = DateTime(sdt1)
         assert dt1.timezoneNaive() is False, (sdt1, dt1)
-        
+
         # convert back
         sdt2 = dt0.asdatetime()
         self.assertEqual(sdt0, sdt2)
-        sdt3 = dt1.utcdatetime() # this returns a timezone naive datetime
+        sdt3 = dt1.utcdatetime()  # this returns a timezone naive datetime
         self.assertEqual(sdt1.hour, sdt3.hour)
-        
+
         dt4 = DateTime('2007-10-04T10:00:00+05:00')
         sdt4 = datetime(2007, 10, 4, 5, 0)
         self.assertEqual(dt4.utcdatetime(), sdt4)
         self.assertEqual(dt4.asdatetime(), sdt4.replace(tzinfo=pytz.utc))
-        
+
         dt5 = DateTime('2007-10-23 10:00:00 US/Eastern')
         tz = pytz.timezone('US/Eastern')
         sdt5 = datetime(2007, 10, 23, 10, 0, tzinfo=tz)
@@ -609,38 +608,8 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(dt5.asdatetime().tzinfo, tz)
         self.assertEqual(dt6.asdatetime().tzinfo, tz)
 
-    def testLegacyTimezones(self):
-        from DateTime.DateTime import _TZINFO
-        # The year is important here as timezones change over time
-        t1 = time.mktime(datetime(2002, 1, 1).timetuple())
-        t2 = time.mktime(datetime(2002, 7, 1).timetuple())
-        
-        for name in legacy._zlst + legacy._zmap.keys() + legacy._data.keys():
-            self.failUnless(name.lower() in _TZINFO._zidx, 'legacy timezone  %s cannot be looked up' % name)            
-        
-        failures = []
-        for name, zone in legacy.timezones.iteritems():
-            newzone = _TZINFO[name]
-            # The name of the new zone might change (eg GMT+6 rather than GMT+0600)
-            if zone.info(t1)[:2] != newzone.info(t1)[:2] or zone.info(t2)[:2] != newzone.info(t2)[:2]:
-                failures.append(name)
-                
-        expected_failures = [ # zone.info(t1)     newzone.info(t1)     zone.info(t2)     newzone.info(t2)
-            'Jamaica',        # (-18000, 0, 'EST') (-18000, 0, 'EST') (-14400, 1, 'EDT') (-18000, 0, 'EST')
-            'Turkey',         # (10800, 0, 'EET') (7200, 0, 'EET') (14400, 1, 'EET DST') (10800, 1, 'EEST')
-            'Mexico/BajaSur', # (-25200, 0, 'MST') (-25200, 0, 'MST') (-25200, 0, 'MST') (-21600, 1, 'MDT')
-            'Mexico/General', # (-21600, 0, 'CST') (-21600, 0, 'CST') (-21600, 0, 'CST') (-18000, 1, 'CDT')
-            'Canada/Yukon',   # (-32400, 0, 'YST') (-28800, 0, 'PST') (-28800, 1, 'YDT') (-25200, 1, 'PDT')
-            'Brazil/West',    # (-10800, 1, 'WDT') (-14400, 0, 'AMT') (-14400, 0, 'WST') (-14400, 0, 'AMT')
-            'Brazil/Acre',    # (-14400, 1, 'ADT') (-18000, 0, 'ACT') (-18000, 0, 'AST') (-18000, 0, 'ACT')
-            ]
-            
-        real_failures = list(set(failures).difference(set(expected_failures)))
-            
-        self.failIf(real_failures, '\n'.join(real_failures))
-    
     def testBasicTZ(self):
-        #psycopg2 supplies it's own tzinfo instances, with no `zone` attribute
+        # psycopg2 supplies it's own tzinfo instances, with no `zone` attribute
         tz = FixedOffset(60, 'GMT+1')
         dt1 = datetime(2008, 8, 5, 12, 0, tzinfo=tz)
         DT = DateTime(dt1)
@@ -649,9 +618,8 @@ class DateTimeTests(unittest.TestCase):
         offset2 = dt2.tzinfo.utcoffset(dt2)
         self.assertEqual(offset1, offset2)
 
-
     def testEDTTimezone(self):
-        #Should be able to parse EDT timezones:  see lp:599856.
+        # should be able to parse EDT timezones:  see lp:599856.
         dt = DateTime("Mon, 28 Jun 2010 10:12:25 EDT")
         self.assertEqual(dt.Day(), 'Monday')
         self.assertEqual(dt.day(), 28)
@@ -678,4 +646,4 @@ def test_suite():
         unittest.makeSuite(DateTimeTests),
         doctest.DocFileSuite('DateTime.txt', package='DateTime'),
         doctest.DocFileSuite('pytz.txt', package='DateTime'),
-        ])
+    ])
