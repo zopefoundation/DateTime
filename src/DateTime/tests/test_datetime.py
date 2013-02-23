@@ -77,7 +77,7 @@ class DateTimeTests(unittest.TestCase):
     def testBug1203(self):
         # 01:59:60 occurred in old DateTime
         dt = DateTime(7200, 'GMT')
-        self.assert_(str(dt).find('60') < 0, dt)
+        self.assertTrue(str(dt).find('60') < 0, dt)
 
     def testDSTInEffect(self):
         # Checks GMT offset for a DST date in the US/Eastern time zone
@@ -162,7 +162,7 @@ class DateTimeTests(unittest.TestCase):
         # Fails when an 1800 date is displayed with negative signs
         dt = DateTime('1830/5/6 12:31:46.213 pm')
         dt1 = dt.toZone('GMT+6')
-        self.assert_(str(dt1).find('-') < 0, (dt, dt1))
+        self.assertTrue(str(dt1).find('-') < 0, (dt, dt1))
 
     def testSubtraction(self):
         # Reconstruction of a DateTime from its parts, with subtraction
@@ -575,17 +575,23 @@ class DateTimeTests(unittest.TestCase):
     def testTimezoneNaiveHandling(self):
         # checks that we assign timezone naivity correctly
         dt = DateTime('2007-10-04T08:00:00+00:00')
-        assert dt.timezoneNaive() is False, 'error with naivity handling in __parse_iso8601'
+        self.assertFalse(dt.timezoneNaive(),
+            'error with naivity handling in __parse_iso8601')
         dt = DateTime('2007-10-04T08:00:00Z')
-        assert dt.timezoneNaive() is False, 'error with naivity handling in __parse_iso8601'
+        self.assertFalse(dt.timezoneNaive(),
+            'error with naivity handling in __parse_iso8601')
         dt = DateTime('2007-10-04T08:00:00')
-        assert dt.timezoneNaive() is True, 'error with naivity handling in __parse_iso8601'
+        self.assertTrue(dt.timezoneNaive(),
+            'error with naivity handling in __parse_iso8601')
         dt = DateTime('2007/10/04 15:12:33.487618 GMT+1')
-        assert dt.timezoneNaive() is False, 'error with naivity handling in _parse'
+        self.assertFalse(dt.timezoneNaive(),
+            'error with naivity handling in _parse')
         dt = DateTime('2007/10/04 15:12:33.487618')
-        assert dt.timezoneNaive() is True, 'error with naivity handling in _parse'
+        self.assertTrue(dt.timezoneNaive(),
+            'error with naivity handling in _parse')
         dt = DateTime()
-        assert dt.timezoneNaive() is False, 'error with naivity for current time'
+        self.assertFalse(dt.timezoneNaive(),
+            'error with naivity for current time')
         s = '2007-10-04T08:00:00'
         dt = DateTime(s)
         self.assertEqual(s, dt.ISO8601())
@@ -596,10 +602,10 @@ class DateTimeTests(unittest.TestCase):
     def testConversions(self):
         sdt0 = datetime.now()  # this is a timezone naive datetime
         dt0 = DateTime(sdt0)
-        assert dt0.timezoneNaive() is True, (sdt0, dt0)
+        self.assertTrue(dt0.timezoneNaive(), (sdt0, dt0))
         sdt1 = datetime(2007, 10, 4, 18, 14, 42, 580, pytz.utc)
         dt1 = DateTime(sdt1)
-        assert dt1.timezoneNaive() is False, (sdt1, dt1)
+        self.assertFalse(dt1.timezoneNaive(), (sdt1, dt1))
 
         # convert back
         sdt2 = dt0.asdatetime()
