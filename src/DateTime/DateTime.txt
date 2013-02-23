@@ -111,13 +111,13 @@ with from zero to seven arguments:
 
     >>> x = DateTime('1997/3/9 1:45pm')
     >>> x.parts() # doctest: +ELLIPSIS
-    (1997, 3, 9, 13, 45, 0.0, ...)
+    (1997, 3, 9, 13, 45, ...)
 
   o Specified time in local machine zone, verbose format:
 
     >>> y = DateTime('Mar 9, 1997 13:45:00')
     >>> y.parts() # doctest: +ELLIPSIS
-    (1997, 3, 9, 13, 45, 0.0, ...)
+    (1997, 3, 9, 13, 45, ...)
     >>> y == x
     True
 
@@ -330,8 +330,8 @@ Component access
 * ``parts()`` returns a tuple containing the calendar year, month,
   day, hour, minute second and timezone of the object
 
-    >>> dt.parts()
-    (1997, 3, 9, 13, 45, 0.0, 'US/Eastern')
+    >>> y.parts() # doctest: +ELLIPSIS
+    (1997, 3, 9, 13, 45, ... 'US/Eastern')
 
 * ``timezone()`` returns the timezone in which the object is represented:
 
@@ -432,13 +432,13 @@ Component access
 
 * ``second()`` returns the second:
 
-    >>> dt.second()
-    0.0
+    >>> dt.second() == 0
+    True
 
 * ``millis()`` returns the milliseconds since the epoch in GMT.
 
-    >>> dt.millis()
-    857933100000L
+    >>> dt.millis() == 857933100000
+    True
 
 strftime()
 ~~~~~~~~~~
@@ -603,7 +603,7 @@ General Services Provided by DateTime
 DateTimes can be repr()'ed; the result will be a string indicating how
 to make a DateTime object like this:
 
-  >>> `dt`
+  >>> repr(dt)
   "DateTime('1997/03/09 13:45:00 US/Eastern')"
 
 When we convert them into a string, we get a nicer string that could
@@ -743,10 +743,13 @@ DateTime:
 
 Two DateTimes cannot be added:
 
-  >>> dt + dt
-  Traceback (most recent call last):
-  ...
-  DateTimeError: Cannot add two DateTimes
+  >>> from DateTime.interfaces import DateTimeError
+  >>> try:
+  ...     dt + dt
+  ...     print('fail')
+  ... except DateTimeError:
+  ...     print('ok')
+  ok
 
 Either a DateTime or a number may be subtracted from a DateTime,
 however, a DateTime may not be subtracted from a number:
@@ -761,11 +764,9 @@ however, a DateTime may not be subtracted from a number:
   TypeError: unsupported operand type(s) for -: 'int' and 'DateTime'
 
 DateTimes can also be converted to integers (number of seconds since
-the epoch), longs (not too long ;)) and floats:
+the epoch) and floats:
 
   >>> int(dt)
   857933100
-  >>> long(dt)
-  857933100L
   >>> float(dt)
   857933100.0

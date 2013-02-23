@@ -58,10 +58,13 @@ examples:
 
 Of course pytz doesn't know about everything.
 
-    >>> d = DateTime('July 21, 1969 Moon/Eastern')
-    Traceback (most recent call last):
-    ...
-    SyntaxError: July 21, 1969 Moon/Eastern
+    >>> from DateTime.interfaces import SyntaxError
+    >>> try:
+    ...     d = DateTime('July 21, 1969 Moon/Eastern')
+    ...     print('fail')
+    ... except SyntaxError:
+    ...     print('ok')
+    ok
 
 You can still use zone names that DateTime defines that aren't part of
 the pytz database.
@@ -112,7 +115,7 @@ The DateTime class uses a new time zone cache.
 
     >>> from DateTime.DateTime import _TZINFO
     >>> _TZINFO #doctest: +ELLIPSIS
-    <DateTime.pytz_support.PytzCache instance at ...>
+    <DateTime.pytz_support.PytzCache ...>
 
 The cache maps time zone names to time zone instances.
 

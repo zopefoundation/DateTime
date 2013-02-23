@@ -26,6 +26,7 @@ from DateTime import DateTime
 
 if sys.version_info > (3, ):
     import pickle
+    unicode = str
 else:
     import cPickle as pickle
 
@@ -238,10 +239,10 @@ class DateTimeTests(unittest.TestCase):
 
     def test_pickle_old(self):
         dt = DateTime('2002/5/2 8:00am GMT+0')
-        data = ('(cDateTime.DateTime\nDateTime\nq\x01Noq\x02}q\x03(U\x05_amonq'
-            '\x04U\x03Mayq\x05U\x05_adayq\x06U\x03Thuq\x07U\x05_pmonq\x08h'
-            '\x05U\x05_hourq\tK\x08U\x05_fmonq\nh\x05U\x05_pdayq\x0bU\x04T'
-            'hu.q\x0cU\x05_fdayq\rU\x08Thursdayq\x0eU\x03_pmq\x0fU\x02amq'
+        data = ('(cDateTime.DateTime\nDateTime\nq\x01Noq\x02}q\x03(U\x05'
+            '_amonq\x04U\x03Mayq\x05U\x05_adayq\x06U\x03Thuq\x07U\x05_pmonq'
+            '\x08h\x05U\x05_hourq\tK\x08U\x05_fmonq\nh\x05U\x05_pdayq\x0bU'
+            '\x04Thu.q\x0cU\x05_fdayq\rU\x08Thursdayq\x0eU\x03_pmq\x0fU\x02amq'
             '\x10U\x02_tq\x11GA\xcehy\x00\x00\x00\x00U\x07_minuteq\x12K\x00U'
             '\x07_microsq\x13L1020326400000000L\nU\x02_dq\x14G@\xe2\x12j\xaa'
             '\xaa\xaa\xabU\x07_secondq\x15G\x00\x00\x00\x00\x00\x00\x00\x00U'
@@ -256,9 +257,9 @@ class DateTimeTests(unittest.TestCase):
 
     def test_pickle_old_without_micros(self):
         dt = DateTime('2002/5/2 8:00am GMT+0')
-        data = ('(cDateTime.DateTime\nDateTime\nq\x01Noq\x02}q\x03(U\x05_amonq'
-            '\x04U\x03Mayq\x05U\x05_adayq\x06U\x03Thuq\x07U\x05_pmonq\x08h'
-            '\x05U\x05_hourq\tK\x08U\x05_fmonq\nh\x05U\x05_pdayq\x0bU'
+        data = ('(cDateTime.DateTime\nDateTime\nq\x01Noq\x02}q\x03(U\x05'
+            '_amonq\x04U\x03Mayq\x05U\x05_adayq\x06U\x03Thuq\x07U\x05_pmonq'
+            '\x08h\x05U\x05_hourq\tK\x08U\x05_fmonq\nh\x05U\x05_pdayq\x0bU'
             '\x04Thu.q\x0cU\x05_fdayq\rU\x08Thursdayq\x0eU\x03_pmq\x0fU'
             '\x02amq\x10U\x02_tq\x11GA\xcehy\x00\x00\x00\x00U\x07_minuteq'
             '\x12K\x00U\x02_dq\x13G@\xe2\x12j\xaa\xaa\xaa\xabU\x07_secondq'

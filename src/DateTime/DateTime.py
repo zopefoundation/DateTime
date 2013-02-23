@@ -36,8 +36,10 @@ if sys.version_info > (3, ):
     import copyreg as copy_reg
     basestring = str
     long = int
+    explicit_unicode_type = type(None)
 else:
     import copy_reg
+    explicit_unicode_type = unicode
 
 default_datefmt = None
 
@@ -1242,6 +1244,8 @@ class DateTime(object):
         Revised to give more correct results through comparison of
         long integer microseconds.
         """
+        if t is None:
+            t = 0
         if isinstance(t, float):
             return self._micros > long(t * 1000000)
         try:
@@ -1263,6 +1267,8 @@ class DateTime(object):
         Revised to give more correct results through comparison of
         long integer microseconds.
         """
+        if t is None:
+            t = 0
         if isinstance(t, float):
             return self._micros >= long(t * 1000000)
         try:
@@ -1283,6 +1289,8 @@ class DateTime(object):
         Revised to give more correct results through comparison of
         long integer microseconds.
         """
+        if t is None:
+            t = 0
         if isinstance(t, float):
             return self._micros == long(t * 1000000)
         try:
@@ -1328,6 +1336,8 @@ class DateTime(object):
         Revised to give more correct results through comparison of
         long integer microseconds.
         """
+        if t is None:
+            t = 0
         if isinstance(t, float):
             return self._micros < long(t * 1000000)
         try:
@@ -1348,6 +1358,8 @@ class DateTime(object):
         Revised to give more correct results through comparison of
         long integer microseconds.
         """
+        if t is None:
+            t = 0
         if isinstance(t, float):
             return self._micros <= long(t * 1000000)
         try:
@@ -1537,9 +1549,16 @@ class DateTime(object):
         tzdiff = _tzoffset(ltz, self._t) - _tzoffset(self._tz, self._t)
         zself = self + tzdiff / 86400.0
         microseconds = int((zself._second - zself._nearsec) * 1000000)
-        return datetime(zself._year, zself._month, zself._day, zself._hour,
+        unicode_format = False
+        if isinstance(format, explicit_unicode_type):
+            format = format.encode('utf-8')
+            unicode_format = True
+        ds = datetime(zself._year, zself._month, zself._day, zself._hour,
                zself._minute, int(zself._nearsec),
                microseconds).strftime(format)
+        if unicode_format:
+            return ds.decode('utf-8')
+        return ds
 
     # General formats from previous DateTime
     def Date(self):
