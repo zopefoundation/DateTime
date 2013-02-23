@@ -1,9 +1,13 @@
 Changelog
 =========
 
-3.0.4 (unreleased)
-------------------
+4.0 (unreleased)
+----------------
 
+- Added support for Python 3.2 and 3.3 in addition to 2.6 and 2.7.
+
+- Removed unused legacy pytz tests and the DateTimeZone module and renamed
+  some test internals.
 
 3.0.3 (2013-01-22)
 ------------------

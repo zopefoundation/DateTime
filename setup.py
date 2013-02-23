@@ -24,7 +24,7 @@ with open(os.path.join(here, 'CHANGES.rst')) as f:
 
 setup(
     name='DateTime',
-    version='3.0.4dev',
+    version='4.0dev',
     url='http://pypi.python.org/pypi/DateTime',
     license='ZPL 2.1',
     description="""\
