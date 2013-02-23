@@ -27,8 +27,10 @@ from DateTime import DateTime
 if sys.version_info > (3, ):
     import pickle
     unicode = str
+    PY3K = True
 else:
     import cPickle as pickle
+    PY3K = False
 
 try:
     __file__
@@ -251,6 +253,8 @@ class DateTimeTests(unittest.TestCase):
             '\x1bM\xd2\x07U\x08_nearsecq\x1cG\x00\x00\x00\x00\x00\x00\x00'
             '\x00U\x07_pmhourq\x1dK\x08U\n_dayoffsetq\x1eK\x04U\x04timeq'
             '\x1fG?\xd5UUUV\x00\x00ub.')
+        if PY3K:
+            data = data.encode('latin-1')
         new = pickle.loads(data)
         for key in DateTime.__slots__:
             self.assertEqual(getattr(dt, key), getattr(new, key))
@@ -268,6 +272,8 @@ class DateTimeTests(unittest.TestCase):
             '\x04_dayq\x19K\x02U\x05_yearq\x1aM\xd2\x07U\x08_nearsecq'
             '\x1bG\x00\x00\x00\x00\x00\x00\x00\x00U\x07_pmhourq\x1cK\x08U'
             '\n_dayoffsetq\x1dK\x04U\x04timeq\x1eG?\xd5UUUV\x00\x00ub.')
+        if PY3K:
+            data = data.encode('latin-1')
         new = pickle.loads(data)
         for key in DateTime.__slots__:
             self.assertEqual(getattr(dt, key), getattr(new, key))
