@@ -15,42 +15,48 @@
 import os
 from setuptools import setup, find_packages
 
-setup(name='DateTime',
-      version='3.0.4dev',
-      url='http://pypi.python.org/pypi/DateTime',
-      license='ZPL 2.1',
-      description="""\
+here = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(here, 'src', 'DateTime', 'DateTime.txt')) as f:
+    README = f.read()
+with open(os.path.join(here, 'CHANGES.rst')) as f:
+    CHANGES = f.read()
+
+
+setup(
+    name='DateTime',
+    version='3.0.4dev',
+    url='http://pypi.python.org/pypi/DateTime',
+    license='ZPL 2.1',
+    description="""\
 This package provides a DateTime data type, as known from Zope 2.
 Unless you need to communicate with Zope 2 APIs, you're probably
 better off using Python's built-in datetime module.""",
-      author='Zope Foundation and Contributors',
-      author_email='zope-dev@zope.org',
-      long_description=open(
-          os.path.join('src', 'DateTime', 'DateTime.txt')).read() +
-          '\n\n' + open('CHANGES.txt').read(),
-      packages=find_packages('src'),
-      package_dir={'': 'src'},
-      classifiers=[
-          "Development Status :: 6 - Mature",
-          "Environment :: Web Environment",
-          "Framework :: Zope2",
-          "License :: OSI Approved :: Zope Public License",
-          "Operating System :: OS Independent",
-          "Programming Language :: Python",
-          "Programming Language :: Python :: 2",
-          "Programming Language :: Python :: 2 :: Only",
-          "Programming Language :: Python :: 2.6",
-          "Programming Language :: Python :: 2.7",
-          "Programming Language :: Python :: 3",
-          "Programming Language :: Python :: 3.2",
-          "Programming Language :: Python :: 3.3",
-          "Programming Language :: Python :: Implementation :: CPython",
-      ],
-      install_requires=[
-          'zope.interface',
-          'pytz',
-      ],
-      include_package_data=True,
-      test_suite='DateTime.tests.test_datetime.test_suite',
-      zip_safe=False,
-      )
+    author='Zope Foundation and Contributors',
+    author_email='zope-dev@zope.org',
+    long_description=README + '\n\n' + CHANGES,
+    packages=find_packages('src'),
+    package_dir={'': 'src'},
+    classifiers=[
+        "Development Status :: 6 - Mature",
+        "Environment :: Web Environment",
+        "Framework :: Zope2",
+        "License :: OSI Approved :: Zope Public License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2 :: Only",
+        "Programming Language :: Python :: 2.6",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.2",
+        "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: Implementation :: CPython",
+    ],
+    install_requires=[
+        'zope.interface',
+        'pytz',
+    ],
+    include_package_data=True,
+    test_suite='DateTime.tests.test_datetime.test_suite',
+    zip_safe=False,
+)
