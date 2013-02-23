@@ -1,7 +1,7 @@
 Changelog
 =========
 
-4.0 (unreleased)
+4.0 (2013-02-23)
 ----------------
 
 - Added support for Python 3.2 and 3.3 in addition to 2.6 and 2.7.
