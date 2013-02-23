@@ -68,7 +68,7 @@ tm = ((0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334),
       (0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335))
 yr, mo, dy, hr, mn, sc = gmtime(0)[:6]
 i = int(yr - 1)
-to_year = int(i * 365 + i / 4 - i / 100 + i / 400 - 693960.0)
+to_year = int(i * 365 + i // 4 - i // 100 + i // 400 - 693960.0)
 to_month = tm[yr % 4 == 0 and (yr % 100 != 0 or yr % 400 == 0)][mo]
 EPOCH = ((to_year + to_month + dy +
     (hr / 24.0 + mn / 1440.0 + sc / 86400.0)) * 86400)
@@ -176,7 +176,7 @@ def _findLocalTimeZoneName(isDST):
                 localzone = altzone
             else:
                 localzone = timezone
-            offset = (-localzone / (60 * 60.0))
+            offset = (-localzone / 3600.0)
             majorOffset = int(offset)
             if majorOffset != 0:
                 minorOffset = abs(int((offset % majorOffset) * 60.0))
@@ -238,9 +238,9 @@ def _calcIndependentSecondEtc(tz, x, ms):
 
 def _calcHMS(x, ms):
     # hours, minutes, seconds from integer and float.
-    hr = x / 3600
+    hr = x // 3600
     x = x - hr * 3600
-    mn = x / 60
+    mn = x // 60
     sc = x - mn * 60 + ms
     return (hr, mn, sc)
 
@@ -248,11 +248,11 @@ def _calcHMS(x, ms):
 def _calcYMDHMS(x, ms):
     # x is a timezone-dependent integer of seconds.
     # Produces yr,mo,dy,hr,mn,sc.
-    yr, mo, dy = _calendarday(x / 86400 + jd1901)
-    x = int(x - (x / 86400) * 86400)
-    hr = x / 3600
+    yr, mo, dy = _calendarday(x // 86400 + jd1901)
+    x = int(x - (x // 86400) * 86400)
+    hr = x // 3600
     x = x - hr * 3600
-    mn = x / 60
+    mn = x // 60
     sc = x - mn * 60 + ms
     return (yr, mo, dy, hr, mn, sc)
 
@@ -260,11 +260,11 @@ def _calcYMDHMS(x, ms):
 def _julianday(yr, mo, dy):
     y, m, d = long(yr), long(mo), long(dy)
     if m > 12:
-        y = y + m / 12
+        y = y + m // 12
         m = m % 12
     elif m < 1:
         m = -m
-        y = y - m / 12 - 1
+        y = y - m // 12 - 1
         m = 12 - m % 12
     if y > 0:
         yr_correct = 0
@@ -273,11 +273,11 @@ def _julianday(yr, mo, dy):
     if m < 3:
         y, m = y - 1, m + 12
     if y * 10000 + m * 100 + d > 15821014:
-        b = 2 - y / 100 + y / 400
+        b = 2 - y // 100 + y // 400
     else:
         b = 0
-    return ((1461 * y - yr_correct) / 4 +
-        306001 * (m + 1) / 10000 + d + 1720994 + b)
+    return ((1461 * y - yr_correct) // 4 +
+        306001 * (m + 1) // 10000 + d + 1720994 + b)
 
 
 def _calendarday(j):
@@ -285,12 +285,12 @@ def _calendarday(j):
     if (j < 2299160):
         b = j + 1525
     else:
-        a = (4 * j - 7468861) / 146097
-        b = j + 1526 + a - a / 4
-    c = (20 * b - 2442) / 7305
-    d = 1461 * c / 4
-    e = 10000 * (b - d) / 306001
-    dy = int(b - d - 306001 * e / 10000)
+        a = (4 * j - 7468861) // 146097
+        b = j + 1526 + a - a // 4
+    c = (20 * b - 2442) // 7305
+    d = 1461 * c // 4
+    e = 10000 * (b - d) // 306001
+    dy = int(b - d - 306001 * e // 10000)
     mo = (e < 14) and int(e - 1) or int(e - 13)
     yr = (mo > 2) and (c - 4716) or (c - 4715)
     return (int(yr), int(mo), int(dy))
@@ -324,10 +324,7 @@ def _correctYear(year):
 def safegmtime(t):
     '''gmtime with a safety zone.'''
     try:
-        t_int = int(t)
-        if isinstance(t_int, long):
-            raise OverflowError  # Python 2.3 fix: int can return a long!
-        return gmtime(t_int)
+        return gmtime(t)
     except (ValueError, OverflowError):
         raise TimeError('The time %f is beyond the range of this Python '
             'implementation.' % float(t))
@@ -336,10 +333,7 @@ def safegmtime(t):
 def safelocaltime(t):
     '''localtime with a safety zone.'''
     try:
-        t_int = int(t)
-        if isinstance(t_int, long):
-            raise OverflowError  # Python 2.3 fix: int can return a long!
-        return localtime(t_int)
+        return localtime(t)
     except (ValueError, OverflowError):
         raise TimeError('The time %f is beyond the range of this Python '
             'implementation.' % float(t))
@@ -350,7 +344,7 @@ def _tzoffset2rfc822zone(seconds):
        compliant zone specification. Please note that the result of
        _tzoffset() is the negative of what time.localzone and time.altzone is.
     """
-    return "%+03d%02d" % divmod((seconds / 60), 60)
+    return "%+03d%02d" % divmod((seconds // 60), 60)
 
 
 def _tzoffset2iso8601zone(seconds):
@@ -358,7 +352,7 @@ def _tzoffset2iso8601zone(seconds):
        compliant zone specification. Please note that the result of
        _tzoffset() is the negative of what time.localzone and time.altzone is.
     """
-    return "%+03d:%02d" % divmod((seconds / 60), 60)
+    return "%+03d:%02d" % divmod((seconds // 60), 60)
 
 
 def Timezones():
@@ -748,7 +742,6 @@ class DateTime(object):
 
             elif isinstance(arg, basestring):
                 # Date/time string
-
                 iso8601 = iso8601Match(arg.strip())
                 fields_iso8601 = iso8601 and iso8601.groupdict() or {}
                 if fields_iso8601 and not fields_iso8601.get('garbage'):
@@ -1518,7 +1511,7 @@ class DateTime(object):
 
     def millis(self):
         """Return the millisecond since the epoch in GMT."""
-        return self._micros / 1000
+        return self._micros // 1000
 
     def micros(self):
         """Return the microsecond since the epoch in GMT."""
@@ -1544,20 +1537,9 @@ class DateTime(object):
         tzdiff = _tzoffset(ltz, self._t) - _tzoffset(self._tz, self._t)
         zself = self + tzdiff / 86400.0
         microseconds = int((zself._second - zself._nearsec) * 1000000)
-
-        # Note: in older versions strftime() accepted also unicode strings
-        # as format strings (just because time.strftime() did not perform
-        # any type checking). So we convert unicode strings to utf8,
-        # pass them to strftime and convert them back to unicode if necessary.
-
-        format_is_unicode = False
-        if isinstance(format, unicode):
-            format = format.encode('utf-8')
-            format_is_unicode = True
-        ds = datetime(zself._year, zself._month, zself._day, zself._hour,
+        return datetime(zself._year, zself._month, zself._day, zself._hour,
                zself._minute, int(zself._nearsec),
                microseconds).strftime(format)
-        return format_is_unicode and unicode(ds, 'utf-8') or ds
 
     # General formats from previous DateTime
     def Date(self):
@@ -1793,11 +1775,11 @@ class DateTime(object):
 
     def __int__(self):
         """Convert to an integer number of seconds since the epoch (gmt)."""
-        return int(self.micros() / 1000000)
+        return int(self.micros() // 1000000)
 
     def __long__(self):
         """Convert to a long-int number of seconds since the epoch (gmt)."""
-        return long(self.micros() / 1000000)
+        return long(self.micros() // 1000000)
 
     def __float__(self):
         """Convert to floating-point number of seconds since the epoch (gmt).
@@ -1899,11 +1881,11 @@ class DateTime(object):
 
         See: http://www.tondering.dk/claus/cal/node3.html#sec-calcjd
         """
-        a = (14 - self._month) / 12  # integer division, discard remainder
+        a = (14 - self._month) // 12
         y = self._year + 4800 - a
         m = self._month + (12 * a) - 3
-        return (self._day + (153 * m + 2) / 5 + 365 * y +
-            y / 4 - y / 100 + y / 400 - 32045)
+        return (self._day + (153 * m + 2) // 5 + 365 * y +
+            y // 4 - y // 100 + y // 400 - 32045)
 
     def week(self):
         """Return the week number according to ISO.
@@ -1912,9 +1894,9 @@ class DateTime(object):
         """
         J = self.JulianDay()
         d4 = (J + 31741 - (J % 7)) % 146097 % 36524 % 1461
-        L = d4 / 1460
+        L = d4 // 1460
         d1 = ((d4 - L) % 365) + L
-        return d1 / 7 + 1
+        return d1 // 7 + 1
 
     def encode(self, out):
         """Encode value for XML-RPC."""
