@@ -181,7 +181,19 @@ _old_zmap = {
     'wast': 'GMT+7', 'cct': 'GMT+8', 'jst': 'GMT+9', 'east': 'GMT+10',
     'gst': 'GMT+10', 'nzt': 'GMT+12', 'nzst': 'GMT+12', 'idle': 'GMT+12',
     'ret': 'GMT+4', 'ist': 'GMT+0530', 'edt': 'GMT-4',
+
 }
+
+
+# some timezone definitions of the "-0400" are not working
+# when upgrading
+for hour in range(0, 13):
+    hour = hour
+    fhour = str(hour)
+    if len(fhour) == 1:
+        fhour = '0' + fhour
+    _old_zmap['-%s00' % fhour] = 'GMT-%i' % hour
+    _old_zmap['+%s00' % fhour] = 'GMT+%i' % hour
 
 
 def _static_timezone_factory(data):
