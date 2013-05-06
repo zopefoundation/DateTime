@@ -182,7 +182,6 @@ _old_zmap = {
     'gst': 'GMT+10', 'nzt': 'GMT+12', 'nzst': 'GMT+12', 'idle': 'GMT+12',
     'ret': 'GMT+4', 'ist': 'GMT+0530', 'edt': 'GMT-4',
 
-    '-0400': 'GMT-0400'
 }
 
 
