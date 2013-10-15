@@ -1,10 +1,10 @@
 Changelog
 =========
 
-4.0.1 (unreleased)
+4.0.1 (2013-10-15)
 ------------------
 
-- provide more backward compatible timezones
+- Provide more backward compatible timezones.
   [vangheem]
 
 4.0 (2013-02-23)
