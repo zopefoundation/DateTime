@@ -130,7 +130,7 @@ with from zero to seven arguments:
   
     >>> z = DateTime('2014-03-24')
     >>> z.parts() # doctest: +ELLIPSIS
-    (1997, 3, 9, 13, 45, ...)
+    (2014, 3, 24, 0, 0, ...)
     >>> z.timezone()
     'GMT+0'
 
