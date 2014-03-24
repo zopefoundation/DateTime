@@ -93,12 +93,17 @@ with from zero to seven arguments:
   the world, it is interpreted as January 2, 1994.) A date/ time
   string consists of two components, a date component and an optional
   time component, separated by one or more spaces.  If the time
-  component is omited, 12:00am is assumed.  Any recognized timezone
-  name specified as the final element of the date/time string will be
-  used for computing the date/time value.  (If you create a DateTime
-  with the string "Mar 9, 1997 1:45pm US/Pacific", the value will
-  essentially be the same as if you had captured time.time() at the
-  specified date and time on a machine in that timezone).
+  component is omited, 12:00am is assumed.
+  
+  Any recognized timezone name specified as the final element of the
+  date/time string will be used for computing the date/time value.
+  (If you create a DateTime with the string,
+  "Mar 9, 1997 1:45pm US/Pacific", the value will essentially be the
+  same as if you had captured time.time() at the specified date and
+  time on a machine in that timezone).  If no timezone is passed, then
+  the timezone configured on the local machine will be used, **except**
+  that if the date format matches ISO 8601 ('YYYY-MM-DD'), the instance
+  will use UTC / CMT+0 as the timezone.
 
   o Returns current date/time, represented in US/Eastern:
 
@@ -120,6 +125,14 @@ with from zero to seven arguments:
     (1997, 3, 9, 13, 45, ...)
     >>> y == x
     True
+    
+  o Specified time in UTC via ISO 8601 rule:
+  
+    >>> z = DateTime('2014-03-24')
+    >>> z.parts() # doctest: +ELLIPSIS
+    (1997, 3, 9, 13, 45, ...)
+    >>> z.timezone()
+    'GMT+0'
 
   The date component consists of year, month, and day values.  The
   year value must be a one-, two-, or four-digit integer.  If a one-
