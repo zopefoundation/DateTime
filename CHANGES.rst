@@ -4,6 +4,7 @@ Changelog
 4.0.2 (unreleased)
 ------------------
 
+- Add support for Python 3.4.
 
 4.0.1 (2013-10-15)
 ------------------

@@ -1,16 +1,14 @@
 language: python
 sudo: false
-python:
-    - 2.6
-    - 2.7
-    - 3.2
-    - 3.3
+env:
+    - TOXENV=py26
+    - TOXENV=py27
+    - TOXENV=py32
+    - TOXENV=py33
+    - TOXENV=py34
 install:
-    - virtualenv env
-    - env/bin/pip install -U setuptools
-    - env/bin/python bootstrap.py
-    - bin/buildout
+    - pip install tox
 script:
-    - bin/test -v1
+    - tox
 notifications:
     email: false
