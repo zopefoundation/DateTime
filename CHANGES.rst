@@ -138,6 +138,16 @@ from the Python standard library instead.
 
 - Removed reference to missing version section from buildout.
 
+2.12.7 (2012-08-11)
+-------------------
+
+- Added forward compatibility with DateTime 3 pickle format. DateTime
+  instances constructed under version 3 can be read and unpickled by this
+  version. The pickled data is converted to the current versions format
+  (old-style class / no slots). Once converted it will be stored again in the
+  old format. This should allow for a transparent upgrade/downgrade path
+  between DateTime 2 and 3.
+
 2.12.6 (2010-10-17)
 -------------------
 
