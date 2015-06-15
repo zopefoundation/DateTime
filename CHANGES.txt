@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.12.8 (unreleased)
+2.12.8 (2015-06-15)
 -------------------
 
 - Remove failing-and-redundant test (allows ``bin/alltests`` to pass in
