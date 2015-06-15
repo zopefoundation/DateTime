@@ -4,6 +4,8 @@ Changelog
 2.12.8 (unreleased)
 -------------------
 
+- Remove failing-and-redundant test (allows ``bin/alltests`` to pass in
+  Zope2 2.13 branch checkout).
 
 2.12.7 (2012-08-11)
 -------------------
