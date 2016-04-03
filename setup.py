@@ -21,10 +21,11 @@ with open(os.path.join(here, 'src', 'DateTime', 'DateTime.txt')) as f:
 with open(os.path.join(here, 'CHANGES.rst')) as f:
     CHANGES = f.read()
 
+__version__ = '4.1.dev0'
 
 setup(
     name='DateTime',
-    version='4.0.2dev',
+    version=__version__,
     url='http://pypi.python.org/pypi/DateTime',
     license='ZPL 2.1',
     description="""\
@@ -44,13 +45,13 @@ better off using Python's built-in datetime module.""",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.6",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.2",
         "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: PyPy",
     ],
     install_requires=[
         'zope.interface',
