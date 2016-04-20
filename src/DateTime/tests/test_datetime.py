@@ -232,6 +232,16 @@ class DateTimeTests(unittest.TestCase):
         for key in DateTime.__slots__:
             self.assertEqual(getattr(dt, key), getattr(new, key))
 
+    def test_pickle_with_numerical_tz(self):
+        for dt_str in ('2007/01/02 12:34:56.789 +0300',
+                       '2007/01/02 12:34:56.789 +0430',
+                       '2007/01/02 12:34:56.789 -1234'):
+            dt = DateTime(dt_str)
+            data = pickle.dumps(dt, 1)
+            new = pickle.loads(data)
+            for key in DateTime.__slots__:
+                self.assertEqual(getattr(dt, key), getattr(new, key))
+
     def test_pickle_with_micros(self):
         dt = DateTime('2002/5/2 8:00:14.123 GMT+8')
         data = pickle.dumps(dt, 1)

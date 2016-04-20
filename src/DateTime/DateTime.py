@@ -786,7 +786,11 @@ class DateTime(object):
                 # Seconds from epoch (gmt) and timezone
                 t, tz = args
                 ms = (t - math.floor(t))
-                tz = _TZINFO._zmap[tz.lower()]
+                try:
+                    tz = _TZINFO._zmap[tz.lower()]
+                except KeyError:
+                    if numericTimeZoneMatch(tz) is None:
+                        raise DateTimeError('Unknown time zone: %s' % tz)
                 # Use integer arithmetic as much as possible.
                 s, d = _calcSD(t)
                 x = _calcDependentSecond(tz, t)
