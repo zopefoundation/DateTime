@@ -1,7 +1,7 @@
 Changelog
 =========
 
-4.1.1 (unreleased)
+4.1.1 (2016-04-30)
 ------------------
 
 - Support unpickling instances having a numeric timezone like `+0430`.
