@@ -4,6 +4,7 @@ Changelog
 4.2 (unreleased)
 ----------------
 
+- Add support for Python 3.6, drop support for Python 3.3.
 
 4.1.1 (2016-04-30)
 ------------------

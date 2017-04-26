@@ -2,12 +2,16 @@ language: python
 sudo: false
 python:
     - 2.7
-    - 3.3
     - 3.4
     - 3.5
+    - 3.6
+    - pypy
+    - pypy3.3-5.2-alpha1
 install:
-    - python bootstrap.py
-    - bin/buildout
+    - pip install -U setuptools
+    - pip install zc.buildout
+    - buildout bootstrap
+    - buildout
 script:
     - bin/test -v1
 notifications:

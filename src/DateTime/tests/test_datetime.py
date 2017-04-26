@@ -14,6 +14,7 @@
 
 from datetime import date, datetime, tzinfo, timedelta
 import math
+import platform
 import os
 import sys
 import time
@@ -38,6 +39,8 @@ except NameError:
     f = sys.argv[0]
 else:
     f = __file__
+
+IS_PYPY = getattr(platform, 'python_implementation', lambda: None)() == 'PyPy'
 
 DATADIR = os.path.dirname(os.path.abspath(f))
 del f
@@ -576,10 +579,14 @@ class DateTimeTests(unittest.TestCase):
                          dt2.strftime('%d/%m/%Y %H:%M'))
 
     def testStrftimeUnicode(self):
+        if IS_PYPY:
+            # Using Non-Ascii characters for strftime doesn't work in PyPy
+            # https://bitbucket.org/pypy/pypy/issues/2161/pypy3-strftime-does-not-accept-unicode
+            return
         dt = DateTime('2002-05-02T08:00:00+00:00')
-        uchar = b'\xe0'.decode('latin1')
+        uchar = b'\xc3\xa0'.decode('utf-8')
         ok = dt.strftime('Le %d/%m/%Y a %Hh%M').replace('a', uchar)
-        ustr = b'Le %d/%m/%Y \xe0 %Hh%M'.decode('latin-1')
+        ustr = b'Le %d/%m/%Y \xc3\xa0 %Hh%M'.decode('utf-8')
         self.assertEqual(dt.strftime(ustr), ok)
 
     def testTimezoneNaiveHandling(self):
