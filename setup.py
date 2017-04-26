@@ -21,7 +21,7 @@ with open(os.path.join(here, 'src', 'DateTime', 'DateTime.txt')) as f:
 with open(os.path.join(here, 'CHANGES.rst')) as f:
     CHANGES = f.read()
 
-__version__ = '4.2'
+__version__ = '4.3.dev0'
 
 setup(
     name='DateTime',
