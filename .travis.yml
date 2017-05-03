@@ -11,9 +11,9 @@ install:
     - pip install -U setuptools
     - pip install zc.buildout
     - buildout bootstrap
-    - buildout
+    - buildout tox:env=travis install test
 script:
-    - bin/test -v1
+    - bin/test-travis -v1
 notifications:
     email: false
 cache:
