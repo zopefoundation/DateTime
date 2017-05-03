@@ -8,7 +8,7 @@ parts
 *.pyc
 *.pyo
 *.so
-.installed.cfg
+.installed*.cfg
 develop-eggs/
 eggs/
 *.egg-info/
