@@ -26,7 +26,7 @@ __version__ = '4.3.dev0'
 setup(
     name='DateTime',
     version=__version__,
-    url='http://pypi.python.org/pypi/DateTime',
+    url='https://github.com/zopefoundation/DateTime',
     license='ZPL 2.1',
     description="""\
 This package provides a DateTime data type, as known from Zope 2.
@@ -50,6 +50,7 @@ better off using Python's built-in datetime module.""".replace('\n', ' '),
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],

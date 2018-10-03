@@ -6,14 +6,21 @@ python:
     - 3.5
     - 3.6
     - pypy
-    - pypy3.3-5.2-alpha1
+    - pypy3
+matrix:
+    include:
+        - python: "3.7"
+          dist: xenial
+          sudo: true
 install:
-    - pip install -U setuptools==33.1.1
+    - pip install coverage coveralls
     - pip install zc.buildout
     - buildout bootstrap
     - buildout
 script:
-    - bin/test -v1
+    - coverage run bin/test -v1
+after_success:
+    - coveralls
 notifications:
     email: false
 cache:
