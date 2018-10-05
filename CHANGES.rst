@@ -4,7 +4,7 @@ Changelog
 4.3 (unreleased)
 ----------------
 
-- Added support for Python 3.7.
+- Add support for Python 3.7.
 
 4.2 (2017-04-26)
 ----------------
@@ -173,13 +173,13 @@ from the Python standard library instead.
 2.12.5 (2010-07-29)
 -------------------
 
-- Launchpad #143269: Corrected the documentation for year value 
-  behavior when constructing a DateTime object with three numeric 
+- Launchpad #143269: Corrected the documentation for year value
+  behavior when constructing a DateTime object with three numeric
   arguments.
 
-- Launchpad #142521: Removed confusing special case in 
-  DateTime.__str__ where DateTime instances for midnight 
-  (e.g. '2010-07-27 00:00:00 US/Eastern') values would 
+- Launchpad #142521: Removed confusing special case in
+  DateTime.__str__ where DateTime instances for midnight
+  (e.g. '2010-07-27 00:00:00 US/Eastern') values would
   render only their date and nothing else.
 
 2.12.4 (2010-07-12)
@@ -196,7 +196,7 @@ from the Python standard library instead.
 2.12.2 (2010-05-05)
 -------------------
 
-- Launchpad #572715:  Relaxed pin on pytz, after applying a patch from 
+- Launchpad #572715:  Relaxed pin on pytz, after applying a patch from
   Marius Gedminus which fixes the apparent API breakage.
 
 2.12.1 (2010-04-30)
