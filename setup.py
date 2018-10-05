@@ -29,8 +29,8 @@ setup(
     url='https://github.com/zopefoundation/DateTime',
     license='ZPL 2.1',
     description="""\
-This package provides a DateTime data type, as known from Zope 2.
-Unless you need to communicate with Zope 2 APIs, you're probably
+This package provides a DateTime data type, as known from Zope.
+Unless you need to communicate with Zope APIs, you're probably
 better off using Python's built-in datetime module.""".replace('\n', ' '),
     author='Zope Foundation and Contributors',
     author_email='zope-dev@zope.org',
@@ -40,7 +40,7 @@ better off using Python's built-in datetime module.""".replace('\n', ' '),
     classifiers=[
         "Development Status :: 6 - Mature",
         "Environment :: Web Environment",
-        "Framework :: Zope2",
+        "Framework :: Zope :: 4",
         "License :: OSI Approved :: Zope Public License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
