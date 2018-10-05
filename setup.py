@@ -21,11 +21,11 @@ with open(os.path.join(here, 'src', 'DateTime', 'DateTime.txt')) as f:
 with open(os.path.join(here, 'CHANGES.rst')) as f:
     CHANGES = f.read()
 
-__version__ = '4.3.dev0'
+version = '4.3.dev0'
 
 setup(
     name='DateTime',
-    version=__version__,
+    version=version,
     url='https://github.com/zopefoundation/DateTime',
     license='ZPL 2.1',
     description="""\
