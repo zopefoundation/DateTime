@@ -1,7 +1,7 @@
 Changelog
 =========
 
-4.4 (unreleased)
+5.0 (unreleased)
 ----------------
 
 - Drop support for Python 3.4.
