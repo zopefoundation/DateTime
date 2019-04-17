@@ -381,7 +381,7 @@ class DateTime(object):
        DateTime objects may be created from a wide variety of string
        or numeric data, or may be computed from other DateTime objects.
        DateTimes support the ability to convert their representations
-       to many major timezones, as well as the ablility to create a
+       to many major timezones, as well as the ability to create a
        DateTime object in the context of a given timezone.
 
        DateTime objects provide partial numerical behavior:
@@ -495,7 +495,7 @@ class DateTime(object):
             that date/time will be returned.
 
             As a general rule, any date-time representation that is
-            recognized and unambigous to a resident of North America
+            recognized and unambiguous to a resident of North America
             is acceptable. The reason for this qualification is that
             in North America, a date like: 2/1/1994 is interpreted
             as February 1, 1994, while in some parts of the world,
@@ -503,7 +503,7 @@ class DateTime(object):
 
             A date/time string consists of two components, a date
             component and an optional time component, separated by one
-            or more spaces. If the time component is omited, 12:00am is
+            or more spaces. If the time component is omitted, 12:00am is
             assumed. Any recognized timezone name specified as the final
             element of the date/time string will be used for computing
             the date/time value. If you create a DateTime with the
@@ -527,11 +527,11 @@ class DateTime(object):
             four-digit integer. If a one- or two-digit year is
             used, the year is assumed to be in the twentieth
             century. The month may be an integer, from 1 to 12, a
-            month name, or a month abreviation, where a period may
-            optionally follow the abreviation. The day must be an
+            month name, or a month abbreviation, where a period may
+            optionally follow the abbreviation. The day must be an
             integer from 1 to the number of days in the month. The
             year, month, and day values may be separated by
-            periods, hyphens, forward, shashes, or spaces. Extra
+            periods, hyphens, forward slashes, or spaces. Extra
             spaces are permitted around the delimiters. Year,
             month, and day values may be given in any order as long
             as it is possible to distinguish the components. If all
@@ -544,7 +544,7 @@ class DateTime(object):
             must be an integer between 0 and 59 inclusively. The
             second value may be an integer value between 0 and
             59.999 inclusively. The second value or both the minute
-            and second values may be ommitted. The time may be
+            and second values may be omitted. The time may be
             followed by am or pm in upper or lower case, in which
             case a 12-hour clock is assumed.
 
@@ -570,7 +570,7 @@ class DateTime(object):
             Note that the Zope DateTime parser assumes timezone naive ISO
             strings to be in UTC rather than local time as specified.
 
-          - If the DateTime function is invoked with a single Numeric
+          - If the DateTime function is invoked with a single numeric
             argument, the number is assumed to be a floating point value
             such as that returned by time.time().
 
@@ -579,7 +579,7 @@ class DateTime(object):
             timezone.
 
           - If the DateTime function is invoked with a single argument
-            that is a DateTime instane, a copy of the passed object will
+            that is a DateTime instance, a copy of the passed object will
             be created.
 
           - New in 2.11:
@@ -641,7 +641,7 @@ class DateTime(object):
             New in Zope 2.7:
             A new keyword parameter "datefmt" can be passed to the
             constructor. If set to "international", the constructor
-            is forced to treat ambigious dates as "days before month
+            is forced to treat ambiguous dates as "days before month
             before year". This useful if you need to parse non-US
             dates in a reliable way
 
@@ -844,7 +844,7 @@ class DateTime(object):
             s, d, t, microsecs = _calcIndependentSecondEtc(tz, x, ms)
 
         self._dayoffset = int((_julianday(yr, mo, dy) + 2) % 7)
-        # Round to nearest microsecond in platform-independent way.  You
+        # Round to nearest microsecond in platform-independent way. You
         # cannot rely on C sprintf (Python '%') formatting to round
         # consistently; doing it ourselves ensures that all but truly
         # horrid C sprintf implementations will yield the same result
@@ -895,7 +895,7 @@ class DateTime(object):
             nearTime = x - fsetAtEpoch - long(EPOCH) + 86400 + ms
 
             # nearTime might still be negative if we are east of Greenwich.
-            # But we can asume on 1969/12/31 were no timezone changes.
+            # But we can assume on 1969/12/31 were no timezone changes.
             nearTime = max(0, nearTime)
 
             ltm = safelocaltime(nearTime)
@@ -1424,7 +1424,7 @@ class DateTime(object):
         return _MONTHS_A[self._month]
 
     def aMonth(self):
-        """Return the abreviated month name."""
+        """Return the abbreviated month name."""
         return self._amon
 
     def Mon(self):
@@ -1436,7 +1436,7 @@ class DateTime(object):
         return _MONTHS_P[self._month]
 
     def pMonth(self):
-        """Return the abreviated (with period) month name."""
+        """Return the abbreviated (with period) month name."""
         return self._pmon
 
     def Mon_(self):
@@ -1464,7 +1464,7 @@ class DateTime(object):
         return _DAYS_A[self._dayoffset]
 
     def aDay(self):
-        """Return the abreviated name of the day of the week."""
+        """Return the abbreviated name of the day of the week."""
         return self._aday
 
     @property
@@ -1472,7 +1472,7 @@ class DateTime(object):
         return _DAYS_P[self._dayoffset]
 
     def pDay(self):
-        """Return the abreviated (with period) name of the day of the week."""
+        """Return the abbreviated (with period) name of the day of the week."""
         return self._pday
 
     def Day_(self):
@@ -1686,7 +1686,7 @@ class DateTime(object):
             TZD is Time Zone Designator, format +HH:MM or -HH:MM
 
         If the instance is timezone naive (it was not specified with a timezone
-        when it was constructed) then the timezone is ommitted.
+        when it was constructed) then the timezone is omitted.
 
         The HTML4 method below offers the same formatting, but converts
         to UTC before returning the value and sets the TZD "Z".
@@ -1716,7 +1716,7 @@ class DateTime(object):
             newdate._hour, newdate._minute, newdate._second)
 
     def asdatetime(self):
-        """Return a standard libary datetime.datetime
+        """Return a standard library datetime.datetime
         """
         tznaive = self.timezoneNaive()
         if tznaive:
