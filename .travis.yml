@@ -9,7 +9,7 @@ python:
     - pypy3
 install:
     - pip install coverage coveralls
-    - pip install zc.buildout setuptools-scm
+    - pip install zc.buildout
     - buildout bootstrap
     - buildout
 script:
