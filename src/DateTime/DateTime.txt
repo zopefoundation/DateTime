@@ -30,7 +30,7 @@ the object.
 DateTime objects may be created from a wide variety of string or
 numeric data, or may be computed from other DateTime objects.
 DateTimes support the ability to convert their representations to many
-major timezones, as well as the ablility to create a DateTime object
+major timezones, as well as the ability to create a DateTime object
 in the context of a given timezone.
 
 DateTime objects provide partial numerical behavior:
@@ -87,13 +87,13 @@ with from zero to seven arguments:
   time will be returned.
 
   As a general rule, any date-time representation that is recognized
-  and unambigous to a resident of North America is acceptable.  (The
+  and unambiguous to a resident of North America is acceptable.  (The
   reason for this qualification is that in North America, a date like:
   2/1/1994 is interpreted as February 1, 1994, while in some parts of
   the world, it is interpreted as January 2, 1994.) A date/ time
   string consists of two components, a date component and an optional
   time component, separated by one or more spaces.  If the time
-  component is omited, 12:00am is assumed.
+  component is omitted, 12:00am is assumed.
   
   Any recognized timezone name specified as the final element of the
   date/time string will be used for computing the date/time value.
@@ -103,7 +103,7 @@ with from zero to seven arguments:
   time on a machine in that timezone).  If no timezone is passed, then
   the timezone configured on the local machine will be used, **except**
   that if the date format matches ISO 8601 ('YYYY-MM-DD'), the instance
-  will use UTC / CMT+0 as the timezone.
+  will use UTC / GMT+0 as the timezone.
 
   o Returns current date/time, represented in US/Eastern:
 
@@ -138,10 +138,10 @@ with from zero to seven arguments:
   year value must be a one-, two-, or four-digit integer.  If a one-
   or two-digit year is used, the year is assumed to be in the
   twentieth century.  The month may an integer, from 1 to 12, a month
-  name, or a month abreviation, where a period may optionally follow
-  the abreviation.  The day must be an integer from 1 to the number of
+  name, or a month abbreviation, where a period may optionally follow
+  the abbreviation.  The day must be an integer from 1 to the number of
   days in the month.  The year, month, and day values may be separated
-  by periods, hyphens, forward, shashes, or spaces.  Extra spaces are
+  by periods, hyphens, forward slashes, or spaces.  Extra spaces are
   permitted around the delimiters.  Year, month, and day values may be
   given in any order as long as it is possible to distinguish the
   components.  If all three components are numbers that are less than
@@ -152,16 +152,16 @@ with from zero to seven arguments:
   and 23 inclusively.  The minute value must be an integer between 0
   and 59 inclusively.  The second value may be an integer value
   between 0 and 59.999 inclusively.  The second value or both the
-  minute and second values may be ommitted.  The time may be followed
+  minute and second values may be omitted.  The time may be followed
   by am or pm in upper or lower case, in which case a 12-hour clock is
   assumed.
 
-* If the DateTime function is invoked with a single Numeric argument,
+* If the DateTime function is invoked with a single numeric argument,
   the number is assumed to be either a floating point value such as
-  that returned by time.time() , or a number of days after January 1,
+  that returned by time.time(), or a number of days after January 1,
   1901 00:00:00 UTC.
 
-  A DateTime object is returned that represents either the gmt value
+  A DateTime object is returned that represents either the GMT value
   of the time.time() float represented in the local machine's
   timezone, or that number of days after January 1, 1901.  Note that
   the number of days after 1901 need to be expressed from the
@@ -178,9 +178,9 @@ with from zero to seven arguments:
   the twentieth century.
 
 * If the function is invoked with two arguments, the first a float
-  representing a number of seconds past the epoch in gmt (such as
+  representing a number of seconds past the epoch in GMT (such as
   those returned by time.time()) and the second a string naming a
-  recognized timezone, a DateTime with a value of that gmt time will
+  recognized timezone, a DateTime with a value of that GMT time will
   be returned, represented in the given timezone.
 
     >>> import time
@@ -227,7 +227,7 @@ Conversion and comparison methods
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * ``timeTime()`` returns the date/time as a floating-point number in
-  UTC, in the format used by the python time module.  Note that it is
+  UTC, in the format used by the Python time module.  Note that it is
   possible to create date /time values with DateTime that have no
   meaningful value to the time module, and in such cases a
   DateTimeError is raised.  A DateTime object's value must generally
@@ -397,12 +397,12 @@ Component access
     >>> dt.dayOfYear()
     68
 
-* ``aDay()`` returns the abreviated name of the day of the week:
+* ``aDay()`` returns the abbreviated name of the day of the week:
 
     >>> dt.aDay()
     'Sun'
 
-* ``pDay()`` returns the abreviated (with period) name of the day of
+* ``pDay()`` returns the abbreviated (with period) name of the day of
   the week:
 
     >>> dt.pDay()
@@ -659,7 +659,7 @@ Same goes for inequalities:
   >>> dt.notEqualTo(DateTime())
   True
 
-Normal equality operations only work with datetime objects and take the
+Normal equality operations only work with DateTime objects and take the
 timezone setting into account:
 
   >>> dt == dt
