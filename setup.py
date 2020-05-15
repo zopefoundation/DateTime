@@ -16,6 +16,8 @@ import os
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(here, 'README.rst')) as f:
+    HEADER = f.read()
 with open(os.path.join(here, 'src', 'DateTime', 'DateTime.txt')) as f:
     README = f.read()
 with open(os.path.join(here, 'CHANGES.rst')) as f:
@@ -34,7 +36,12 @@ Unless you need to communicate with Zope APIs, you're probably
 better off using Python's built-in datetime module.""".replace('\n', ' '),
     author='Zope Foundation and Contributors',
     author_email='zope-dev@zope.org',
-    long_description=README + '\n\n' + CHANGES,
+    long_description = '\n\n'.join([
+        HEADER,
+        '.. contents::',
+        README,
+        CHANGES,
+    ]),
     packages=find_packages('src'),
     package_dir={'': 'src'},
     classifiers=[
