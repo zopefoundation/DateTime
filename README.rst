@@ -1,5 +1,5 @@
-.. image:: https://travis-ci.org/zopefoundation/DateTime.svg?branch=master
-    :target: https://travis-ci.org/zopefoundation/DateTime
+.. image:: https://travis-ci.com/zopefoundation/DateTime.svg?branch=master
+    :target: https://travis-ci.com/zopefoundation/DateTime
 
 .. image:: https://img.shields.io/pypi/v/DateTime.svg
         :target: https://pypi.org/project/DateTime/
