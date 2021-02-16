@@ -1,13 +1,12 @@
+# Generated from:
+# https://github.com/zopefoundation/meta/tree/master/config/zope-product
 include *.rst
 include *.txt
-include .coveragerc
 include buildout.cfg
 include tox.ini
 
-include bootstrap.py
-exclude bootstrap.py
-
-recursive-include src/DateTime *
-
-global-exclude *.pyc
-global-exclude *.pyo
+recursive-include src *.pt
+recursive-include src *.py
+recursive-include src *.rst
+recursive-include src *.txt
+recursive-include src *.zcml
