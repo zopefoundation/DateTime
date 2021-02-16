@@ -12,24 +12,28 @@
 #
 ##############################################################################
 
-from datetime import date, datetime, tzinfo, timedelta
 import math
-import platform
 import os
+import platform
 import sys
 import time
 import unittest
+from datetime import date
+from datetime import datetime
+from datetime import timedelta
+from datetime import tzinfo
 
 import pytz
 
-from DateTime.DateTime import _findLocalTimeZoneName
 from DateTime import DateTime
+from DateTime.DateTime import _findLocalTimeZoneName
 
-if sys.version_info > (3, ):
+
+if sys.version_info > (3, ):  # pragma: PY3
     import pickle
     unicode = str
     PY3K = True
-else:
+else:  # pragma: PY2
     import cPickle as pickle
     PY3K = False
 
@@ -254,7 +258,8 @@ class DateTimeTests(unittest.TestCase):
 
     def test_pickle_old(self):
         dt = DateTime('2002/5/2 8:00am GMT+0')
-        data = ('(cDateTime.DateTime\nDateTime\nq\x01Noq\x02}q\x03(U\x05'
+        data = (
+            '(cDateTime.DateTime\nDateTime\nq\x01Noq\x02}q\x03(U\x05'
             '_amonq\x04U\x03Mayq\x05U\x05_adayq\x06U\x03Thuq\x07U\x05_pmonq'
             '\x08h\x05U\x05_hourq\tK\x08U\x05_fmonq\nh\x05U\x05_pdayq\x0bU'
             '\x04Thu.q\x0cU\x05_fdayq\rU\x08Thursdayq\x0eU\x03_pmq\x0fU\x02amq'
@@ -274,7 +279,8 @@ class DateTimeTests(unittest.TestCase):
 
     def test_pickle_old_without_micros(self):
         dt = DateTime('2002/5/2 8:00am GMT+0')
-        data = ('(cDateTime.DateTime\nDateTime\nq\x01Noq\x02}q\x03(U\x05'
+        data = (
+            '(cDateTime.DateTime\nDateTime\nq\x01Noq\x02}q\x03(U\x05'
             '_amonq\x04U\x03Mayq\x05U\x05_adayq\x06U\x03Thuq\x07U\x05_pmonq'
             '\x08h\x05U\x05_hourq\tK\x08U\x05_fmonq\nh\x05U\x05_pdayq\x0bU'
             '\x04Thu.q\x0cU\x05_fdayq\rU\x08Thursdayq\x0eU\x03_pmq\x0fU'
@@ -578,11 +584,12 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(dt1.strftime('%d/%m/%Y %H:%M'),
                          dt2.strftime('%d/%m/%Y %H:%M'))
 
+    @unittest.skipIf(
+        IS_PYPY,
+        "Using Non-Ascii characters for strftime doesn't work in PyPy"
+        "https://bitbucket.org/pypy/pypy/issues/2161/pypy3-strftime-does-not-accept-unicode"  # noqa: E501 line too long
+    )
     def testStrftimeUnicode(self):
-        if IS_PYPY:
-            # Using Non-Ascii characters for strftime doesn't work in PyPy
-            # https://bitbucket.org/pypy/pypy/issues/2161/pypy3-strftime-does-not-accept-unicode
-            return
         dt = DateTime('2002-05-02T08:00:00+00:00')
         uchar = b'\xc3\xa0'.decode('utf-8')
         ok = dt.strftime('Le %d/%m/%Y a %Hh%M').replace('a', uchar)
@@ -593,22 +600,22 @@ class DateTimeTests(unittest.TestCase):
         # checks that we assign timezone naivity correctly
         dt = DateTime('2007-10-04T08:00:00+00:00')
         self.assertFalse(dt.timezoneNaive(),
-            'error with naivity handling in __parse_iso8601')
+                         'error with naivity handling in __parse_iso8601')
         dt = DateTime('2007-10-04T08:00:00Z')
         self.assertFalse(dt.timezoneNaive(),
-            'error with naivity handling in __parse_iso8601')
+                         'error with naivity handling in __parse_iso8601')
         dt = DateTime('2007-10-04T08:00:00')
         self.assertTrue(dt.timezoneNaive(),
-            'error with naivity handling in __parse_iso8601')
+                        'error with naivity handling in __parse_iso8601')
         dt = DateTime('2007/10/04 15:12:33.487618 GMT+1')
         self.assertFalse(dt.timezoneNaive(),
-            'error with naivity handling in _parse')
+                         'error with naivity handling in _parse')
         dt = DateTime('2007/10/04 15:12:33.487618')
         self.assertTrue(dt.timezoneNaive(),
-            'error with naivity handling in _parse')
+                        'error with naivity handling in _parse')
         dt = DateTime()
         self.assertFalse(dt.timezoneNaive(),
-            'error with naivity for current time')
+                         'error with naivity for current time')
         s = '2007-10-04T08:00:00'
         dt = DateTime(s)
         self.assertEqual(s, dt.ISO8601())

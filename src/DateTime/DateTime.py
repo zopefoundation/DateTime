@@ -14,6 +14,7 @@
 import math
 import re
 import sys
+from datetime import datetime
 from time import altzone
 from time import daylight
 from time import gmtime
@@ -21,25 +22,25 @@ from time import localtime
 from time import time
 from time import timezone
 from time import tzname
-from datetime import datetime
 
 from zope.interface import implementer
 
-from .interfaces import IDateTime
-from .interfaces import DateTimeError
-from .interfaces import SyntaxError
 from .interfaces import DateError
+from .interfaces import DateTimeError
+from .interfaces import IDateTime
+from .interfaces import SyntaxError
 from .interfaces import TimeError
 from .pytz_support import PytzCache
 
-if sys.version_info > (3, ):
+
+if sys.version_info > (3, ):  # pragma: PY3
     import copyreg as copy_reg
     basestring = str
     long = int
     explicit_unicode_type = type(None)
-else:
+else:  # pragma: PY2
     import copy_reg
-    explicit_unicode_type = unicode
+    explicit_unicode_type = unicode  # noqa: F821 undefined name
 
 default_datefmt = None
 
@@ -56,6 +57,7 @@ def getDefaultDateFormat():
     else:
         return default_datefmt
 
+
 # To control rounding errors, we round system time to the nearest
 # microsecond.  Then delicate calculations can rely on that the
 # maximum precision that needs to be preserved is known.
@@ -65,6 +67,7 @@ _system_time = time
 def time():
     return round(_system_time(), 6)
 
+
 # Determine machine epoch
 tm = ((0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334),
       (0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335))
@@ -73,7 +76,7 @@ i = int(yr - 1)
 to_year = int(i * 365 + i // 4 - i // 100 + i // 400 - 693960.0)
 to_month = tm[yr % 4 == 0 and (yr % 100 != 0 or yr % 400 == 0)][mo]
 EPOCH = ((to_year + to_month + dy +
-    (hr / 24.0 + mn / 1440.0 + sc / 86400.0)) * 86400)
+          (hr / 24.0 + mn / 1440.0 + sc / 86400.0)) * 86400)
 jd1901 = 2415385
 
 _TZINFO = PytzCache()
@@ -171,7 +174,7 @@ def _findLocalTimeZoneName(isDST):
         # Get the name of the current time zone depending
         # on DST.
         _localzone = PytzCache._zmap[tzname[isDST].lower()]
-    except:
+    except BaseException:
         try:
             # Generate a GMT-offset zone name.
             if isDST:
@@ -187,9 +190,10 @@ def _findLocalTimeZoneName(isDST):
             m = majorOffset >= 0 and '+' or ''
             lz = '%s%0.02d%0.02d' % (m, majorOffset, minorOffset)
             _localzone = PytzCache._zmap[('GMT%s' % lz).lower()]
-        except:
+        except BaseException:
             _localzone = ''
     return _localzone
+
 
 _localzone0 = _findLocalTimeZoneName(0)
 _localzone1 = _findLocalTimeZoneName(1)
@@ -279,7 +283,7 @@ def _julianday(yr, mo, dy):
     else:
         b = 0
     return ((1461 * y - yr_correct) // 4 +
-        306001 * (m + 1) // 10000 + d + 1720994 + b)
+            306001 * (m + 1) // 10000 + d + 1720994 + b)
 
 
 def _calendarday(j):
@@ -329,7 +333,7 @@ def safegmtime(t):
         return gmtime(t)
     except (ValueError, OverflowError):
         raise TimeError('The time %f is beyond the range of this Python '
-            'implementation.' % float(t))
+                        'implementation.' % float(t))
 
 
 def safelocaltime(t):
@@ -338,7 +342,7 @@ def safelocaltime(t):
         return localtime(t)
     except (ValueError, OverflowError):
         raise TimeError('The time %f is beyond the range of this Python '
-            'implementation.' % float(t))
+                        'implementation.' % float(t))
 
 
 def _tzoffset2rfc822zone(seconds):
@@ -450,8 +454,8 @@ class DateTime(object):
         # We store a float of _micros, instead of the _micros long, as we most
         # often don't have any sub-second resolution and can save those bytes
         return (self._micros / 1000000.0,
-            getattr(self, '_timezone_naive', False),
-            self._tz)
+                getattr(self, '_timezone_naive', False),
+                self._tz)
 
     def __setstate__(self, value):
         if isinstance(value, tuple):
@@ -884,7 +888,7 @@ class DateTime(object):
         # nearTime is within an hour of being correct.
         try:
             ltm = safelocaltime(nearTime)
-        except:
+        except BaseException:
             # We are beyond the range of Python's date support.
             # Hopefully we can assume that daylight savings schedules
             # repeat every 28 years.  Calculate the name of the
@@ -923,16 +927,16 @@ class DateTime(object):
 
         ints = []
         i = 0
-        l = len(st)
-        while i < l:
-            while i < l and st[i] in SPACE_CHARS:
+        len_st = len(st)
+        while i < len_st:
+            while i < len_st and st[i] in SPACE_CHARS:
                 i += 1
-            if i < l and st[i] in DELIMITERS:
+            if i < len_st and st[i] in DELIMITERS:
                 d = st[i]
                 i += 1
             else:
                 d = ''
-            while i < l and st[i] in SPACE_CHARS:
+            while i < len_st and st[i] in SPACE_CHARS:
                 i += 1
 
             # The float pattern needs to look back 1 character, because it
@@ -951,7 +955,7 @@ class DateTime(object):
                 ints.append(float(s))
                 continue
 
-            #AJ
+            # AJ
             ts_results = INT_PATTERN.match(st, i)
             if ts_results:
                 s = ts_results.group(0)
@@ -959,7 +963,7 @@ class DateTime(object):
                 ls = len(s)
                 i = i + ls
                 if (ls == 4 and d and d in '+-' and
-                   (len(ints) + (not not month) >= 3)):
+                        (len(ints) + (not not month) >= 3)):
                     tz = '%s%s' % (d, s)
                 else:
                     v = int(s)
@@ -970,7 +974,7 @@ class DateTime(object):
             if ts_results:
                 s = ts_results.group(0).lower()
                 i = i + len(s)
-                if i < l and st[i] == '.':
+                if i < len_st and st[i] == '.':
                     i += 1
                 # Check for month name:
                 _v = _MONTHMAP.get(s)
@@ -1378,7 +1382,7 @@ class DateTime(object):
         object\'s timezone) is a leap year.
         """
         return (self._year % 4 == 0 and
-            (self._year % 100 != 0 or self._year % 400 == 0))
+                (self._year % 100 != 0 or self._year % 400 == 0))
 
     def dayOfYear(self):
         """Return the day of the year, in context of the timezone
@@ -1558,8 +1562,8 @@ class DateTime(object):
             format = format.encode('utf-8')
             unicode_format = True
         ds = datetime(zself._year, zself._month, zself._day, zself._hour,
-               zself._minute, int(zself._nearsec),
-               microseconds).strftime(format)
+                      zself._minute, int(zself._nearsec),
+                      microseconds).strftime(format)
         if unicode_format:
             return ds.decode('utf-8')
         return ds
@@ -1756,7 +1760,7 @@ class DateTime(object):
         x = _calcDependentSecond(tz, t)
         yr, mo, dy, hr, mn, sc = _calcYMDHMS(x, ms)
         return self.__class__(yr, mo, dy, hr, mn, sc, self._tz,
-            t, d, s, None, self.timezoneNaive())
+                              t, d, s, None, self.timezoneNaive())
 
     __radd__ = __add__
 
@@ -1802,7 +1806,7 @@ class DateTime(object):
 
     def __long__(self):
         """Convert to a long-int number of seconds since the epoch (gmt)."""
-        return long(self.micros() // 1000000)
+        return long(self.micros() // 1000000)  # pragma: PY2
 
     def __float__(self):
         """Convert to floating-point number of seconds since the epoch (gmt).
@@ -1908,7 +1912,7 @@ class DateTime(object):
         y = self._year + 4800 - a
         m = self._month + (12 * a) - 3
         return (self._day + (153 * m + 2) // 5 + 365 * y +
-            y // 4 - y // 100 + y // 400 - 32045)
+                y // 4 - y // 100 + y // 400 - 32045)
 
     def week(self):
         """Return the week number according to ISO.
