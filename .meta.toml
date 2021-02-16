@@ -13,3 +13,8 @@ with-sphinx-doctests = false
 
 [coverage]
 fail-under = 88
+
+[manifest]
+additional-rules = [
+    "include buildout4.cfg",
+    ]
