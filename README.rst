@@ -1,5 +1,6 @@
-.. image:: https://travis-ci.com/zopefoundation/DateTime.svg?branch=master
-    :target: https://travis-ci.com/zopefoundation/DateTime
+.. image:: https://github.com/zopefoundation/DateTime/workflows/tests/badge.svg
+        :target: https://github.com/zopefoundation/DateTime/actions?query=workflow%3Atests
+        :alt: CI status
 
 .. image:: https://img.shields.io/pypi/v/DateTime.svg
         :target: https://pypi.org/project/DateTime/
