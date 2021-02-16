@@ -11,13 +11,16 @@
 #
 ##############################################################################
 
-from datetime import datetime, timedelta
+from datetime import datetime
+from datetime import timedelta
 
 import pytz
 import pytz.reference
-from pytz.tzinfo import StaticTzInfo, memorized_timedelta
+from pytz.tzinfo import StaticTzInfo
+from pytz.tzinfo import memorized_timedelta
 
 from .interfaces import DateTimeError
+
 
 EPOCH = datetime.utcfromtimestamp(0).replace(tzinfo=pytz.utc)
 
@@ -204,6 +207,7 @@ def _static_timezone_factory(data):
         _tzname=data[6][:-1]))  # strip the trailing null
     return cls()
 
+
 _numeric_timezones = dict((key, _static_timezone_factory(data))
                           for key, data in _numeric_timezone_data.items())
 
@@ -213,6 +217,7 @@ class Timezone:
     Timezone information returned by PytzCache.__getitem__
     Adapts datetime.tzinfo object to DateTime._timezone interface
     """
+
     def __init__(self, tzinfo):
         self.tzinfo = tzinfo
 

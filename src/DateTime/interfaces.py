@@ -32,7 +32,7 @@ class TimeError(DateTimeError):
 class IDateTime(Interface):
     # Conversion and comparison methods
 
-    #TODO determine whether this method really is part of the public API
+    # TODO determine whether this method really is part of the public API
     def localZone(ltm=None):
         '''Returns the time zone on the given date.  The time zone
         can change according to daylight savings.'''
@@ -338,8 +338,9 @@ class IDateTime(Interface):
         """
 
     def week():
-        """Return the week number according to ISO
-        see http://www.tondering.dk/claus/cal/node6.html#SECTION00670000000000000000
+        """Return the week number according to ISO.
+
+        See https://www.tondering.dk/claus/cal/week.php#weekno
         """
 
     # Python operator and conversion API

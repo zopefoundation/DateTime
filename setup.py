@@ -13,7 +13,10 @@
 ##############################################################################
 
 import os
-from setuptools import setup, find_packages
+
+from setuptools import find_packages
+from setuptools import setup
+
 
 here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, 'README.rst')) as f:
@@ -23,7 +26,7 @@ with open(os.path.join(here, 'src', 'DateTime', 'DateTime.txt')) as f:
 with open(os.path.join(here, 'CHANGES.rst')) as f:
     CHANGES = f.read()
 
-version = '5.0.dev0'
+version = '4.4.dev0'
 
 setup(
     name='DateTime',
@@ -36,7 +39,7 @@ Unless you need to communicate with Zope APIs, you're probably
 better off using Python's built-in datetime module.""".replace('\n', ' '),
     author='Zope Foundation and Contributors',
     author_email='zope-dev@zope.org',
-    long_description = '\n\n'.join([
+    long_description='\n\n'.join([
         HEADER,
         '.. contents::',
         README,
@@ -58,6 +61,7 @@ better off using Python's built-in datetime module.""".replace('\n', ' '),
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
