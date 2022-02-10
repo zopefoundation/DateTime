@@ -4,6 +4,9 @@ Changelog
 4.4 (unreleased)
 ----------------
 
+- Fix WAT definition
+  `#31 <https://github.com/zopefoundation/DateTime/issues/31>`_.
+
 - Add support for Python 3.8 and 3.9.
 
 - Drop support for Python 3.4.

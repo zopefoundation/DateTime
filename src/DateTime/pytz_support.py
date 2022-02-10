@@ -175,7 +175,7 @@ _old_zmap = {
     'ut': 'Universal',
     'bst': 'GMT+1', 'mest': 'GMT+2', 'sst': 'GMT+2',
     'fst': 'GMT+2', 'wadt': 'GMT+8', 'eadt': 'GMT+11', 'nzdt': 'GMT+13',
-    'wet': 'GMT', 'wat': 'GMT-1', 'at': 'GMT-2', 'ast': 'GMT-4',
+    'wet': 'GMT', 'wat': 'GMT+1', 'at': 'GMT-2', 'ast': 'GMT-4',
     'nt': 'GMT-11', 'idlw': 'GMT-12', 'cet': 'GMT+1', 'cest': 'GMT+2',
     'met': 'GMT+1',
     'mewt': 'GMT+1', 'swt': 'GMT+1', 'fwt': 'GMT+1', 'eet': 'GMT+2',
