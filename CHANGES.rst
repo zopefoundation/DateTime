@@ -7,7 +7,7 @@ Changelog
 - Fix WAT definition
   `#31 <https://github.com/zopefoundation/DateTime/issues/31>`_.
 
-- Add support for Python 3.8 and 3.9.
+- Add support for Python 3.8, 3.9, and 3.10.
 
 - Drop support for Python 3.4.
 
@@ -247,4 +247,3 @@ from the Python standard library instead.
 ---------------------
 
 - Split off from the Zope2 main source code tree.
-
