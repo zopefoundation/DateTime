@@ -1,7 +1,7 @@
 Changelog
 =========
 
-4.4 (unreleased)
+4.4 (2022-02-11)
 ----------------
 
 - Fix WAT definition
