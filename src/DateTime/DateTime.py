@@ -1795,6 +1795,14 @@ class DateTime(object):
             return '%4.4d/%2.2d/%2.2d %2.2d:%2.2d:%06.6f %s' % (
                 y, m, d, h, mn, s, t)
 
+    def __format__(self, fmt):
+        """Render a DateTime in an f-string."""
+        if not isinstance(fmt, str):
+            raise TypeError("must be str, not %s" % type(fmt).__name__)
+        if len(fmt) != 0:
+            return self.strftime(fmt)
+        return str(self)
+
     def __hash__(self):
         """Compute a hash value for a DateTime."""
         return int(((self._year % 100 * 12 + self._month) * 31 +

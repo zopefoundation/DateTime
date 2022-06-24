@@ -683,6 +683,12 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(dt.__roles__, None)
         self.assertEqual(dt.__allow_access_to_unprotected_subobjects__, 1)
 
+    def test_format(self):
+        dt = DateTime()
+        fmt = '%-d.%-m.%Y %H:%M'
+        result = dt.strtime(fmt)
+        self.assertEqual(result, f'{dt:%-d.%-m.%Y %H:%M}')
+
 
 def test_suite():
     import doctest
