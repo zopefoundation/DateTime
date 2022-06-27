@@ -688,7 +688,7 @@ class DateTimeTests(unittest.TestCase):
             dt = DateTime()
             fmt = '%-d.%-m.%Y %H:%M'
             result = dt.strftime(fmt)
-            self.assertEqual(result, '{dt:%-d.%-m.%Y %H:%M}'.format(dt))
+            self.assertEqual(result, '{:%-d.%-m.%Y %H:%M}'.format(dt))
         else:
             pass
 
