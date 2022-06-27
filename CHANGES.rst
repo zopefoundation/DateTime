@@ -4,7 +4,7 @@ Changelog
 4.5 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add __format__ method to DateTime
 
 
 4.4 (2022-02-11)
