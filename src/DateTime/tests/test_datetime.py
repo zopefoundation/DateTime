@@ -683,14 +683,12 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(dt.__roles__, None)
         self.assertEqual(dt.__allow_access_to_unprotected_subobjects__, 1)
 
+    @unittest.skipUnless(PY3K, 'format method is Python 3 only')
     def test_format(self):
-        if sys.version_info > (2, 7, 0):  # pragma: no cover
-            dt = DateTime()
-            fmt = '%-d.%-m.%Y %H:%M'
-            result = dt.strftime(fmt)
-            self.assertEqual(result, '{:%-d.%-m.%Y %H:%M}'.format(dt))
-        else:   # pragma: no cover
-            pass
+        dt = DateTime()
+        fmt = '%-d.%-m.%Y %H:%M'
+        result = dt.strftime(fmt)
+        self.assertEqual(result, '{:%-d.%-m.%Y %H:%M}'.format(dt))
 
 
 def test_suite():
