@@ -4,7 +4,7 @@ Changelog
 4.5 (unreleased)
 ----------------
 
-- Add ``__format__`` method to DateTime
+- Add ``__format__`` method for DateTime objects
   (`#35 <https://github.com/zopefoundation/DateTime/issues/35>`_)
 
 
