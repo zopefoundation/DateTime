@@ -39,7 +39,7 @@ else:  # pragma: PY2
 
 try:
     __file__
-except NameError:
+except NameError:   # pragma: no cover
     f = sys.argv[0]
 else:
     f = __file__
