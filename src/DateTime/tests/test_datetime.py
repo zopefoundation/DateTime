@@ -684,10 +684,13 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(dt.__allow_access_to_unprotected_subobjects__, 1)
 
     def test_format(self):
-        dt = DateTime()
-        fmt = '%-d.%-m.%Y %H:%M'
-        result = dt.strftime(fmt)
-        self.assertEqual(result, f'{dt:%-d.%-m.%Y %H:%M}')
+        if sys.version_info() >= (2, 6, 0):
+            dt = DateTime()
+            fmt = '%-d.%-m.%Y %H:%M'
+            result = dt.strftime(fmt)
+            self.assertEqual(result, '{dt:%-d.%-m.%Y %H:%M}'.format(dt))
+            if sys.version_info() >= (3, 6, 0):
+                self.assertEqual(result, f'{dt:%-d.%-m.%Y %H:%M}')
 
 
 def test_suite():
