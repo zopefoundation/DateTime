@@ -689,6 +689,14 @@ class DateTimeTests(unittest.TestCase):
         fmt = '%-d.%-m.%Y %H:%M'
         result = dt.strftime(fmt)
         self.assertEqual(result, '{:%-d.%-m.%Y %H:%M}'.format(dt))
+        self.assertEqual(str(dt), '{:}'.format(dt))
+        self.assertEqual(str(dt), '{}'.format(dt))
+        if sys.version_info > (3, 6, 0):  # pragma: no cover
+            eval("self.assertEqual(result, f'{dt:{fmt}}')")
+            eval("self.assertEqual(str(dt) ,f'{dt:}'.format(dt))")
+            eval("self.assertEqual(str(dt), f'{dt}'.format(dt))")
+        else:  # pragma: no cover
+            pass
 
 
 def test_suite():
