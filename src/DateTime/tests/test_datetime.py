@@ -685,16 +685,17 @@ class DateTimeTests(unittest.TestCase):
 
     @unittest.skipUnless(PY3K, 'format method is Python 3 only')
     def test_format(self):
-        dt = DateTime()
+        dt = DateTime(1968, 3, 10, 23, 45, 0, 'Europe/Vienna')
         fmt = '%-d.%-m.%Y %H:%M'
         result = dt.strftime(fmt)
+        unformatted_result = '1968/03/10 23:45:00 Europe/Vienna'
         self.assertEqual(result, '{:%-d.%-m.%Y %H:%M}'.format(dt))
-        self.assertEqual(str(dt), '{:}'.format(dt))
-        self.assertEqual(str(dt), '{}'.format(dt))
+        self.assertEqual(unformatted_result, '{:}'.format(dt))
+        self.assertEqual(unformatted_result, '{}'.format(dt))
         if sys.version_info > (3, 6, 0):  # pragma: no cover
             eval("self.assertEqual(result, f'{dt:{fmt}}')")
-            eval("self.assertEqual(str(dt) ,f'{dt:}'.format(dt))")
-            eval("self.assertEqual(str(dt), f'{dt}'.format(dt))")
+            eval("self.assertEqual(unformatted_result ,f'{dt:}'.format(dt))")
+            eval("self.assertEqual(unformatted_result, f'{dt}'.format(dt))")
         else:  # pragma: no cover
             pass
 
