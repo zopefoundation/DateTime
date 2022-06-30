@@ -692,12 +692,9 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(result, '{:%-d.%-m.%Y %H:%M}'.format(dt))
         self.assertEqual(unformatted_result, '{:}'.format(dt))
         self.assertEqual(unformatted_result, '{}'.format(dt))
-        if sys.version_info > (3, 6, 0):  # PY3
-            eval("self.assertEqual(result, f'{dt:{fmt}}')")
-            eval("self.assertEqual(unformatted_result ,f'{dt:}')")
-            eval("self.assertEqual(unformatted_result, f'{dt}')")
-        else:  # PY3
-            pass
+        eval("self.assertEqual(result, f'{dt:{fmt}}')")
+        eval("self.assertEqual(unformatted_result ,f'{dt:}')")
+        eval("self.assertEqual(unformatted_result, f'{dt}')")
 
 
 def test_suite():
