@@ -39,7 +39,7 @@ else:  # pragma: PY2
 
 try:
     __file__
-except NameError:
+except NameError:   # pragma: no cover
     f = sys.argv[0]
 else:
     f = __file__
@@ -682,6 +682,19 @@ class DateTimeTests(unittest.TestCase):
         dt = DateTime()
         self.assertEqual(dt.__roles__, None)
         self.assertEqual(dt.__allow_access_to_unprotected_subobjects__, 1)
+
+    @unittest.skipUnless(PY3K, 'format method is Python 3 only')
+    def test_format(self):
+        dt = DateTime(1968, 3, 10, 23, 45, 0, 'Europe/Vienna')
+        fmt = '%-d.%-m.%Y %H:%M'
+        result = dt.strftime(fmt)
+        unformatted_result = '1968/03/10 23:45:00 Europe/Vienna'
+        self.assertEqual(result, '{:%-d.%-m.%Y %H:%M}'.format(dt))
+        self.assertEqual(unformatted_result, '{:}'.format(dt))
+        self.assertEqual(unformatted_result, '{}'.format(dt))
+        eval("self.assertEqual(result, f'{dt:{fmt}}')")
+        eval("self.assertEqual(unformatted_result ,f'{dt:}')")
+        eval("self.assertEqual(unformatted_result, f'{dt}')")
 
 
 def test_suite():
