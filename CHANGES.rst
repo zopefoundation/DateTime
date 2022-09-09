@@ -4,7 +4,8 @@ Changelog
 4.6 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix ``__format__`` method for DateTime objects
+  (`#39 <https://github.com/zopefoundation/DateTime/issues/39>`)
 
 
 4.5 (2022-07-04)
