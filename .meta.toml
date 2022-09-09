@@ -22,3 +22,9 @@ additional-rules = [
 
 [tox]
 use-flake8 = true
+testenv-commands = [
+    "{envdir}/bin/test {posargs:-cv}",
+    ]
+coverage-command = [
+    "coverage run {envdir}/bin/test {posargs:-cv}",
+    ]

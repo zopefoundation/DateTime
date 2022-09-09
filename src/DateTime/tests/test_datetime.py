@@ -686,10 +686,10 @@ class DateTimeTests(unittest.TestCase):
     @unittest.skipUnless(PY3K, 'format method is Python 3 only')
     def test_format(self):
         dt = DateTime(1968, 3, 10, 23, 45, 0, 'Europe/Vienna')
-        fmt = '%-d.%-m.%Y %H:%M'
+        fmt = '%d.%m.%Y %H:%M'
         result = dt.strftime(fmt)
         unformatted_result = '1968/03/10 23:45:00 Europe/Vienna'
-        self.assertEqual(result, '{:%-d.%-m.%Y %H:%M}'.format(dt))
+        self.assertEqual(result, '{:%d.%m.%Y %H:%M}'.format(dt))
         self.assertEqual(unformatted_result, '{:}'.format(dt))
         self.assertEqual(unformatted_result, '{}'.format(dt))
         eval("self.assertEqual(result, f'{dt:{fmt}}')")
