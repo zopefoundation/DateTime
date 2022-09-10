@@ -1,7 +1,7 @@
 Changelog
 =========
 
-4.6 (unreleased)
+4.6 (2022-09-10)
 ----------------
 
 - Fix ``__format__`` method for DateTime objects
