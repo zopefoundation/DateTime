@@ -864,7 +864,7 @@ class DateTime(object):
         # self._micros is the time since the epoch
         # in long integer microseconds.
         if microsecs is None:
-            microsecs = long(math.floor(t * 1000000.0))
+            microsecs = long(round(t * 1000000.0))
         self._micros = microsecs
 
     def localZone(self, ltm=None):
@@ -1760,7 +1760,7 @@ class DateTime(object):
         x = _calcDependentSecond(tz, t)
         yr, mo, dy, hr, mn, sc = _calcYMDHMS(x, ms)
         return self.__class__(yr, mo, dy, hr, mn, sc, self._tz,
-                              t, d, s, None, self.timezoneNaive())
+                              t, d, s, tmicros, self.timezoneNaive())
 
     __radd__ = __add__
 

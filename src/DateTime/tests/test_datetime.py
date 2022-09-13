@@ -103,6 +103,16 @@ class DateTimeTests(unittest.TestCase):
         dt = DateTime()
         self.assertEqual(str(dt + 0.10 + 3.14 + 6.76 - 10), str(dt),
                          dt)
+        # checks problem reported in
+        # https://github.com/zopefoundation/DateTime/issues/41
+        dt = DateTime(2038, 10, 7, 8, 52, 44.959840, "UTC")
+        self.assertEqual(str(dt + 0.10 + 3.14 + 6.76 - 10), str(dt),
+                         dt)
+
+    def testConsistentSecondMicroRounding(self):
+        dt = DateTime(2038, 10, 7, 8, 52, 44.9598398, "UTC")
+        self.assertEqual(int(dt.second() * 1000000),
+                         dt.micros() % 60000000)
 
     def testConstructor3(self):
         # Constructor from date/time string
