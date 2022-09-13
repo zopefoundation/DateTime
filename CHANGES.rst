@@ -4,12 +4,15 @@ Changelog
 4.7 (unreleased)
 ----------------
 
+- Fix rounding problem with `DateTime` addition beyond the year 2038
+  (`#41 <https://github.com/zopefoundation/DateTime/issues/41>`_)
+
 
 4.6 (2022-09-10)
 ----------------
 
 - Fix ``__format__`` method for DateTime objects
-  (`#39 <https://github.com/zopefoundation/DateTime/issues/39>`)
+  (`#39 <https://github.com/zopefoundation/DateTime/issues/39>`_)
 
 
 4.5 (2022-07-04)
