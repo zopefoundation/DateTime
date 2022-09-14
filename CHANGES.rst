@@ -1,6 +1,12 @@
 Changelog
 =========
 
+4.8 (unreleased)
+----------------
+
+- Nothing changed yet.
+
+
 4.7 (2022-09-14)
 ----------------
 
