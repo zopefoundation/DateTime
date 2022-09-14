@@ -1,7 +1,7 @@
 Changelog
 =========
 
-4.7 (unreleased)
+4.7 (2022-09-14)
 ----------------
 
 - Fix rounding problem with `DateTime` addition beyond the year 2038
