@@ -4,7 +4,7 @@ Changelog
 4.8 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add support for Python 3.11.
 
 
 4.7 (2022-09-14)
