@@ -1,7 +1,7 @@
 Changelog
 =========
 
-4.8 (unreleased)
+4.8 (2022-12-16)
 ----------------
 
 - Fix insidious buildout configuration bug that prevented tests on Python 2.7
