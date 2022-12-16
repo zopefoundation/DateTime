@@ -4,6 +4,10 @@ Changelog
 4.8 (unreleased)
 ----------------
 
+- Fix insidious buildout configuration bug that prevented tests on Python 2.7
+  and 3.5, and fix test code that was incompatible with Python 3.5.
+  (`#44 <https://github.com/zopefoundation/DateTime/issues/44>`_)
+
 - Add support for Python 3.11.
 
 
