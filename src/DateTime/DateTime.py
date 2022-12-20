@@ -11,9 +11,9 @@
 #
 ##############################################################################
 
+import copyreg as copy_reg
 import math
 import re
-import sys
 from datetime import datetime
 from time import altzone
 from time import daylight
@@ -33,7 +33,6 @@ from .interfaces import TimeError
 from .pytz_support import PytzCache
 
 
-import copyreg as copy_reg
 basestring = str
 long = int
 explicit_unicode_type = type(None)

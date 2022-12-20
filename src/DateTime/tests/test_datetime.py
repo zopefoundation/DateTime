@@ -14,6 +14,7 @@
 
 import math
 import os
+import pickle
 import platform
 import sys
 import time
@@ -28,8 +29,6 @@ import pytz
 from DateTime import DateTime
 from DateTime.DateTime import _findLocalTimeZoneName
 
-
-import pickle
 
 try:
     __file__
@@ -694,7 +693,7 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(unformatted_result, f'{dt}')
         self.assertEqual(unformatted_result, f'{dt}')
         self.assertEqual(result, f'{dt:{fmt}}')
-        self.assertEqual(unformatted_result ,f'{dt:}')
+        self.assertEqual(unformatted_result, f'{dt:}')
         self.assertEqual(unformatted_result, f'{dt}')
 
 
