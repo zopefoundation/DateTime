@@ -4,9 +4,16 @@ Changelog
 5.0 (unreleased)
 ----------------
 
-- Add support for Python 3.11.
-
 - Drop support for Python 2.7, 3.5, 3.6.
+
+4.8 (2022-12-16)
+----------------
+
+- Fix insidious buildout configuration bug that prevented tests on Python 2.7
+  and 3.5, and fix test code that was incompatible with Python 3.5.
+  (`#44 <https://github.com/zopefoundation/DateTime/issues/44>`_)
+
+- Add support for Python 3.11.
 
 
 4.7 (2022-09-14)
