@@ -29,13 +29,7 @@ from DateTime import DateTime
 from DateTime.DateTime import _findLocalTimeZoneName
 
 
-if sys.version_info > (3, ):  # pragma: PY3
-    import pickle
-    unicode = str
-    PY3K = True
-else:  # pragma: PY2
-    import cPickle as pickle
-    PY3K = False
+import pickle
 
 try:
     __file__
@@ -141,7 +135,7 @@ class DateTimeTests(unittest.TestCase):
         dt = DateTime()
         dt1 = DateTime(float(dt), dt.timezone())
         self.assertEqual(str(dt), str(dt1), (dt, dt1))
-        dt1 = DateTime(float(dt), unicode(dt.timezone()))
+        dt1 = DateTime(float(dt), str(dt.timezone()))
         self.assertEqual(str(dt), str(dt1), (dt, dt1))
 
     def testConstructor6(self):
@@ -281,8 +275,7 @@ class DateTimeTests(unittest.TestCase):
             '\x1bM\xd2\x07U\x08_nearsecq\x1cG\x00\x00\x00\x00\x00\x00\x00'
             '\x00U\x07_pmhourq\x1dK\x08U\n_dayoffsetq\x1eK\x04U\x04timeq'
             '\x1fG?\xd5UUUV\x00\x00ub.')
-        if PY3K:
-            data = data.encode('latin-1')
+        data = data.encode('latin-1')
         new = pickle.loads(data)
         for key in DateTime.__slots__:
             self.assertEqual(getattr(dt, key), getattr(new, key))
@@ -301,8 +294,7 @@ class DateTimeTests(unittest.TestCase):
             '\x04_dayq\x19K\x02U\x05_yearq\x1aM\xd2\x07U\x08_nearsecq'
             '\x1bG\x00\x00\x00\x00\x00\x00\x00\x00U\x07_pmhourq\x1cK\x08U'
             '\n_dayoffsetq\x1dK\x04U\x04timeq\x1eG?\xd5UUUV\x00\x00ub.')
-        if PY3K:
-            data = data.encode('latin-1')
+        data = data.encode('latin-1')
         new = pickle.loads(data)
         for key in DateTime.__slots__:
             self.assertEqual(getattr(dt, key), getattr(new, key))
@@ -477,7 +469,7 @@ class DateTimeTests(unittest.TestCase):
     def testJulianWeek(self):
         # Check JulianDayWeek function
         fn = os.path.join(DATADIR, 'julian_testdata.txt')
-        with open(fn, 'r') as fd:
+        with open(fn) as fd:
             lines = fd.readlines()
         for line in lines:
             d = DateTime(line[:10])
@@ -599,7 +591,7 @@ class DateTimeTests(unittest.TestCase):
         "Using Non-Ascii characters for strftime doesn't work in PyPy"
         "https://bitbucket.org/pypy/pypy/issues/2161/pypy3-strftime-does-not-accept-unicode"  # noqa: E501 line too long
     )
-    def testStrftimeUnicode(self):
+    def testStrftimeStr(self):
         dt = DateTime('2002-05-02T08:00:00+00:00')
         uchar = b'\xc3\xa0'.decode('utf-8')
         ok = dt.strftime('Le %d/%m/%Y a %Hh%M').replace('a', uchar)
@@ -693,24 +685,23 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(dt.__roles__, None)
         self.assertEqual(dt.__allow_access_to_unprotected_subobjects__, 1)
 
-    @unittest.skipUnless(PY3K, 'format method is Python 3 only')
     def test_format(self):
         dt = DateTime(1968, 3, 10, 23, 45, 0, 'Europe/Vienna')
         fmt = '%d.%m.%Y %H:%M'
         result = dt.strftime(fmt)
         unformatted_result = '1968/03/10 23:45:00 Europe/Vienna'
-        self.assertEqual(result, '{:%d.%m.%Y %H:%M}'.format(dt))
-        self.assertEqual(unformatted_result, '{:}'.format(dt))
-        self.assertEqual(unformatted_result, '{}'.format(dt))
-        eval("self.assertEqual(result, f'{dt:{fmt}}')")
-        eval("self.assertEqual(unformatted_result ,f'{dt:}')")
-        eval("self.assertEqual(unformatted_result, f'{dt}')")
+        self.assertEqual(result, f'{dt:%d.%m.%Y %H:%M}')
+        self.assertEqual(unformatted_result, f'{dt}')
+        self.assertEqual(unformatted_result, f'{dt}')
+        self.assertEqual(result, f'{dt:{fmt}}')
+        self.assertEqual(unformatted_result ,f'{dt:}')
+        self.assertEqual(unformatted_result, f'{dt}')
 
 
 def test_suite():
     import doctest
     return unittest.TestSuite([
-        unittest.makeSuite(DateTimeTests),
+        unittest.defaultTestLoader.loadTestsFromTestCase(DateTimeTests),
         doctest.DocFileSuite('DateTime.txt', package='DateTime'),
         doctest.DocFileSuite('pytz.txt', package='DateTime'),
     ])

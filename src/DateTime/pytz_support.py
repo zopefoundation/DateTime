@@ -208,8 +208,8 @@ def _static_timezone_factory(data):
     return cls()
 
 
-_numeric_timezones = dict((key, _static_timezone_factory(data))
-                          for key, data in _numeric_timezone_data.items())
+_numeric_timezones = {key: _static_timezone_factory(data)
+                          for key, data in _numeric_timezone_data.items()}
 
 
 class Timezone:
@@ -249,7 +249,7 @@ class PytzCache:
     """
 
     _zlst = pytz.common_timezones + _old_zlst  # used by DateTime.TimeZones
-    _zmap = dict((name.lower(), name) for name in pytz.all_timezones)
+    _zmap = {name.lower(): name for name in pytz.all_timezones}
     _zmap.update(_old_zmap)  # These must take priority
     _zidx = _zmap.keys()
 

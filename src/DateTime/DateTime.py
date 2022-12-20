@@ -33,14 +33,10 @@ from .interfaces import TimeError
 from .pytz_support import PytzCache
 
 
-if sys.version_info > (3, ):  # pragma: PY3
-    import copyreg as copy_reg
-    basestring = str
-    long = int
-    explicit_unicode_type = type(None)
-else:  # pragma: PY2
-    import copy_reg
-    explicit_unicode_type = unicode  # noqa: F821 undefined name
+import copyreg as copy_reg
+basestring = str
+long = int
+explicit_unicode_type = type(None)
 
 default_datefmt = None
 
@@ -366,7 +362,7 @@ def Timezones():
     return sorted(list(PytzCache._zmap.values()))
 
 
-class strftimeFormatter(object):
+class strftimeFormatter:
 
     def __init__(self, dt, format):
         self.dt = dt
@@ -377,7 +373,7 @@ class strftimeFormatter(object):
 
 
 @implementer(IDateTime)
-class DateTime(object):
+class DateTime:
     """DateTime objects represent instants in time and provide
        interfaces for controlling its representation without
        affecting the absolute value of the object.
@@ -448,7 +444,7 @@ class DateTime(object):
         except (DateError, TimeError, DateTimeError):
             raise
         except Exception:
-            raise SyntaxError('Unable to parse %s, %s' % (args, kw))
+            raise SyntaxError('Unable to parse {}, {}'.format(args, kw))
 
     def __getstate__(self):
         # We store a float of _micros, instead of the _micros long, as we most
@@ -819,7 +815,7 @@ class DateTime(object):
             hr, mn, sc, tz = 0, 0, 0, 0
             yr = _correctYear(yr)
             if not self._validDate(yr, mo, dy):
-                raise DateError('Invalid date: %s' % (args, ))
+                raise DateError('Invalid date: {}'.format(args))
             args = args[3:]
             if args:
                 hr, args = args[0], args[1:]
@@ -964,7 +960,7 @@ class DateTime(object):
                 i = i + ls
                 if (ls == 4 and d and d in '+-' and
                         (len(ints) + (not not month) >= 3)):
-                    tz = '%s%s' % (d, s)
+                    tz = '{}{}'.format(d, s)
                 else:
                     v = int(s)
                     ints.append(v)
@@ -1778,7 +1774,7 @@ class DateTime(object):
         """Convert a DateTime to a string that looks like a Python
         expression.
         """
-        return '%s(\'%s\')' % (self.__class__.__name__, str(self))
+        return '{}(\'{}\')'.format(self.__class__.__name__, str(self))
 
     def __str__(self):
         """Convert a DateTime to a string."""
