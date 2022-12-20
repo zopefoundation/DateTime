@@ -2,21 +2,20 @@
 # https://github.com/zopefoundation/meta/tree/master/config/zope-product
 [meta]
 template = "zope-product"
-commit-id = "fb567d8f229738dd2c7afa137b11b69b4ccaacfa"
+commit-id = "be727608"
 
 [python]
 with-pypy = true
-with-legacy-python = true
 with-sphinx-doctests = false
 with-windows = true
 with-future-python = false
+with-macos = false
 
 [coverage]
 fail-under = 88
 
 [manifest]
 additional-rules = [
-    "include buildout4.cfg",
     "recursive-include src *.txt",
     ]
 
