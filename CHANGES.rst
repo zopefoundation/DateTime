@@ -4,6 +4,9 @@ Changelog
 4.9 (unreleased)
 ----------------
 
+- Fix regression in 4.7 on Python 2 when calling ``asdatetime``.
+  (`#47 <https://github.com/zopefoundation/DateTime/issues/47>`_)
+
 
 4.8 (2022-12-16)
 ----------------

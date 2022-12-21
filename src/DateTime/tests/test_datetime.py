@@ -101,13 +101,17 @@ class DateTimeTests(unittest.TestCase):
     def testAddPrecision(self):
         # Precision of serial additions
         dt = DateTime()
-        self.assertEqual(str(dt + 0.10 + 3.14 + 6.76 - 10), str(dt),
-                         dt)
+        calculated_dt = dt + 0.10 + 3.14 + 6.76 - 10
+        self.assertEqual(str(calculated_dt), str(dt), dt)
         # checks problem reported in
         # https://github.com/zopefoundation/DateTime/issues/41
         dt = DateTime(2038, 10, 7, 8, 52, 44.959840, "UTC")
-        self.assertEqual(str(dt + 0.10 + 3.14 + 6.76 - 10), str(dt),
-                         dt)
+        calculated_dt = dt + 0.10 + 3.14 + 6.76 - 10
+        self.assertEqual(str(calculated_dt), str(dt), dt)
+        # checks regression on Py 2.7 where asdatetime gave an error
+        py_dt = dt.asdatetime()
+        py_calculated_dt = calculated_dt.asdatetime()
+        self.assertEqual(py_dt, py_calculated_dt)
 
     def testConsistentSecondMicroRounding(self):
         dt = DateTime(2038, 10, 7, 8, 52, 44.9598398, "UTC")
