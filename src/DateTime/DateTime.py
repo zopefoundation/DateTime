@@ -680,6 +680,8 @@ class DateTime(object):
             # flag indicating whether this was constructed in a timezone naive
             # manner
             yr, mo, dy, hr, mn, sc, tz, t, d, s, microsecs, tznaive = args
+            if isinstance(microsecs, float):
+                microsecs = long(round(microsecs))
             if tznaive is not None:  # preserve this information
                 self._timezone_naive = tznaive
 
