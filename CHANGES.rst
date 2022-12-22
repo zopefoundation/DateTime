@@ -1,7 +1,7 @@
 Changelog
 =========
 
-4.9 (unreleased)
+4.9 (2022-12-22)
 ----------------
 
 - Fix regression in 4.7 on Python 2 when calling ``asdatetime``.
