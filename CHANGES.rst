@@ -4,6 +4,8 @@ Changelog
 5.1 (unreleased)
 ----------------
 
+- Add missing ``python_requires`` to ``setup.py``.
+
 
 5.0 (2023-01-12)
 ----------------

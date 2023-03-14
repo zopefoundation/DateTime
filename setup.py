@@ -63,6 +63,7 @@ better off using Python's built-in datetime module.""".replace('\n', ' '),
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
+    python_requires='>=3.7',
     install_requires=[
         'zope.interface',
         'pytz',
