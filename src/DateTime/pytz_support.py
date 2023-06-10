@@ -22,7 +22,7 @@ from pytz.tzinfo import memorized_timedelta
 from .interfaces import DateTimeError
 
 
-EPOCH = datetime.utcfromtimestamp(0).replace(tzinfo=pytz.utc)
+EPOCH = datetime.fromtimestamp(0, pytz.utc)
 
 _numeric_timezone_data = {
     'GMT': ('GMT', 0, 1, [], '', [(0, 0, 0)], 'GMT\000'),
@@ -223,7 +223,7 @@ class Timezone:
 
     def info(self, t=None):
         if t is None:
-            dt = datetime.utcnow().replace(tzinfo=pytz.utc)
+            dt = datetime.now(pytz.utc)
         else:
             # can't use utcfromtimestamp past 2038
             dt = EPOCH + timedelta(0, t)
