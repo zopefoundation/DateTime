@@ -535,7 +535,7 @@ class DateTime:
             month, and day values may be given in any order as long
             as it is possible to distinguish the components. If all
             three components are numbers that are less than 13,
-            then a a month-day-year ordering is assumed.
+            then a month-day-year ordering is assumed.
 
             The time component consists of hour, minute, and second
             values separated by colons.  The hour value must be an
@@ -1319,7 +1319,7 @@ class DateTime:
         Return True if their internal state is the same. Two objects
         representing the same time in different timezones are regared as
         unequal. Use the equalTo method if you are only interested in them
-        refering to the same moment in time.
+        referring to the same moment in time.
         """
         if not isinstance(t, DateTime):
             return False

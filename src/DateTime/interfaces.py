@@ -176,13 +176,13 @@ class IDateTime(Interface):
         """Return the full month name"""
 
     def aMonth():
-        """Return the abreviated month name."""
+        """Return the abbreviated month name."""
 
     def Mon():
         """Compatibility: see aMonth"""
 
     def pMonth():
-        """Return the abreviated (with period) month name."""
+        """Return the abbreviated (with period) month name."""
 
     def Mon_():
         """Compatibility: see pMonth"""
@@ -201,10 +201,10 @@ class IDateTime(Interface):
         representation of the object"""
 
     def aDay():
-        """Return the abreviated name of the day of the week"""
+        """Return the abbreviated name of the day of the week"""
 
     def pDay():
-        """Return the abreviated (with period) name of the day of the
+        """Return the abbreviated (with period) name of the day of the
         week"""
 
     def Day_():
