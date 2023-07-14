@@ -5,6 +5,8 @@ Changelog
 ----------------
 
 - Cast int to float in compare methods.
+- Fix compare methods between DateTime instances and None.
+  (`#52 <https://github.com/zopefoundation/DateTime/issues/52>`_)
 
 
 5.1 (2023-03-14)
