@@ -4,7 +4,7 @@ Changelog
 5.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Cast int to float in compare methods.
 
 
 5.1 (2023-03-14)
