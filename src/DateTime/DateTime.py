@@ -1248,7 +1248,7 @@ class DateTime:
         long integer microseconds.
         """
         if t is None:
-            t = 0
+            return True
         if isinstance(t, (float, int)):
             return self._micros > long(t * 1000000)
         else:
@@ -1269,7 +1269,7 @@ class DateTime:
         long integer microseconds.
         """
         if t is None:
-            t = 0
+            return True
         if isinstance(t, (float, int)):
             return self._micros >= long(t * 1000000)
         else:
@@ -1289,7 +1289,7 @@ class DateTime:
         long integer microseconds.
         """
         if t is None:
-            t = 0
+            return False
         if isinstance(t, (float, int)):
             return self._micros == long(t * 1000000)
         else:
@@ -1334,7 +1334,7 @@ class DateTime:
         long integer microseconds.
         """
         if t is None:
-            t = 0
+            return False
         if isinstance(t, (float, int)):
             return self._micros < long(t * 1000000)
         else:
@@ -1354,7 +1354,7 @@ class DateTime:
         long integer microseconds.
         """
         if t is None:
-            t = 0
+            return False
         if isinstance(t, (float, int)):
             return self._micros <= long(t * 1000000)
         else:
