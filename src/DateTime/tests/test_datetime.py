@@ -217,6 +217,23 @@ class DateTimeTests(unittest.TestCase):
         self.assertTrue(dt.lessThanEqualTo(dt1))
         self.assertTrue(dt.notEqualTo(dt1))
         self.assertFalse(dt.equalTo(dt1))
+        # Compare a date to float
+        dt = DateTime(1.0)
+        self.assertFalse(dt.greaterThan(1.0))
+        self.assertTrue(dt.greaterThanEqualTo(1.0))
+        self.assertFalse(dt.lessThan(1.0))
+        self.assertTrue(dt.lessThanEqualTo(1.0))
+        self.assertFalse(dt.notEqualTo(1.0))
+        self.assertTrue(dt.equalTo(1.0))
+        # Compare a date to int
+        dt = DateTime(1)
+        self.assertEqual(dt, DateTime(1.0))
+        self.assertFalse(dt.greaterThan(1))
+        self.assertTrue(dt.greaterThanEqualTo(1))
+        self.assertFalse(dt.lessThan(1))
+        self.assertTrue(dt.lessThanEqualTo(1))
+        self.assertFalse(dt.notEqualTo(1))
+        self.assertTrue(dt.equalTo(1))
 
     def test_compare_methods_none(self):
         # Compare a date to None
