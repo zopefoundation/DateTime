@@ -1,7 +1,7 @@
 Changelog
 =========
 
-5.2 (unreleased)
+5.2 (2023-07-19)
 ----------------
 
 - Cast int to float in compare methods.
