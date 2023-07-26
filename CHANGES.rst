@@ -4,7 +4,7 @@ Changelog
 5.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add preliminary support for Python 3.12b4.
 
 
 5.2 (2023-07-19)
