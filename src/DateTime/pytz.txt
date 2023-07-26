@@ -132,7 +132,7 @@ The _zlst attribute is a list of supported time zone names.
     ['Africa/Abidjan'... 'Africa/Accra'... 'IDLE'... 'NZST'... 'NZT'...]
 
 The _zidx attribute is a list of lower-case and possibly abbreviated
-time zone names that can be mapped to offical zone names.
+time zone names that can be mapped to official zone names.
 
     >>> 'australia/yancowinna' in cache._zidx
     True

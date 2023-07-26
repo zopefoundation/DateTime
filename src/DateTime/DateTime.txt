@@ -55,7 +55,7 @@ of days since January 1, 1901, using the standard int, long, and float
 functions (Compatibility Note: int, long and float return the number
 of days since 1901 in GMT rather than local machine timezone).
 DateTime objects also provide access to their value in a float format
-usable with the python time module, provided that the value of the
+usable with the Python time module, provided that the value of the
 object falls in the range of the epoch-based time module.
 
 A DateTime object should be considered immutable; all conversion and numeric
@@ -145,7 +145,7 @@ with from zero to seven arguments:
   permitted around the delimiters.  Year, month, and day values may be
   given in any order as long as it is possible to distinguish the
   components.  If all three components are numbers that are less than
-  13, then a a month-day-year ordering is assumed.
+  13, then a month-day-year ordering is assumed.
 
   The time component consists of hour, minute, and second values
   separated by colons.  The hour value must be an integer between 0
@@ -361,7 +361,7 @@ Component access
     >>> dt.year()
     1997
 
-* ``month()`` retursn the month of the object as an integer:
+* ``month()`` returns the month of the object as an integer:
 
     >>> dt.month()
     3
@@ -371,12 +371,12 @@ Component access
     >>> dt.Month()
     'March'
 
-* ``aMonth()`` returns the abreviated month name:
+* ``aMonth()`` returns the abbreviated month name:
 
     >>> dt.aMonth()
     'Mar'
 
-* ``pMonth()`` returns the abreviated (with period) month name:
+* ``pMonth()`` returns the abbreviated (with period) month name:
 
     >>> dt.pMonth()
     'Mar.'
@@ -634,7 +634,7 @@ equal for different representations of the DateTime:
   3618678
 
 DateTime objects can be compared to other DateTime objects OR floating
-point numbers such as the ones which are returned by the python time
+point numbers such as the ones which are returned by the Python time
 module by using the equalTo method. Using this API, True is returned if the
 object represents a date/time equal to the specified DateTime or time module
 style time:

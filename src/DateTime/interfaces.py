@@ -32,14 +32,13 @@ class TimeError(DateTimeError):
 class IDateTime(Interface):
     # Conversion and comparison methods
 
-    # TODO determine whether this method really is part of the public API
     def localZone(ltm=None):
-        '''Returns the time zone on the given date.  The time zone
-        can change according to daylight savings.'''
+        """Returns the time zone on the given date.  The time zone
+        can change according to daylight savings."""
 
     def timeTime():
         """Return the date/time as a floating-point number in UTC, in
-        the format used by the python time module.  Note that it is
+        the format used by the Python time module.  Note that it is
         possible to create date/time values with DateTime that have no
         meaningful value to the time module."""
 
@@ -97,7 +96,7 @@ class IDateTime(Interface):
     def greaterThan(t):
         """Compare this DateTime object to another DateTime object OR
         a floating point number such as that which is returned by the
-        python time module. Returns true if the object represents a
+        Python time module. Returns true if the object represents a
         date/time greater than the specified DateTime or time module
         style time.  Revised to give more correct results through
         comparison of long integer milliseconds."""
@@ -107,7 +106,7 @@ class IDateTime(Interface):
     def greaterThanEqualTo(t):
         """Compare this DateTime object to another DateTime object OR
         a floating point number such as that which is returned by the
-        python time module. Returns true if the object represents a
+        Python time module. Returns true if the object represents a
         date/time greater than or equal to the specified DateTime or
         time module style time.  Revised to give more correct results
         through comparison of long integer milliseconds."""
@@ -117,7 +116,7 @@ class IDateTime(Interface):
     def equalTo(t):
         """Compare this DateTime object to another DateTime object OR
         a floating point number such as that which is returned by the
-        python time module. Returns true if the object represents a
+        Python time module. Returns true if the object represents a
         date/time equal to the specified DateTime or time module style
         time.  Revised to give more correct results through comparison
         of long integer milliseconds."""
@@ -127,7 +126,7 @@ class IDateTime(Interface):
     def notEqualTo(t):
         """Compare this DateTime object to another DateTime object OR
         a floating point number such as that which is returned by the
-        python time module. Returns true if the object represents a
+        Python time module. Returns true if the object represents a
         date/time not equal to the specified DateTime or time module
         style time.  Revised to give more correct results through
         comparison of long integer milliseconds."""
@@ -137,7 +136,7 @@ class IDateTime(Interface):
     def lessThan(t):
         """Compare this DateTime object to another DateTime object OR
         a floating point number such as that which is returned by the
-        python time module. Returns true if the object represents a
+        Python time module. Returns true if the object represents a
         date/time less than the specified DateTime or time module
         style time.  Revised to give more correct results through
         comparison of long integer milliseconds."""
@@ -147,7 +146,7 @@ class IDateTime(Interface):
     def lessThanEqualTo(t):
         """Compare this DateTime object to another DateTime object OR
         a floating point number such as that which is returned by the
-        python time module. Returns true if the object represents a
+        Python time module. Returns true if the object represents a
         date/time less than or equal to the specified DateTime or time
         module style time.  Revised to give more correct results
         through comparison of long integer milliseconds."""
@@ -176,13 +175,13 @@ class IDateTime(Interface):
         """Return the full month name"""
 
     def aMonth():
-        """Return the abreviated month name."""
+        """Return the abbreviated month name."""
 
     def Mon():
         """Compatibility: see aMonth"""
 
     def pMonth():
-        """Return the abreviated (with period) month name."""
+        """Return the abbreviated (with period) month name."""
 
     def Mon_():
         """Compatibility: see pMonth"""
@@ -201,10 +200,10 @@ class IDateTime(Interface):
         representation of the object"""
 
     def aDay():
-        """Return the abreviated name of the day of the week"""
+        """Return the abbreviated name of the day of the week"""
 
     def pDay():
-        """Return the abreviated (with period) name of the day of the
+        """Return the abbreviated (with period) name of the day of the
         week"""
 
     def Day_():
@@ -334,7 +333,7 @@ class IDateTime(Interface):
 
     def JulianDay():
         """Return the Julian day according to
-        http://www.tondering.dk/claus/cal/node3.html#sec-calcjd
+        https://www.tondering.dk/claus/cal/julperiod.php#formula
         """
 
     def week():

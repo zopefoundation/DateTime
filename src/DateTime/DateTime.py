@@ -54,7 +54,7 @@ def getDefaultDateFormat():
 
 
 # To control rounding errors, we round system time to the nearest
-# microsecond.  Then delicate calculations can rely on that the
+# microsecond.  Then delicate calculations can rely on the fact that the
 # maximum precision that needs to be preserved is known.
 _system_time = time
 
@@ -406,7 +406,7 @@ class DateTime:
         long, and float functions (Compatibility Note: int, long and
         float return the number of days since 1901 in GMT rather than
         local machine timezone). DateTime objects also provide access
-        to their value in a float format usable with the python time
+        to their value in a float format usable with the Python time
         module, provided that the value of the object falls in the
         range of the epoch-based time module, and as a datetime.datetime
         object.
@@ -478,7 +478,7 @@ class DateTime:
         Note that in all cases the local machine timezone is used for
         representation if no timezone is specified.
 
-        DateTimes may be created with from zero to seven arguments.
+        DateTimes may be created with zero to seven arguments.
 
           - If the function is called with no arguments or with None,
             then the current date/time is returned, represented in the
@@ -510,16 +510,16 @@ class DateTime:
             essentially be the same as if you had captured time.time()
             at the specified date and time on a machine in that timezone:
 
-            <PRE>
-            e=DateTime('US/Eastern')
+            <pre>
+            e = DateTime('US/Eastern')
             # returns current date/time, represented in US/Eastern.
 
-            x=DateTime('1997/3/9 1:45pm')
+            x = DateTime('1997/3/9 1:45pm')
             # returns specified time, represented in local machine zone.
 
-            y=DateTime('Mar 9, 1997 13:45:00')
+            y = DateTime('Mar 9, 1997 13:45:00')
             # y is equal to x
-            </PRE>
+            </pre>
 
             The date component consists of year, month, and day
             values. The year value must be a one-, two-, or
@@ -535,7 +535,7 @@ class DateTime:
             month, and day values may be given in any order as long
             as it is possible to distinguish the components. If all
             three components are numbers that are less than 13,
-            then a a month-day-year ordering is assumed.
+            then a month-day-year ordering is assumed.
 
             The time component consists of hour, minute, and second
             values separated by colons.  The hour value must be an
@@ -555,14 +555,14 @@ class DateTime:
             The existing ISO8601 parser was extended to support almost
             the whole ISO8601 specification. New formats includes:
 
-            <PRE>
-            y=DateTime('1993-045')
+            <pre>
+            y = DateTime('1993-045')
             # returns the 45th day from 1993, which is 14th February
 
-            w=DateTime('1993-W06-7')
+            w = DateTime('1993-W06-7')
             # returns the 7th day from the 6th week from 1993, which
             # is also 14th February
-            </PRE>
+            </pre>
 
             See http://en.wikipedia.org/wiki/ISO_8601 for full specs.
 
@@ -608,19 +608,19 @@ class DateTime:
             with a value of that gmt time will be returned, represented
             in the given timezone.
 
-            <PRE>
+            <pre>
             import time
-            t=time.time()
+            t = time.time()
 
-            now_east=DateTime(t,'US/Eastern')
+            now_east = DateTime(t,'US/Eastern')
             # Time t represented as US/Eastern
 
-            now_west=DateTime(t,'US/Pacific')
+            now_west = DateTime(t,'US/Pacific')
             # Time t represented as US/Pacific
 
             # now_east == now_west
             # only their representations are different
-            </PRE>
+            </pre>
 
           - If the function is invoked with three or more numeric
             arguments, then the first is taken to be an integer
@@ -847,7 +847,7 @@ class DateTime:
         # cannot rely on C sprintf (Python '%') formatting to round
         # consistently; doing it ourselves ensures that all but truly
         # horrid C sprintf implementations will yield the same result
-        # x-platform, provided the format asks for exactly 6 digits after
+        # cross-platform, provided the format asks for exactly 6 digits after
         # the decimal point.
         sc = round(sc, 6)
         if sc >= 60.0:  # can happen if, e.g., orig sc was 59.9999999
@@ -950,7 +950,6 @@ class DateTime:
                 ints.append(float(s))
                 continue
 
-            # AJ
             ts_results = INT_PATTERN.match(st, i)
             if ts_results:
                 s = ts_results.group(0)
@@ -1124,7 +1123,7 @@ class DateTime:
 
     def timeTime(self):
         """Return the date/time as a floating-point number in UTC,
-        in the format used by the python time module.
+        in the format used by the Python time module.
 
         Note that it is possible to create date/time values with
         DateTime that have no meaningful value to the time module.
@@ -1175,7 +1174,7 @@ class DateTime:
     def isCurrentYear(self):
         """Return true if this object represents a date/time
         that falls within the current year, in the context
-        of this object\'s timezone representation.
+        of this object's timezone representation.
         """
         t = time()
         return safegmtime(t + _tzoffset(self._tz, t))[0] == self._year
@@ -1183,7 +1182,7 @@ class DateTime:
     def isCurrentMonth(self):
         """Return true if this object represents a date/time
         that falls within the current month, in the context
-        of this object\'s timezone representation.
+        of this object's timezone representation.
         """
         t = time()
         gmt = safegmtime(t + _tzoffset(self._tz, t))
@@ -1192,7 +1191,7 @@ class DateTime:
     def isCurrentDay(self):
         """Return true if this object represents a date/time
         that falls within the current day, in the context
-        of this object\'s timezone representation.
+        of this object's timezone representation.
         """
         t = time()
         gmt = safegmtime(t + _tzoffset(self._tz, t))
@@ -1202,7 +1201,7 @@ class DateTime:
     def isCurrentHour(self):
         """Return true if this object represents a date/time
         that falls within the current hour, in the context
-        of this object\'s timezone representation.
+        of this object's timezone representation.
         """
         t = time()
         gmt = safegmtime(t + _tzoffset(self._tz, t))
@@ -1212,7 +1211,7 @@ class DateTime:
     def isCurrentMinute(self):
         """Return true if this object represents a date/time
         that falls within the current minute, in the context
-        of this object\'s timezone representation.
+        of this object's timezone representation.
         """
         t = time()
         gmt = safegmtime(t + _tzoffset(self._tz, t))
@@ -1223,7 +1222,7 @@ class DateTime:
     def earliestTime(self):
         """Return a new DateTime object that represents the earliest
         possible time (in whole seconds) that still falls within
-        the current object\'s day, in the object\'s timezone context.
+        the current object's day, in the object's timezone context.
         """
         return self.__class__(
             self._year, self._month, self._day, 0, 0, 0, self._tz)
@@ -1231,7 +1230,7 @@ class DateTime:
     def latestTime(self):
         """Return a new DateTime object that represents the latest
         possible time (in whole seconds) that still falls within
-        the current object\'s day, in the object\'s timezone context.
+        the current object's day, in the object's timezone context.
         """
         return self.__class__(
             self._year, self._month, self._day, 23, 59, 59, self._tz)
@@ -1239,7 +1238,7 @@ class DateTime:
     def greaterThan(self, t):
         """Compare this DateTime object to another DateTime object
         OR a floating point number such as that which is returned
-        by the python time module.
+        by the Python time module.
 
         Returns true if the object represents a date/time greater
         than the specified DateTime or time module style time.
@@ -1259,7 +1258,7 @@ class DateTime:
     def greaterThanEqualTo(self, t):
         """Compare this DateTime object to another DateTime object
         OR a floating point number such as that which is returned
-        by the python time module.
+        by the Python time module.
 
         Returns true if the object represents a date/time greater
         than or equal to the specified DateTime or time module style
@@ -1280,7 +1279,7 @@ class DateTime:
     def equalTo(self, t):
         """Compare this DateTime object to another DateTime object
         OR a floating point number such as that which is returned
-        by the python time module.
+        by the Python time module.
 
         Returns true if the object represents a date/time equal to
         the specified DateTime or time module style time.
@@ -1298,7 +1297,7 @@ class DateTime:
     def notEqualTo(self, t):
         """Compare this DateTime object to another DateTime object
         OR a floating point number such as that which is returned
-        by the python time module.
+        by the Python time module.
 
         Returns true if the object represents a date/time not equal
         to the specified DateTime or time module style time.
@@ -1313,7 +1312,7 @@ class DateTime:
         Return True if their internal state is the same. Two objects
         representing the same time in different timezones are regared as
         unequal. Use the equalTo method if you are only interested in them
-        refering to the same moment in time.
+        referring to the same moment in time.
         """
         if not isinstance(t, DateTime):
             return False
@@ -1325,7 +1324,7 @@ class DateTime:
     def lessThan(self, t):
         """Compare this DateTime object to another DateTime object
         OR a floating point number such as that which is returned
-        by the python time module.
+        by the Python time module.
 
         Returns true if the object represents a date/time less than
         the specified DateTime or time module style time.
@@ -1345,7 +1344,7 @@ class DateTime:
     def lessThanEqualTo(self, t):
         """Compare this DateTime object to another DateTime object
         OR a floating point number such as that which is returned
-        by the python time module.
+        by the Python time module.
 
         Returns true if the object represents a date/time less than
         or equal to the specified DateTime or time module style time.
@@ -1364,7 +1363,7 @@ class DateTime:
 
     def isLeapYear(self):
         """Return true if the current year (in the context of the
-        object\'s timezone) is a leap year.
+        object's timezone) is a leap year.
         """
         return (self._year % 4 == 0 and
                 (self._year % 100 != 0 or self._year % 400 == 0))
@@ -1469,11 +1468,11 @@ class DateTime:
         return self._pday
 
     def dow(self):
-        """Return the integer day of the week, where sunday is 0."""
+        """Return the integer day of the week, where Sunday is 0."""
         return self._dayoffset
 
     def dow_1(self):
-        """Return the integer day of the week, where sunday is 1."""
+        """Return the integer day of the week, where Sunday is 1."""
         return self._dayoffset + 1
 
     @property
@@ -1523,10 +1522,10 @@ class DateTime:
         return self._micros
 
     def timezoneNaive(self):
-        """The python datetime module introduces the idea of distinguishing
+        """The Python datetime module introduces the idea of distinguishing
         between timezone aware and timezone naive datetime values. For lossless
-        conversion to and from datetime.datetime record if we record this
-        information using True / False. DateTime makes no distinction, when we
+        conversion to and from datetime.datetime we record this
+        information using True / False. DateTime makes no distinction, if we
         don't have any information we return None here.
         """
         try:
@@ -1605,7 +1604,7 @@ class DateTime:
 
     # New formats
     def fCommon(self):
-        """Return a string representing the object\'s value
+        """Return a string representing the object's value
         in the format: March 1, 1997 1:45 pm.
         """
         return '%s %s, %4.4d %s:%2.2d %s' % (
@@ -1613,7 +1612,7 @@ class DateTime:
                self._minute, self._pm)
 
     def fCommonZ(self):
-        """Return a string representing the object\'s value
+        """Return a string representing the object's value
         in the format: March 1, 1997 1:45 pm US/Eastern.
         """
         return '%s %s, %4.4d %d:%2.2d %s %s' % (
@@ -1621,7 +1620,7 @@ class DateTime:
                self._minute, self._pm, self._tz)
 
     def aCommon(self):
-        """Return a string representing the object\'s value
+        """Return a string representing the object's value
         in the format: Mar 1, 1997 1:45 pm.
         """
         return '%s %s, %4.4d %s:%2.2d %s' % (
@@ -1629,7 +1628,7 @@ class DateTime:
                self._minute, self._pm)
 
     def aCommonZ(self):
-        """Return a string representing the object\'s value
+        """Return a string representing the object's value
         in the format: Mar 1, 1997 1:45 pm US/Eastern.
         """
         return '%s %s, %4.4d %d:%2.2d %s %s' % (
@@ -1637,7 +1636,7 @@ class DateTime:
                self._minute, self._pm, self._tz)
 
     def pCommon(self):
-        """Return a string representing the object\'s value
+        """Return a string representing the object's value
         in the format: Mar. 1, 1997 1:45 pm.
         """
         return '%s %s, %4.4d %s:%2.2d %s' % (
@@ -1645,7 +1644,7 @@ class DateTime:
                self._minute, self._pm)
 
     def pCommonZ(self):
-        """Return a string representing the object\'s value
+        """Return a string representing the object's value
         in the format: Mar. 1, 1997 1:45 pm US/Eastern.
         """
         return '%s %s, %4.4d %d:%2.2d %s %s' % (
@@ -1719,7 +1718,7 @@ class DateTime:
         return dt
 
     def utcdatetime(self):
-        """Convert the time to UTC then return a timezone naive datetime object
+        """Convert the time to UTC and return a timezone naive datetime object
         """
         utc = self.toZone('UTC')
         second = int(utc._second)
@@ -1730,7 +1729,7 @@ class DateTime:
 
     def __add__(self, other):
         """A DateTime may be added to a number and a number may be
-        added to a DateTime;  two DateTimes cannot be added.
+        added to a DateTime; two DateTimes cannot be added.
         """
         if hasattr(other, '_t'):
             raise DateTimeError('Cannot add two DateTimes')
@@ -1812,7 +1811,7 @@ class DateTime:
 
     def _parse_iso8601(self, s):
         # preserve the previously implied contract
-        # who know where this could be used...
+        # who knows where this could be used...
         return self._parse_iso8601_preserving_tznaive(s)[:7]
 
     def _parse_iso8601_preserving_tznaive(self, s):
@@ -1899,7 +1898,7 @@ class DateTime:
     def JulianDay(self):
         """Return the Julian day.
 
-        See: http://www.tondering.dk/claus/cal/node3.html#sec-calcjd
+        See: https://www.tondering.dk/claus/cal/julperiod.php#formula
         """
         a = (14 - self._month) // 12
         y = self._year + 4800 - a
@@ -1910,7 +1909,7 @@ class DateTime:
     def week(self):
         """Return the week number according to ISO.
 
-        See: http://www.tondering.dk/claus/cal/node6.html
+        See: https://www.tondering.dk/claus/cal/week.php#weekno
         """
         J = self.JulianDay()
         d4 = (J + 31741 - (J % 7)) % 146097 % 36524 % 1461
