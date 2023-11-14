@@ -2,7 +2,7 @@
 # https://github.com/zopefoundation/meta/tree/master/config/zope-product
 [meta]
 template = "zope-product"
-commit-id = "6f8d8c51"
+commit-id = "8a08ecb4"
 
 [python]
 with-pypy = true
@@ -21,9 +21,3 @@ additional-rules = [
 
 [tox]
 use-flake8 = true
-testenv-commands = [
-    "{envdir}/bin/test {posargs:-cv}",
-    ]
-coverage-command = [
-    "coverage run {envdir}/bin/test {posargs:-cv}",
-    ]
