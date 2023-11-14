@@ -21,16 +21,19 @@ jobs:
         - ["windows", "windows-latest"]
         config:
         # [Python version, tox env]
+        - ["3.9",   "release-check"]
         - ["3.9",   "lint"]
         - ["3.7",   "py37"]
         - ["3.8",   "py38"]
         - ["3.9",   "py39"]
         - ["3.10",  "py310"]
         - ["3.11",  "py311"]
-        - ["3.12.0-beta.4",  "py312"]
+        - ["3.12",  "py312"]
+        - ["3.13.0-alpha - 3.13.0",  "py313"]
         - ["pypy-3.9", "pypy3"]
         - ["3.9",   "coverage"]
         exclude:
+          - { os: ["windows", "windows-latest"], config: ["3.9",   "release-check"] }
           - { os: ["windows", "windows-latest"], config: ["3.9",   "lint"] }
           - { os: ["windows", "windows-latest"], config: ["3.9",   "coverage"] }
 
