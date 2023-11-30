@@ -199,9 +199,14 @@ for hour in range(0, 13):
     _old_zmap['+%s00' % fhour] = 'GMT+%i' % hour
 
 
+def _p(zone):
+    return _numeric_timezones[zone]
+
+
 def _static_timezone_factory(data):
     zone = data[0]
     cls = type(zone, (StaticTzInfo,), dict(
+        __reduce__=lambda _: (_p, (zone, )),
         zone=zone,
         _utcoffset=memorized_timedelta(data[5][0][0]),
         _tzname=data[6][:-1]))  # strip the trailing null
