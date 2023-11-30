@@ -4,7 +4,8 @@ Changelog
 5.4 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix ``UnknownTimeZoneError`` when unpickling ``DateTime.DateTime().asdatetime()``.
+  (`#58 <https://github.com/zopefoundation/DateTime/issues/58>`_)
 
 
 5.3 (2023-11-14)
