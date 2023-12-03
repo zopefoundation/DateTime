@@ -219,6 +219,8 @@ class DateTimeTests(unittest.TestCase):
         self.assertFalse(dt.equalTo(dt1))
         # Compare a date to float
         dt = DateTime(1.0)
+        self.assertTrue(dt == DateTime(1.0))  # testing __eq__
+        self.assertFalse(dt != DateTime(1.0))  # testing __ne__
         self.assertFalse(dt.greaterThan(1.0))
         self.assertTrue(dt.greaterThanEqualTo(1.0))
         self.assertFalse(dt.lessThan(1.0))
@@ -228,12 +230,26 @@ class DateTimeTests(unittest.TestCase):
         # Compare a date to int
         dt = DateTime(1)
         self.assertEqual(dt, DateTime(1.0))
+        self.assertTrue(dt == DateTime(1))  # testing __eq__
+        self.assertFalse(dt != DateTime(1))  # testing __ne__
         self.assertFalse(dt.greaterThan(1))
         self.assertTrue(dt.greaterThanEqualTo(1))
         self.assertFalse(dt.lessThan(1))
         self.assertTrue(dt.lessThanEqualTo(1))
         self.assertFalse(dt.notEqualTo(1))
         self.assertTrue(dt.equalTo(1))
+        # Compare a date to string; there is no implicit type conversion
+        # but behavior if consistent as when comparing, for example, an int
+        # and a string.
+        dt = DateTime("2023")
+        self.assertFalse(dt == "2023")  # testing __eq__
+        self.assertTrue(dt != "2023")  # testing __ne__
+        self.assertRaises(TypeError, dt.greaterThan, "2023")
+        self.assertRaises(TypeError, dt.greaterThanEqualTo, "2023")
+        self.assertRaises(TypeError, dt.lessThan, "2023")
+        self.assertRaises(TypeError, dt.lessThanEqualTo, "2023")
+        self.assertTrue(dt.notEqualTo("2023"))
+        self.assertFalse(dt.equalTo("2023"))
 
     def test_compare_methods_none(self):
         # Compare a date to None

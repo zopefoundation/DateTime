@@ -7,6 +7,9 @@ Changelog
 - Fix ``UnknownTimeZoneError`` when unpickling ``DateTime.DateTime().asdatetime()``.
   (`#58 <https://github.com/zopefoundation/DateTime/issues/58>`_)
 
+- Repair equality comparison between DateTime instances and other types.
+  (`#60 <https://github.com/zopefoundation/DateTime/issues/60>`_)
+
 
 5.3 (2023-11-14)
 ----------------
