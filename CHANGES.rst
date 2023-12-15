@@ -1,7 +1,7 @@
 Changelog
 =========
 
-5.4 (unreleased)
+5.4 (2023-12-15)
 ----------------
 
 - Fix ``UnknownTimeZoneError`` when unpickling ``DateTime.DateTime().asdatetime()``.
