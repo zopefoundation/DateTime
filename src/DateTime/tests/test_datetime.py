@@ -338,6 +338,24 @@ class DateTimeTests(unittest.TestCase):
         for key in DateTime.__slots__:
             self.assertEqual(getattr(dt, key), getattr(new, key))
 
+    def test_pickle_dates_after_2038(self):
+        dt = DateTime('2039/09/02 07:07:6.235027 GMT+1')
+        data = pickle.dumps(dt, 1)
+        new = pickle.loads(data)
+        for key in DateTime.__slots__:
+            self.assertEqual(getattr(dt, key), getattr(new, key))
+
+    def test_pickle_old_with_micros_as_float(self):
+        dt = DateTime('2002/5/2 8:00am GMT+0')
+        data = (
+            'ccopy_reg\n_reconstructor\nq\x00(cDateTime.DateTime\nDateTime'
+            '\nq\x01c__builtin__\nobject\nq\x02Ntq\x03Rq\x04(GA\xcehy\x00\x00'
+            '\x00\x00I00\nX\x05\x00\x00\x00GMT+0q\x05tq\x06b.')
+        data = data.encode('latin-1')
+        new = pickle.loads(data)
+        for key in DateTime.__slots__:
+            self.assertEqual(getattr(dt, key), getattr(new, key))
+
     def testTZ2(self):
         # Time zone manipulation test 2
         dt = DateTime()
