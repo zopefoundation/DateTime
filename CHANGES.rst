@@ -4,7 +4,7 @@ Changelog
 5.6 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Remove Python2 compatiblity code.
 
 
 5.5 (2024-03-21)
