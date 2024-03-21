@@ -6,7 +6,7 @@ Changelog
 
 - Nothing changed yet.
 
-- Change pickle format to export the milliseconds as an int, to
+- Change pickle format to export the microseconds as an int, to
   solve a problem with dates after 2038.
   (`#56 <https://github.com/zopefoundation/DateTime/issues/56>`_)
 
