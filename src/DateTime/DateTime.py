@@ -446,17 +446,19 @@ class DateTime:
             raise SyntaxError('Unable to parse {}, {}'.format(args, kw))
 
     def __getstate__(self):
-        # We store a float of _micros, instead of the _micros long, as we most
-        # often don't have any sub-second resolution and can save those bytes
-        return (self._micros / 1000000.0,
+        return (self._micros,
                 getattr(self, '_timezone_naive', False),
                 self._tz)
 
     def __setstate__(self, value):
         if isinstance(value, tuple):
-            self._parse_args(value[0], value[2])
-            self._micros = long(value[0] * 1000000)
-            self._timezone_naive = value[1]
+            micros, tz_naive, tz = value
+            if isinstance(micros, float):
+                # BBB: support for pickle where micros was a float
+                micros = int(micros * 1000000)
+            self._parse_args(micros / 1000000., tz)
+            self._micros = micros
+            self._timezone_naive = tz_naive
         else:
             for k, v in value.items():
                 if k in self.__slots__:
