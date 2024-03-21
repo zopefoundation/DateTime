@@ -1,7 +1,7 @@
 Changelog
 =========
 
-5.5 (unreleased)
+5.5 (2024-03-21)
 ----------------
 
 - Change pickle format to export the microseconds as an int, to
