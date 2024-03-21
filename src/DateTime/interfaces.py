@@ -99,7 +99,7 @@ class IDateTime(Interface):
         Python time module. Returns true if the object represents a
         date/time greater than the specified DateTime or time module
         style time.  Revised to give more correct results through
-        comparison of long integer milliseconds."""
+        comparison of integer microseconds."""
 
     __gt__ = greaterThan
 
@@ -109,7 +109,7 @@ class IDateTime(Interface):
         Python time module. Returns true if the object represents a
         date/time greater than or equal to the specified DateTime or
         time module style time.  Revised to give more correct results
-        through comparison of long integer milliseconds."""
+        through comparison of integer microseconds."""
 
     __ge__ = greaterThanEqualTo
 
@@ -119,7 +119,7 @@ class IDateTime(Interface):
         Python time module. Returns true if the object represents a
         date/time equal to the specified DateTime or time module style
         time.  Revised to give more correct results through comparison
-        of long integer milliseconds."""
+        of integer microseconds."""
 
     __eq__ = equalTo
 
@@ -129,7 +129,7 @@ class IDateTime(Interface):
         Python time module. Returns true if the object represents a
         date/time not equal to the specified DateTime or time module
         style time.  Revised to give more correct results through
-        comparison of long integer milliseconds."""
+        comparison of integer microseconds."""
 
     __ne__ = notEqualTo
 
@@ -139,7 +139,7 @@ class IDateTime(Interface):
         Python time module. Returns true if the object represents a
         date/time less than the specified DateTime or time module
         style time.  Revised to give more correct results through
-        comparison of long integer milliseconds."""
+        comparison of integer microseconds."""
 
     __lt__ = lessThan
 
@@ -149,7 +149,7 @@ class IDateTime(Interface):
         Python time module. Returns true if the object represents a
         date/time less than or equal to the specified DateTime or time
         module style time.  Revised to give more correct results
-        through comparison of long integer milliseconds."""
+        through comparison of integer microseconds."""
 
     __le__ = lessThanEqualTo
 

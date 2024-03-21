@@ -4,11 +4,11 @@ Changelog
 5.5 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
 - Change pickle format to export the microseconds as an int, to
   solve a problem with dates after 2038.
   (`#56 <https://github.com/zopefoundation/DateTime/issues/56>`_)
+
+- Remove python2 compatiblity code.
 
 
 5.4 (2023-12-15)
