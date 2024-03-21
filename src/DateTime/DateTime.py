@@ -455,7 +455,7 @@ class DateTime:
             micros, tz_naive, tz = value
             if isinstance(micros, float):
                 # BBB: support for pickle where micros was a float
-                micros = long(micros * 1000000)
+                micros = int(micros * 1000000)
             self._parse_args(micros / 1000000., tz)
             self._micros = micros
             self._timezone_naive = tz_naive
