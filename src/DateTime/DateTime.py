@@ -439,7 +439,7 @@ class DateTime:
         except (DateError, TimeError, DateTimeError):
             raise
         except Exception:
-            raise SyntaxError('Unable to parse {}, {}'.format(args, kw))
+            raise SyntaxError(f'Unable to parse {args}, {kw}')
 
     def __getstate__(self):
         return (self._micros,
@@ -812,7 +812,7 @@ class DateTime:
             hr, mn, sc, tz = 0, 0, 0, 0
             yr = _correctYear(yr)
             if not self._validDate(yr, mo, dy):
-                raise DateError('Invalid date: {}'.format(args))
+                raise DateError(f'Invalid date: {args}')
             args = args[3:]
             if args:
                 hr, args = args[0], args[1:]
@@ -956,7 +956,7 @@ class DateTime:
                 i = i + ls
                 if (ls == 4 and d and d in '+-' and
                         (len(ints) + (not not month) >= 3)):
-                    tz = '{}{}'.format(d, s)
+                    tz = f'{d}{s}'
                 else:
                     v = int(s)
                     ints.append(v)
@@ -1764,7 +1764,7 @@ class DateTime:
         """Convert a DateTime to a string that looks like a Python
         expression.
         """
-        return '{}(\'{}\')'.format(self.__class__.__name__, str(self))
+        return f'{self.__class__.__name__}(\'{str(self)}\')'
 
     def __str__(self):
         """Convert a DateTime to a string."""
