@@ -26,7 +26,7 @@ with open(os.path.join(here, 'src', 'DateTime', 'DateTime.txt')) as f:
 with open(os.path.join(here, 'CHANGES.rst')) as f:
     CHANGES = f.read()
 
-version = '5.6.dev0'
+version = '6.0.dev0'
 
 setup(
     name='DateTime',
@@ -55,7 +55,6 @@ better off using Python's built-in datetime module.""".replace('\n', ' '),
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -64,7 +63,7 @@ better off using Python's built-in datetime module.""".replace('\n', ' '),
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
-    python_requires='>=3.7',
+    python_requires='>=3.8',
     install_requires=[
         'zope.interface',
         'pytz',
