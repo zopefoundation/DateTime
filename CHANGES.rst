@@ -1,7 +1,7 @@
 Changelog
 =========
 
-5.6 (unreleased)
+6.0 (unreleased)
 ----------------
 
 - Remove Python2 compatiblity code.
