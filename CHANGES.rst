@@ -4,6 +4,8 @@ Changelog
 6.0 (unreleased)
 ----------------
 
+- Remove setuptools fossils.
+
 - Drop support for Python 3.7.
 
 - Remove Python2 compatiblity code.
