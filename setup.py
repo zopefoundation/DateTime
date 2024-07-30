@@ -69,6 +69,5 @@ better off using Python's built-in datetime module.""".replace('\n', ' '),
         'pytz',
     ],
     include_package_data=True,
-    test_suite='DateTime.tests.test_datetime.test_suite',
     zip_safe=False,
 )
