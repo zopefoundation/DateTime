@@ -77,7 +77,7 @@ class DateTimeTests(unittest.TestCase):
     def testBug1203(self):
         # 01:59:60 occurred in old DateTime
         dt = DateTime(7200, 'GMT')
-        self.assertTrue(str(dt).find('60') < 0, dt)
+        self.assertNotIn('60', str(dt))
 
     def testDSTInEffect(self):
         # Checks GMT offset for a DST date in the US/Eastern time zone
@@ -172,7 +172,7 @@ class DateTimeTests(unittest.TestCase):
         # Fails when an 1800 date is displayed with negative signs
         dt = DateTime('1830/5/6 12:31:46.213 pm')
         dt1 = dt.toZone('GMT+6')
-        self.assertTrue(str(dt1).find('-') < 0, (dt, dt1))
+        self.assertNotIn('-', str(dt1))
 
     def testSubtraction(self):
         # Reconstruction of a DateTime from its parts, with subtraction
@@ -219,8 +219,10 @@ class DateTimeTests(unittest.TestCase):
         self.assertFalse(dt.equalTo(dt1))
         # Compare a date to float
         dt = DateTime(1.0)
-        self.assertTrue(dt == DateTime(1.0))  # testing __eq__
-        self.assertFalse(dt != DateTime(1.0))  # testing __ne__
+        is_eq = dt == DateTime(1.0)  # testing __eq__
+        self.assertTrue(is_eq)
+        is_neq = dt != DateTime(1.0)  # testing __ne__
+        self.assertFalse(is_neq)
         self.assertFalse(dt.greaterThan(1.0))
         self.assertTrue(dt.greaterThanEqualTo(1.0))
         self.assertFalse(dt.lessThan(1.0))
@@ -230,8 +232,10 @@ class DateTimeTests(unittest.TestCase):
         # Compare a date to int
         dt = DateTime(1)
         self.assertEqual(dt, DateTime(1.0))
-        self.assertTrue(dt == DateTime(1))  # testing __eq__
-        self.assertFalse(dt != DateTime(1))  # testing __ne__
+        is_eq = dt == DateTime(1)  # testing __eq__
+        self.assertTrue(is_eq)
+        is_neq = dt != DateTime(1)  # testing __ne__
+        self.assertFalse(is_neq)
         self.assertFalse(dt.greaterThan(1))
         self.assertTrue(dt.greaterThanEqualTo(1))
         self.assertFalse(dt.lessThan(1))
@@ -242,8 +246,10 @@ class DateTimeTests(unittest.TestCase):
         # but behavior if consistent as when comparing, for example, an int
         # and a string.
         dt = DateTime("2023")
-        self.assertFalse(dt == "2023")  # testing __eq__
-        self.assertTrue(dt != "2023")  # testing __ne__
+        is_eq = dt == "2023"  # testing __eq__
+        self.assertFalse(is_eq)
+        is_neq = dt != "2023"  # testing __ne__
+        self.assertTrue(is_neq)
         self.assertRaises(TypeError, dt.greaterThan, "2023")
         self.assertRaises(TypeError, dt.greaterThanEqualTo, "2023")
         self.assertRaises(TypeError, dt.lessThan, "2023")
