@@ -22,6 +22,3 @@ additional-rules = [
 
 [tox]
 use-flake8 = true
-
-[pre-commit]
-teyit-exclude = "tests/test_datetime\\.py"
