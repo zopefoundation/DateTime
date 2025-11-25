@@ -2,7 +2,7 @@
 # https://github.com/zopefoundation/meta/tree/master/config/zope-product
 [meta]
 template = "zope-product"
-commit-id = "a0de4e93"
+commit-id = "08e52d38"
 
 [python]
 with-pypy = true
@@ -19,6 +19,3 @@ fail-under = 88
 additional-rules = [
     "recursive-include src *.txt",
     ]
-
-[tox]
-use-flake8 = true
