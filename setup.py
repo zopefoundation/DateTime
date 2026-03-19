@@ -12,62 +12,8 @@
 #
 ##############################################################################
 
-import os
-
-from setuptools import find_packages
 from setuptools import setup
 
 
-here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, 'README.rst')) as f:
-    HEADER = f.read()
-with open(os.path.join(here, 'src', 'DateTime', 'DateTime.txt')) as f:
-    README = f.read()
-with open(os.path.join(here, 'CHANGES.rst')) as f:
-    CHANGES = f.read()
-
-version = '6.1.dev0'
-
-setup(
-    name='DateTime',
-    version=version,
-    url='https://github.com/zopefoundation/DateTime',
-    license='ZPL-2.1',
-    description="""\
-This package provides a DateTime data type, as known from Zope.
-Unless you need to communicate with Zope APIs, you're probably
-better off using Python's built-in datetime module.""".replace('\n', ' '),
-    author='Zope Foundation and Contributors',
-    author_email='zope-dev@zope.dev',
-    long_description='\n\n'.join([
-        HEADER,
-        '.. contents::',
-        README,
-        CHANGES,
-    ]),
-    packages=find_packages('src'),
-    package_dir={'': 'src'},
-    classifiers=[
-        "Development Status :: 6 - Mature",
-        "Environment :: Web Environment",
-        "Framework :: Zope :: 5",
-        "License :: OSI Approved :: Zope Public License",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",
-        "Programming Language :: Python :: 3.13",
-        "Programming Language :: Python :: 3.14",
-        "Programming Language :: Python :: Implementation :: CPython",
-        "Programming Language :: Python :: Implementation :: PyPy",
-    ],
-    python_requires='>=3.10',
-    install_requires=[
-        'zope.interface',
-        'pytz',
-    ],
-    include_package_data=True,
-    zip_safe=False,
-)
+# See pyproject.toml for package metadata
+setup()
