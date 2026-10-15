@@ -94,7 +94,7 @@ with from zero to seven arguments:
   string consists of two components, a date component and an optional
   time component, separated by one or more spaces.  If the time
   component is omitted, 12:00am is assumed.
-  
+
   Any recognized timezone name specified as the final element of the
   date/time string will be used for computing the date/time value.
   (If you create a DateTime with the string,
@@ -125,9 +125,9 @@ with from zero to seven arguments:
     (1997, 3, 9, 13, 45, ...)
     >>> y == x
     True
-    
+
   o Specified time in UTC via ISO 8601 rule:
-  
+
     >>> z = DateTime('2014-03-24')
     >>> z.parts() # doctest: +ELLIPSIS
     (2014, 3, 24, 0, 0, ...)
@@ -203,7 +203,7 @@ with from zero to seven arguments:
   then the first is taken to be an integer year, the second is taken
   to be an integer month, and the third is taken to be an integer day.
   If the combination of values is not valid, then a DateTimeError is
-  raised.  One- or two-digit years up to 69 are assumed to be in the 
+  raised.  One- or two-digit years up to 69 are assumed to be in the
   21st century, whereas values 70-99 are assumed to be 20th century.
   The fourth, fifth, and sixth arguments are floating point, positive
   or negative offsets in units of hours, minutes, and days, and

@@ -189,4 +189,3 @@ time information as of today.
 
     >>> tz.info() in ((-21600, 1, 'MDT'), (-25200, 0, 'MST'))
     True
-
