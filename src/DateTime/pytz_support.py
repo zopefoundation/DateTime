@@ -257,13 +257,23 @@ class PytzCache:
     _zmap = {name.lower(): name for name in pytz.all_timezones}
     _zmap.update(_old_zmap)  # These must take priority
     _zidx = _zmap.keys()
+    # Timezone objects are stateless: cache them per key, to avoid
+    # re-resolving the pytz timezone at every _tzoffset call.
+    _cache = {}
 
     def __getitem__(self, key):
+        try:
+            return self.cache[key]
+        except KeyError:
+            pass
         name = self._zmap.get(key.lower(), key)  # fallback to key
         try:
-            return Timezone(pytz.timezone(name))
+            zone = Timezone(pytz.timezone(name))
         except pytz.UnknownTimeZoneError:
             try:
-                return Timezone(_numeric_timezones[name])
+                zone = Timezone(_numeric_timezones[name])
             except KeyError:
                 raise DateTimeError('Unrecognized timezone: %s' % key)
+
+        self._cache[key] = zone
+        return zone
